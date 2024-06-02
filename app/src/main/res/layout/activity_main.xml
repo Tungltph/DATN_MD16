@@ -2,7 +2,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
     android:background="@android:color/white">
     <!-- Search bar -->
     <EditText
@@ -23,6 +22,7 @@
 
     <!-- Horizontal ScrollView for Categories -->
     <HorizontalScrollView
+        android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/etSearch"
@@ -56,6 +56,7 @@
     <!-- RecyclerView for Product List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
+        android:padding="16dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="320dp" />
