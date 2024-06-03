@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Người dùng"
+            android:text="Đổi mật khẩu"
             android:textSize="18sp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -43,19 +43,10 @@
             android:id="@+id/ivAvatar"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:src="@drawable/ic_user"
+            android:src="@drawable/ic_password"
             android:contentDescription="User Avatar"
             android:scaleType="centerCrop"
-            android:layout_gravity="center"
-            android:background="@drawable/avatar_background" />
-
-        <TextView
-            android:id="@+id/tvWelcome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Xin chào : User"
-            android:textSize="16sp" />
+            android:layout_gravity="center"/>
     </LinearLayout>
 
     <!-- User Options -->
@@ -69,54 +60,68 @@
             android:id="@+id/btnProfile"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/border_background"
-            android:drawableStart="@drawable/ic_profile"
             android:drawablePadding="16dp"
-            android:padding="16dp"
-            android:text="Hồ sơ của tôi"
+            android:padding="10dp"
+            android:text="Nhập mật khẩu cũ"
             android:textSize="16sp"
             android:textAlignment="viewStart"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="1dp" />
 
         <TextView
+            android:drawableStart="@drawable/baseline_key_24"
             android:id="@+id/btnChangePassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/border_background"
-            android:drawableStart="@drawable/ic_password"
             android:drawablePadding="16dp"
             android:padding="16dp"
-            android:text="Đổi mật khẩu"
+            android:textSize="16sp"
+            android:textAlignment="viewStart"
+            android:layout_marginBottom="16dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="16dp"
+            android:padding="10dp"
+            android:text="Nhập mật khẩu mới"
+            android:textSize="16sp"
+            android:textAlignment="viewStart"
+            android:layout_marginBottom="1dp" />
+
+        <TextView
+            android:drawableStart="@drawable/baseline_key_24"
+            android:background="@drawable/border_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="16dp"
+            android:padding="16dp"
             android:textSize="16sp"
             android:textAlignment="viewStart"
             android:layout_marginBottom="8dp" />
-
         <TextView
             android:id="@+id/btnAddress"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/border_background"
-            android:drawableStart="@drawable/ic_address"
             android:drawablePadding="16dp"
-            android:padding="16dp"
-            android:text="Địa chỉ"
+            android:padding="10dp"
+            android:text="Nhập lại mật khẩu mới"
             android:textSize="16sp"
             android:textAlignment="viewStart"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="1dp" />
 
         <TextView
-            android:id="@+id/btnPromotions"
+            android:drawableStart="@drawable/baseline_key_24"
+            android:background="@drawable/border_background"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/border_background"
-            android:drawableStart="@drawable/ic_promotions"
             android:drawablePadding="16dp"
             android:padding="16dp"
-            android:text="Danh sách khuyến mãi"
             android:textSize="16sp"
             android:textAlignment="viewStart"
             android:layout_marginBottom="8dp" />
     </LinearLayout>
+
 
     <!-- Logout Button -->
     <Button
@@ -125,7 +130,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:background="@drawable/button_background2"
-        android:text="Đăng xuất"
+        android:text="Xác nhận"
         android:textSize="16sp"
         android:textColor="@android:color/white" />
 </LinearLayout>

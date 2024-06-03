@@ -5,24 +5,16 @@
     android:padding="16dp"
     android:gravity="center"
     android:orientation="vertical"
-    android:background="@android:color/white">
+    android:background="#F0F3F8">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="WELCOME"
-            android:textSize="24sp"
-            android:textColor="@android:color/white"
-            android:layout_marginBottom="20dp"
-            android:fontFamily="sans-serif-medium" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Đăng Nhập"
-            android:textSize="18sp"
+            android:textSize="30sp"
             android:textColor="@android:color/black"
-            android:layout_marginBottom="20dp"
+            android:layout_marginBottom="50dp"
             android:fontFamily="sans-serif" />
 
         <EditText
