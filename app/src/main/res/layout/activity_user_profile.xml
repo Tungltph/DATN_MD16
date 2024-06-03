@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@android:color/white">
+
+    <!-- Header with back button and title -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/baseline_arrow_back_ios_24"
+            android:src="@drawable/ic_back"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Người dùng"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- User Avatar and Welcome Message -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_marginTop="32dp">
+
+        <ImageView
+            android:id="@+id/ivAvatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_user"
+            android:contentDescription="User Avatar"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"
+            android:background="@drawable/avatar_background" />
+
+        <TextView
+            android:id="@+id/tvWelcome"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Xin chào : User"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <!-- User Options -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="32dp">
+
+        <TextView
+            android:id="@+id/btnProfile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_background"
+            android:drawableStart="@drawable/ic_profile"
+            android:drawablePadding="16dp"
+            android:padding="16dp"
+            android:text="Hồ sơ của tôi"
+            android:textSize="16sp"
+            android:textAlignment="viewStart"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/btnChangePassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_background"
+            android:drawableStart="@drawable/ic_password"
+            android:drawablePadding="16dp"
+            android:padding="16dp"
+            android:text="Đổi mật khẩu"
+            android:textSize="16sp"
+            android:textAlignment="viewStart"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/btnAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_background"
+            android:drawableStart="@drawable/ic_address"
+            android:drawablePadding="16dp"
+            android:padding="16dp"
+            android:text="Địa chỉ"
+            android:textSize="16sp"
+            android:textAlignment="viewStart"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/btnPromotions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_background"
+            android:drawableStart="@drawable/ic_promotions"
+            android:drawablePadding="16dp"
+            android:padding="16dp"
+            android:text="Danh sách khuyến mãi"
+            android:textSize="16sp"
+            android:textAlignment="viewStart"
+            android:layout_marginBottom="8dp" />
+    </LinearLayout>
+
+    <!-- Logout Button -->
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/button_background2"
+        android:text="Đăng xuất"
+        android:textSize="16sp"
+        android:textColor="@android:color/white" />
+</LinearLayout>
