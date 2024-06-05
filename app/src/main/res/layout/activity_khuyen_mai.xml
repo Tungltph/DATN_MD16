@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".Khuyen_Mai">
+
+    <!-- Header -->
+    <LinearLayout
+        android:layout_marginBottom="70dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/baseline_arrow_back_ios_24"
+            android:src="@drawable/ic_back"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:text="Khuyến mãi"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Promotional Item 1 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="@drawable/border_background"
+        android:layout_marginBottom="16dp">
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/icon15"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/promo1_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Trừ 15% giá trị sản phẩm"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/promo1_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Áp dụng cho tất cả đơn hàng"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/promo1_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Áp dụng ngay"/>
+    </LinearLayout>
+
+    <!-- Promotional Item 2 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="@drawable/border_background"
+        android:layout_marginBottom="8dp">
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:src="@drawable/freeShip"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/promo2_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Miễn phí vận chuyển"
+                android:textSize="18sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/promo2_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Áp dụng cho tất cả đơn hàng"/>
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/promo2_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Áp dụng ngay"/>
+    </LinearLayout>
+
+</LinearLayout>
