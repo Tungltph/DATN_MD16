@@ -5,16 +5,26 @@
     android:layout_height="match_parent"
     android:background="#F0F3F8">
     <!-- Search bar -->
+
+
     <EditText
         android:id="@+id/etSearch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="Tìm kiếm sản phẩm"
+        android:layout_marginRight="70dp"
         android:padding="12dp"
         android:background="@drawable/search_background"
         android:drawableLeft="@android:drawable/ic_menu_search"
         android:drawablePadding="8dp" />
+    <ImageView
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="350dp"
+        android:background="@drawable/baseline_shopping_cart_24"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        />
 
     <!-- ImageView for banner -->
     <ImageView
