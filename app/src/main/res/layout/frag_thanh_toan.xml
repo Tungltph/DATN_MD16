@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        tools:listitem="@layout/item_thanh_toan"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <!-- Khuyến mãi -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/border">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/khuyen_mai"
+            android:text="  Khuyến mãi"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Không có"
+            android:textSize="16sp" />
+        <Spinner
+            android:id="@+id/spnKhuyenMai"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <!-- Phương thức thanh toán -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/border">
+
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/thanh_toan"
+            android:text="  Phương thức thanh toán"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Khi nhận hàng"
+            android:textSize="16sp" />
+
+        <Spinner
+            android:id="@+id/spnThanhToan"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
+    <!-- Chi tiết thanh toán -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/border">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chi tiết thanh toán"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tổng tiền sản phẩm: 20,000,000đ"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tổng tiền vận chuyển: 20,000đ"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tổng tiền khuyến mãi: 0đ"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tổng thanh toán: 20,020,000đ"
+            android:textSize="16sp"
+            android:textColor="@android:color/holo_red_dark" />
+    </LinearLayout>
+
+    <!-- Nút đặt hàng -->
+    <Button
+        android:id="@+id/btnDatHang"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Đặt hàng"
+        android:backgroundTint="@android:color/holo_blue_light"
+        android:textColor="@android:color/white"
+        android:layout_marginTop="16dp"/>
+</LinearLayout>

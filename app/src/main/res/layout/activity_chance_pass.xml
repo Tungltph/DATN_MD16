@@ -68,16 +68,16 @@
             android:layout_marginBottom="1dp" />
 
         <TextView
-            android:drawableStart="@drawable/baseline_key_24"
             android:id="@+id/btnChangePassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/border_background"
+            android:drawableStart="@drawable/baseline_key_24"
             android:drawablePadding="16dp"
             android:padding="16dp"
-            android:textSize="16sp"
             android:textAlignment="viewStart"
-            android:layout_marginBottom="16dp" />
+            android:textSize="16sp" />
 
         <TextView
             android:layout_width="match_parent"

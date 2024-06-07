@@ -1,0 +1,217 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Hình ảnh sản phẩm -->
+        <ImageView
+            android:id="@+id/product_image"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/img_1" />
+
+        <!-- Tên sản phẩm -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/product_name"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Samsung Galaxy Z Flip 5"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_favorite"/>
+        </LinearLayout>
+
+        <!-- Giá sản phẩm -->
+        <TextView
+            android:id="@+id/product_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Giá: 6,150,000đ"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+
+        <!-- Đánh giá -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <RatingBar
+                android:id="@+id/rbSao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="1"
+                android:rating="5"
+                android:stepSize="0.5"
+                android:scaleX="0.5"
+                android:scaleY="0.5"
+                android:progressTint="@android:color/holo_orange_light" />
+
+            <TextView
+                android:id="@+id/product_rating_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=" 4.9  (50)  | Số lượng còn : 111 sản phầm"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <!-- Màu sắc -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <Button
+                android:layout_width="0dp"
+                android:background="@drawable/border"
+                android:textColor="@color/black"
+                android:layout_marginStart="10dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Màu đen" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/border"
+                android:textColor="@color/black"
+                android:layout_marginStart="10dp"
+                android:text="Màu trắng" />
+
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@drawable/border"
+                android:textColor="@color/black"
+                android:layout_marginStart="10dp"
+                android:text="Màu ghi" />
+        </LinearLayout>
+
+        <!-- Thông tin sản phẩm -->
+        <TextView
+            android:id="@+id/product_info_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thông tin sản phẩm"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/product_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="• Mới, đầy đủ phụ kiện từ nhà sản xuất\n• Điện thoại thông minh\n• Cáp truyền dữ liệu\n• Que lấy sim\n• Galaxy S24 Ultra không bao gồm củ sạc\n• Bảo hành 12 tháng tại trung tâm bảo hành Chính\n  hãng. 1 đổi 1 trong 30 ngày nếu có lỗi phần cứng từ\n  nhà sản xuất" />
+
+
+        <!-- Thông số kỹ thuật -->
+        <TextView
+            android:id="@+id/technical_specs_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Thông số kỹ thuật"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp" />
+
+        <TextView
+            android:id="@+id/technical_specs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="• Kích thước màn hình: 6.8 inches\n• Công nghệ màn hình: Dynamic AMOLED 2X\n• Camera sau: 200MP, Laser AF, OIS\n• Camera chính: 200MP, Laser AF, OIS" />
+
+
+        <!-- Thêm vào giỏ hàng và Mua ngay -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border"
+            android:gravity="center"
+            android:layout_marginTop="20px"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Số lượng"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnDecrease"
+                android:layout_width="140px"
+                android:layout_height="90px"
+                android:background="@drawable/border"
+                android:gravity="center"
+                android:text="-"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/tvQuantity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="0"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/btnCong"
+                android:layout_width="150px"
+                android:layout_height="90px"
+                android:background="@drawable/border"
+                android:gravity="center"
+                android:text="+"
+                android:textColor="@color/black" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="16dp"
+            android:weightSum="2">
+
+            <Button
+                android:id="@+id/add_to_cart"
+                android:layout_width="150dp"
+                android:background="@drawable/border"
+                android:textColor="@color/black"
+                android:layout_marginStart="10dp"
+                android:layout_height="wrap_content"
+                android:text="Thêm giỏ hàng" />
+
+            <Button
+                android:id="@+id/buy_now"
+                android:layout_width="150dp"
+                android:background="@drawable/border"
+                android:textColor="@color/black"
+                android:layout_marginStart="10dp"
+                android:layout_height="wrap_content"
+                android:text="Mua Ngay" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
