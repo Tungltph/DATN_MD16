@@ -1,0 +1,105 @@
+<!-- res/layout/item_product.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="@drawable/product_background"
+    android:layout_margin="8dp">
+
+    <TextView
+        android:id="@+id/tv_sale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sale 50%"
+        android:padding="50px"
+        android:background="@drawable/sale_background"
+        android:textStyle="bold"
+        android:layout_gravity="start" />
+
+    <ImageView
+        android:id="@+id/iv_product_image"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:src="@drawable/img_1"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:id="@+id/tv_product_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="20dp"
+        android:text="iPhone 15 Pro Max 256GB\nChính hãng VNA"
+        android:textStyle="bold"
+        android:paddingTop="8dp" />
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="8dp">
+
+        <Button
+            android:id="@+id/btn_color_black"
+            android:layout_width="300px"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#E1FFFFFF"
+            android:background="@drawable/border"
+            android:textColor="@color/black"
+            android:layout_marginStart="5dp"
+            android:text="Màu đen" />
+
+        <Button
+            android:id="@+id/btn_mau_trang"
+            android:layout_width="300px"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#E1FFFFFF"
+            android:background="@drawable/border"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/black"
+            android:text="Màu trắng" />
+
+        <Button
+            android:id="@+id/btn_mau_ghi"
+            android:layout_width="300px"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#E1FFFFFF"
+            android:background="@drawable/border"
+            android:layout_marginStart="5dp"
+            android:textColor="@color/black"
+            android:text="Màu ghi" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_marginTop="30px"
+        android:paddingLeft="20dp"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/tv_product_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="8.999.999đ"
+            android:textColor="#D32F2F"
+            android:textStyle="bold"
+            android:paddingTop="4dp" />
+
+        <TextView
+            android:id="@+id/tv_product_old_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="18.999.999đ"
+            android:layout_marginStart="20sp"
+            android:textColor="#9E9E9E"
+            android:textDecorationLine="line-through"
+            android:paddingTop="2dp" />
+    </LinearLayout>
+
+
+</LinearLayout>

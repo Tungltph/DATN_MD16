@@ -1,0 +1,11 @@
+<!-- res/drawable/sale_background.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="#6F03A9F4" /> <!-- Màu nền -->
+    <corners
+        android:bottomRightRadius="10dp" /> <!-- Bo góc dưới bên trái và phải -->
+    <padding android:left="4dp"
+        android:top="2dp"
+        android:right="4dp"
+        android:bottom="2dp" /> <!-- Padding bên trong -->
+</shape>
