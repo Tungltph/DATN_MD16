@@ -5,8 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".MainActivity">
-    android:gravity="center">
+    android:padding="8dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,12 +21,12 @@
             android:layout_alignParentStart="true"
             android:layout_toStartOf="@+id/searchButton"
             android:layout_marginEnd="8dp"
-            android:hint="Tìm kiếm ..."
+            android:hint="Tìm kiếm ..."
             android:padding="8dp"
             android:background="@drawable/ic_search_backgroud"
             android:drawableStart="@drawable/search"
             android:drawableEnd="@drawable/ic_clear"
-            android:drawablePadding="8dp"/>
+            android:drawablePadding="8dp" />
 
         <ImageButton
             android:id="@+id/searchButton"
@@ -35,9 +34,62 @@
             android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:background="@drawable/button_background1"
-            android:src="@drawable/baseline_shopping_cart_24"/>
+            android:src="@drawable/baseline_shopping_cart_24" />
     </RelativeLayout>
 
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <Spinner
+                android:id="@+id/spinner_gia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10px"
+                android:background="@drawable/spinner_background"
+                android:entries="@array/spinner_items_gia" />
+
+            <Spinner
+                android:id="@+id/spinner_kichthuoc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10px"
+                android:background="@drawable/spinner_background"
+                android:entries="@array/spinner_items_kichthuoc" />
+
+            <Spinner
+                android:id="@+id/spinner_bonho"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10px"
+                android:background="@drawable/spinner_background"
+                android:entries="@array/spinner_items_bonho" />
+
+            <Spinner
+                android:id="@+id/spinner_khuyenmai"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10px"
+                android:background="@drawable/spinner_background"
+                android:entries="@array/spinner_items_khuyenmai" />
+
+            <Spinner
+                android:id="@+id/spinner_tinhnang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="10px"
+                android:background="@drawable/spinner_background"
+                android:entries="@array/spinner_items_tinhnang" />
+        </LinearLayout>
+    </HorizontalScrollView>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

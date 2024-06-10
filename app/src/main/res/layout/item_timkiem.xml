@@ -97,7 +97,6 @@
             android:text="18.999.999đ"
             android:layout_marginStart="20sp"
             android:textColor="#9E9E9E"
-            android:textDecorationLine="line-through"
             android:paddingTop="2dp" />
     </LinearLayout>
 
