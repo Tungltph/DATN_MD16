@@ -72,8 +72,7 @@
             android:layout_height="40dp"
             android:text="Đánh giá"
             android:background="@drawable/button_background"
-            android:layout_gravity="end"
-            android:marginTop="8dp"/>
+            android:layout_gravity="end" />
     </LinearLayout>
 
 </LinearLayout>
