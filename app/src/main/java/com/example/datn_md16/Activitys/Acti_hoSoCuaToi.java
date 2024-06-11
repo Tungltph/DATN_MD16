@@ -1,14 +1,16 @@
-package com.example.datn_md16;
+package com.example.datn_md16.Activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class Chance_Pass extends AppCompatActivity {
+import com.example.datn_md16.R;
+
+public class Acti_hoSoCuaToi extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chance_pass);
+        setContentView(R.layout.activity_ho_so_cua_toi);
     }
 }

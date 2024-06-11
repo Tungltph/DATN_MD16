@@ -1,14 +1,16 @@
-package com.example.datn_md16;
+package com.example.datn_md16.Activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class Profile_User extends AppCompatActivity {
+import com.example.datn_md16.R;
+
+public class DangKi extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile_user);
+        setContentView(R.layout.activity_dang_ki);
     }
 }

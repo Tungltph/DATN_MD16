@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
     android:padding="8dp">
 
     <RelativeLayout
@@ -94,7 +93,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        tools:listitem="@layout/item_timkiem" />
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp" />
+
 </LinearLayout>
