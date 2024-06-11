@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@color/white"
     android:orientation="vertical"
     android:padding="8dp"
     android:background="#F2F2F2">
@@ -17,8 +18,8 @@
         android:elevation="4dp"
         android:layout_marginBottom="8dp">
 
-        <EditText
-            android:id="@+id/edtSearch"
+        <TextView
+            android:id="@+id/tvSearchHome"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -28,6 +29,7 @@
             android:drawableLeft="@drawable/search" />
 
         <ImageView
+            android:id="@+id/idGioHangHome"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/baseline_shopping_cart_24"
@@ -126,7 +128,7 @@
                 </LinearLayout>
             </HorizontalScrollView>
 
-            <!-- Hot products section -->
+            <!-- Phần sản phẩm hot nhất -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -135,14 +137,23 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                tools:listitem="@layout/item_hot" />
+                android:scrollbars="none"
+                android:padding="8dp"
+                android:background="#FFFFFF">
 
-            <!-- New products section -->
+                <LinearLayout
+                    android:id="@+id/llHotProducts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <!-- Dynamic content will be added here programmatically -->
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- Phần sản phẩm mới nhất -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -151,12 +162,23 @@
                 android:textStyle="bold"
                 android:layout_marginBottom="8dp" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView1"
+            <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                tools:listitem="@layout/item_new" />
+                android:scrollbars="none"
+                android:padding="8dp"
+                android:background="#FFFFFF">
+
+                <LinearLayout
+                    android:id="@+id/llNewProducts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <!-- Dynamic content will be added here programmatically -->
+                </LinearLayout>
+            </HorizontalScrollView>
+
+
 
         </LinearLayout>
     </ScrollView>

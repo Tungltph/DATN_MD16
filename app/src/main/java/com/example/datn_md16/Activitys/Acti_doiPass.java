@@ -1,14 +1,16 @@
-package com.example.datn_md16;
+package com.example.datn_md16.Activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class DangKi extends AppCompatActivity {
+import com.example.datn_md16.R;
+
+public class Acti_doiPass extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dang_ki);
+        setContentView(R.layout.activity_doi_pass);
     }
 }

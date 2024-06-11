@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="200dp"
     android:layout_height="wrap_content"
@@ -13,7 +14,7 @@
         android:gravity="center">
 
         <ImageView
-            android:id="@+id/imgSanPham"
+            android:id="@+id/imgSanPhamHot"
             android:layout_width="wrap_content"
             android:layout_height="200dp"
             android:src="@drawable/img_1"
@@ -21,6 +22,7 @@
             android:layout_gravity="center" />
 
         <TextView
+            android:id="@+id/txtProductNameHot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Iphone 15 Pro"
@@ -45,7 +47,7 @@
                 android:textStyle="bold"/>
 
             <RatingBar
-                android:id="@+id/rbSao"
+                android:id="@+id/rbSaoHot"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:numStars="1"
@@ -86,8 +88,6 @@
                 android:layout_marginStart="20dp" />
         </LinearLayout>
     </LinearLayout>
-
-
 
     <ImageView
         android:id="@+id/imgHot"

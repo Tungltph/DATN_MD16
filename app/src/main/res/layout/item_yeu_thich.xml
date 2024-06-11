@@ -52,7 +52,7 @@
                 android:id="@+id/txtRb"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="5.0"
+                android:text="4.9"
                 android:textSize="13sp"
                 />
         </LinearLayout>

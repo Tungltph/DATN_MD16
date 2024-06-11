@@ -1,14 +1,16 @@
-package com.example.datn_md16;
+package com.example.datn_md16.Activitys;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class activity_user_profile extends AppCompatActivity {
+import com.example.datn_md16.R;
+
+public class Acti_manChao extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_user_profile);
+        setContentView(R.layout.activity_mhchao);
     }
 }

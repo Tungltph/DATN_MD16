@@ -1,10 +1,12 @@
-package com.example.datn_md16;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.example.datn_md16.Activitys;
 
 import android.os.Bundle;
 
-public class Khuyen_Mai extends AppCompatActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.example.datn_md16.R;
+
+public class Acti_KhuyenMai extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -32,36 +32,41 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Chờ xác nhận"
-                android:backgroundTintMode="@drawable/category_button_background"
+                android:background="@drawable/category_button_background"
+                android:layout_margin="5dp"
                 />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Chờ giao hàng"
-                android:backgroundTintMode="@drawable/category_button_background"
-               />
+                android:background="@drawable/category_button_background"
+                android:layout_margin="5dp"
+                />
 
             <!-- Add more buttons for other categories -->
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Đang giao"
-                android:backgroundTintMode="@drawable/category_button_background"
+                android:background="@drawable/category_button_background"
+                android:layout_margin="5dp"
                 />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Đã giao"
-                android:backgroundTintMode="@drawable/category_button_background"
-               />
+                android:background="@drawable/category_button_background"
+                android:layout_margin="5dp"
+                />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Đã hủy"
-                android:backgroundTintMode="@drawable/category_button_background"
-               />
+                android:background="@drawable/category_button_background"
+                android:layout_margin="5dp"
+                />
         </LinearLayout>
     </HorizontalScrollView>
 
