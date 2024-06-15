@@ -1,6 +1,6 @@
 <!-- res/layout/item_product.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="370dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="8dp"
@@ -20,18 +20,19 @@
     <ImageView
         android:id="@+id/iv_product_image"
         android:layout_width="wrap_content"
-        android:layout_height="300dp"
+        android:layout_height="200dp"
         android:src="@drawable/img_1"
         android:scaleType="fitCenter" />
 
     <TextView
         android:id="@+id/tv_product_name"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="20dp"
         android:text="iPhone 15 Pro Max 256GB\nChính hãng VNA"
         android:textStyle="bold"
+        android:paddingLeft="20dp"
         android:paddingTop="8dp" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -48,7 +49,7 @@
             android:background="@drawable/border"
             android:textColor="@android:color/black"
             android:layout_marginStart="5dp"
-            android:text="Màu đen" />
+            android:text="Đen" />
 
         <Button
             android:id="@+id/btn_color_white"
@@ -59,7 +60,7 @@
             android:background="@drawable/border"
             android:layout_marginStart="5dp"
             android:textColor="@android:color/black"
-            android:text="Màu trắng" />
+            android:text="Trắng" />
 
         <Button
             android:id="@+id/btn_color_gray"
@@ -70,7 +71,7 @@
             android:background="@drawable/border"
             android:layout_marginStart="5dp"
             android:textColor="@android:color/black"
-            android:text="Màu ghi" />
+            android:text="Ghi" />
     </LinearLayout>
 
     <LinearLayout
@@ -87,6 +88,7 @@
             android:text="8.999.999đ"
             android:textColor="#D32F2F"
             android:textStyle="bold"
+            android:textSize="20sp"
             android:paddingTop="4dp" />
 
         <TextView

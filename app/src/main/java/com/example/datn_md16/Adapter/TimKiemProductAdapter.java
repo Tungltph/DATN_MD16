@@ -1,28 +1,37 @@
 package com.example.datn_md16.Adapter;
 
 import android.content.Context;
-        import android.view.LayoutInflater;
-        import android.view.View;
-        import android.view.ViewGroup;
-        import android.widget.ImageView;
-        import android.widget.TextView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-        import androidx.annotation.NonNull;
-        import androidx.recyclerview.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
-        import com.example.datn_md16.DTO.Product_TimKiem;
-        import com.example.datn_md16.R;
+import com.example.datn_md16.DTO.Product_TimKiem;
+import com.example.datn_md16.R;
 
-        import java.util.List;
+import java.util.List;
 
 public class TimKiemProductAdapter extends RecyclerView.Adapter<TimKiemProductAdapter.ProductViewHolder> {
 
     private Context context;
     private List<Product_TimKiem> productList;
+    private OnItemClickListener onItemClickListener;
 
     public TimKiemProductAdapter(Context context, List<Product_TimKiem> productList) {
         this.context = context;
         this.productList = productList;
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(Product_TimKiem product);
+    }
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.onItemClickListener = listener;
     }
 
     @NonNull
@@ -38,6 +47,15 @@ public class TimKiemProductAdapter extends RecyclerView.Adapter<TimKiemProductAd
         holder.imageView.setImageResource(product.getImageRes());
         holder.textViewName.setText(product.getName());
         holder.textViewPrice.setText(product.getPrice());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClickListener != null) {
+                    onItemClickListener.onItemClick(product);
+                }
+            }
+        });
     }
 
     @Override
