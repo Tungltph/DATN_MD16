@@ -65,6 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginRight="10dp"
+            app:backgroundTint="@null"
             android:background="@drawable/button_background"
             android:text="Huỷ"/>
 
@@ -74,6 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="10dp"
+            app:backgroundTint="@null"
             android:background="@drawable/button_background"
             android:text="Xác nhận"
             android:layout_marginStart="8dp"/>
