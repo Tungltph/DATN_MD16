@@ -4,9 +4,14 @@
     <string name="close">Close</string>
     <string name="product_image">Product Image</string>
     <string name="heart_icon">Heart Icon</string>
+    <string name="toolbarChiTietSP_title">Chi tiết sản phẩm</string>
+    <string name="toolbarTimKiem">Tìm kiếm</string>
+    <string name="toolbarDiaChi">Địa chỉ</string>
+    <string name="toolbarGioHang">Giỏ hàng</string>
 
 
-        <string-array name="spinner_items_gia">
+
+    <string-array name="spinner_items_gia">
             <item>Giá</item>
             <item>Giá cao - thấp</item>
             <item>Giá thấp - cao</item>

@@ -30,6 +30,7 @@
         <activity android:name=".Activitys.Acti_doiPass" />
         <activity android:name=".Activitys.Acti_TimKiem" />
         <activity android:name=".Activitys.Acti_GioHang" />
+        <activity android:name=".Activitys.Acti_ChiTietSP" />
 
     </application>
 
