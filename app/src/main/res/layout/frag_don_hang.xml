@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -30,49 +30,49 @@
             android:orientation="horizontal">
 
             <Button
+                android:id="@+id/btnChoXacNhan"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Chờ xác nhận"
                 app:backgroundTint="@null"
                 android:background="@drawable/button_background"
-                android:layout_margin="5dp"
-                />
+                android:layout_margin="5dp" />
 
             <Button
+                android:id="@+id/btnChoGiaoHang"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Chờ giao hàng"
                 app:backgroundTint="@null"
                 android:background="@drawable/button_background"
-                android:layout_margin="5dp"
-                />
+                android:layout_margin="5dp" />
 
-            <!-- Add more buttons for other categories -->
             <Button
+                android:id="@+id/btnDangGiao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Đang giao"
                 app:backgroundTint="@null"
                 android:background="@drawable/button_background"
-                android:layout_margin="5dp"
-                />
+                android:layout_margin="5dp" />
 
             <Button
+                android:id="@+id/btnDaGiao"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Đã giao"
                 app:backgroundTint="@null"
                 android:background="@drawable/button_background"
-                android:layout_margin="5dp"
-                />
+                android:layout_margin="5dp" />
+
             <Button
+                android:id="@+id/btnDaHuy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Đã hủy"
                 app:backgroundTint="@null"
                 android:background="@drawable/button_background"
-                android:layout_margin="5dp"
-                />
+                android:layout_margin="5dp" />
         </LinearLayout>
     </HorizontalScrollView>
 

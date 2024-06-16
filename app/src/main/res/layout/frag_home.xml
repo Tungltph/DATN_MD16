@@ -43,12 +43,7 @@
                 android:padding="8dp" />
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/bannerImageView"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:src="@drawable/img_4"
-            android:scaleType="centerCrop" />
+
 
         <ScrollView
             android:layout_width="match_parent"
@@ -59,11 +54,17 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="8dp">
+                android:orientation="vertical">
+                <ImageView
+                    android:id="@+id/bannerImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:src="@drawable/img_4"
+                    android:scaleType="centerCrop" />
 
                 <!-- Category section -->
                 <TextView
+                    android:padding="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Danh mục"
@@ -72,6 +73,7 @@
                     android:layout_marginBottom="8dp" />
 
                 <HorizontalScrollView
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scrollbars="none"
@@ -79,11 +81,13 @@
                     android:background="#FFFFFF">
 
                     <LinearLayout
+                        android:padding="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
                         <Button
+                            android:padding="8dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="@drawable/category_button_background"
@@ -92,6 +96,7 @@
                             android:textColor="#000000" />
 
                         <Button
+                            android:padding="8dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Oppo"
@@ -101,6 +106,7 @@
                             android:textColor="#000000" />
 
                         <Button
+                            android:padding="8dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Samsung"
@@ -110,6 +116,7 @@
                             android:textColor="#000000" />
 
                         <Button
+                            android:padding="8dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Vivo"
@@ -119,6 +126,7 @@
                             android:textColor="#000000" />
 
                         <Button
+                            android:padding="8dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Xiaomi"
@@ -132,6 +140,7 @@
 
                 <!-- Phần sản phẩm hot nhất -->
                 <TextView
+                    android:padding="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Hot nhất"
@@ -140,6 +149,7 @@
                     android:layout_marginBottom="8dp" />
 
                 <HorizontalScrollView
+
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scrollbars="none"
@@ -147,6 +157,7 @@
                     android:background="#FFFFFF">
 
                     <LinearLayout
+                        android:padding="8dp"
                         android:id="@+id/llHotProducts"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -157,6 +168,7 @@
 
                 <!-- Phần sản phẩm mới nhất -->
                 <TextView
+                    android:padding="8dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Mới nhất"
@@ -172,6 +184,7 @@
                     android:background="#FFFFFF">
 
                     <LinearLayout
+                        android:padding="8dp"
                         android:id="@+id/llNewProducts"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
