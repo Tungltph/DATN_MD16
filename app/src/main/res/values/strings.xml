@@ -12,26 +12,12 @@
 
 
     <string-array name="spinner_items_gia">
-            <item>Giá</item>
+            <item>Giá...</item>
             <item>Giá cao - thấp</item>
             <item>Giá thấp - cao</item>
         </string-array>
-        <string-array name="spinner_items_kichthuoc">
-            <item>Kích thước màn hình</item>
-            <item>Nhỏ đến lớn</item>
-            <item>Lớn đến nhỏ</item>
-        </string-array>
-        <string-array name="spinner_items_bonho">
-            <item>Bộ nhớ trong</item>
-            <item>Ít đến nhiều</item>
-            <item>Nhiều đến ít</item>
-        </string-array>
-        <string-array name="spinner_items_khuyenmai">
-            <item>Khuyến mãi hot</item>
-        </string-array>
-        <string-array name="spinner_items_tinhnang">
-            <item>Tính năng đặc biệt</item>
-        </string-array>
+
+
 
 
 </resources>
