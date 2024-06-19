@@ -4,95 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+
     tools:context=".Activitys.Acti_KhuyenMai">
 
-
-    <LinearLayout
+    <!-- Toolbar -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbarKhuyenMai"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp"
-        android:background="@drawable/border_background"
-        android:layout_marginBottom="16dp">
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
-        <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@drawable/icon15"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="8dp"/>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/promo1_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Trừ 15% giá trị sản phẩm"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/promo1_desc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Áp dụng cho tất cả đơn hàng"/>
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/promo1_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Áp dụng ngay"/>
-    </LinearLayout>
-
-    <!-- Promotional Item 2 -->
-    <LinearLayout
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewKhuyenMai"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp"
-        android:background="@drawable/border_background"
-        android:layout_marginBottom="8dp">
-
-        <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:src="@drawable/freeship"
-            android:layout_gravity="center_vertical"
-            android:layout_marginEnd="8dp"/>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/promo2_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Miễn phí vận chuyển"
-                android:textSize="18sp"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/promo2_desc"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Áp dụng cho tất cả đơn hàng"/>
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/promo2_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Áp dụng ngay"/>
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp" />
 
 </LinearLayout>

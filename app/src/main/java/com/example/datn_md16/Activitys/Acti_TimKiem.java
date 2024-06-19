@@ -4,13 +4,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datn_md16.Adapter.TimKiemProductAdapter;
@@ -53,7 +52,7 @@ public class Acti_TimKiem extends AppCompatActivity {
 
         // Khởi tạo và thiết lập Adapter
         adapter = new TimKiemProductAdapter(this, productList);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // Sử dụng GridLayoutManager với 2 cột
         recyclerView.setAdapter(adapter);
 
         // Thiết lập sự kiện nhấp vào mục
@@ -71,8 +70,13 @@ public class Acti_TimKiem extends AppCompatActivity {
         products.add(new Product_TimKiem(R.drawable.img_1, "IPhone 15 Pro Max 256GB\nChính hãng VNA", "9.000.000"));
         products.add(new Product_TimKiem(R.drawable.img_1, "IPhone 15 Pro Max 256GB\nChính hãng VNA", "9.000.000"));
         products.add(new Product_TimKiem(R.drawable.img_1, "IPhone 15 Pro Max 256GB\nChính hãng VNA", "9.000.000"));
+        products.add(new Product_TimKiem(R.drawable.img_1, "IPhone 15 Pro Max 256GB\nChính hãng VNA", "9.000.000"));
+        products.add(new Product_TimKiem(R.drawable.img_1, "IPhone 15 Pro Max 256GB\nChính hãng VNA", "9.000.000"));
+        products.add(new Product_TimKiem(R.drawable.img_1, "IPhone 15 Pro Max 256GB\nChính hãng VNA", "9.000.000"));
+        // Thêm các sản phẩm khác nếu cần
         return products;
     }
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
@@ -81,5 +85,4 @@ public class Acti_TimKiem extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 }

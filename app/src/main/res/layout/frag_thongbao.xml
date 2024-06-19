@@ -1,81 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent">
 
-
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewThongBao"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#F2F2F2"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:layout_marginBottom="8dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Thông báo !"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bạn có 1 khuyến mãi hết hạn vào ngày" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#F2F2F2"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:layout_marginBottom="8dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Thông báo !"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bạn đã mua thành công sản phẩm 15 promax" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#F2F2F2"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:layout_marginBottom="8dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Thông báo !"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bạn đã nhận được sản phẩm 15promax chưa? Vui lòng bấm vào đánh giá để đánh giá và nhận thêm nhiều ưu đãi" />
-
-        <Button
-            android:id="@+id/btnDanhGia"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:text="Đánh giá"
-            app:backgroundTint="@null"
-            android:background="@drawable/button_background"
-            android:layout_gravity="end" />
-    </LinearLayout>
-
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:padding="16dp" />
+</RelativeLayout>
