@@ -1,23 +1,23 @@
 package com.example.datn_md16.DTO;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 public class Product_DonHang {
     private String name;
     private String color;
     private String price;
-
     private String soluong;
     private int imageResId;
+    private String status; // Thêm trường status
 
-    public Product_DonHang(String name, String color, String price, String soluong, int imageResId) {
+    public Product_DonHang(String name, String color, String price, String soluong, int imageResId, String status) {
         this.name = name;
         this.color = color;
         this.price = price;
         this.soluong = soluong;
         this.imageResId = imageResId;
+        this.status = status;
     }
 
+    // Các phương thức getter và setter
     public String getName() {
         return name;
     }
@@ -56,5 +56,13 @@ public class Product_DonHang {
 
     public void setImageResId(int imageResId) {
         this.imageResId = imageResId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

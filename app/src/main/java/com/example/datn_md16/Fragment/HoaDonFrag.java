@@ -33,23 +33,27 @@ public class HoaDonFrag extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerViewOrders);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        // Initialize product list
+        // Khởi tạo danh sách sản phẩm
         productList = new ArrayList<>();
-        productList.add(new Product_DonHang("iPhone 15 Pro", "Đen", "15.000.000đ", "1", R.drawable.img_1));
-        // Add more products to the list
+        productList.add(new Product_DonHang("iPhone 15 Pro", "Đen", "15.000.000đ", "1", R.drawable.img_1, "ChoXacNhan"));
+        productList.add(new Product_DonHang("Samsung Galaxy S23", "Xanh", "20.000.000đ", "1", R.drawable.img_1, "ChoGiaoHang"));
+        productList.add(new Product_DonHang("MacBook Pro", "Bạc", "30.000.000đ", "1", R.drawable.img_1, "DangGiao"));
+        productList.add(new Product_DonHang("iPad Air", "Trắng", "12.000.000đ", "1", R.drawable.img_1, "DaGiao")); // Thêm sản phẩm "Đã Giao"
+        productList.add(new Product_DonHang("iPhon 11", "Đỏ", "8.000.000đ", "1", R.drawable.img_1, "DaHuy")); // Thêm sản phẩm "Đã Hủy"
+        // Thêm nhiều sản phẩm vào danh sách
 
-        // Initialize adapter
+        // Khởi tạo adapter
         adapter = new DonHang_Adapter(productList);
         recyclerView.setAdapter(adapter);
 
-        // Set up button listeners
+        // Cài đặt listener cho các nút
         Button btnChoXacNhan = view.findViewById(R.id.btnChoXacNhan);
         Button btnChoGiaoHang = view.findViewById(R.id.btnChoGiaoHang);
         Button btnDangGiao = view.findViewById(R.id.btnDangGiao);
         Button btnDaGiao = view.findViewById(R.id.btnDaGiao);
         Button btnDaHuy = view.findViewById(R.id.btnDaHuy);
 
-        // Example button click listeners
+        // Ví dụ về listener cho các nút
         btnChoXacNhan.setOnClickListener(v -> filterProducts("ChoXacNhan"));
         btnChoGiaoHang.setOnClickListener(v -> filterProducts("ChoGiaoHang"));
         btnDangGiao.setOnClickListener(v -> filterProducts("DangGiao"));
@@ -60,24 +64,10 @@ public class HoaDonFrag extends Fragment {
     }
 
     private void filterProducts(String category) {
-        // Filter product list based on category and update adapter
+        // Lọc danh sách sản phẩm dựa trên category và cập nhật adapter
         List<Product_DonHang> filteredList = new ArrayList<>();
         for (Product_DonHang product : productList) {
-            // Add filter condition based on category
-            if (category.equals("ChoXacNhan")) {
-                // Add your condition for "Chờ xác nhận"
-                filteredList.add(product);
-            } else if (category.equals("ChoGiaoHang")) {
-                // Add your condition for "Chờ giao hàng"
-                filteredList.add(product);
-            } else if (category.equals("DangGiao")) {
-                // Add your condition for "Đang giao"
-                filteredList.add(product);
-            } else if (category.equals("DaGiao")) {
-                // Add your condition for "Đã giao"
-                filteredList.add(product);
-            } else if (category.equals("DaHuy")) {
-                // Add your condition for "Đã hủy"
+            if (product.getStatus().equals(category)) {
                 filteredList.add(product);
             }
         }
