@@ -14,7 +14,7 @@ import com.example.datn_md16.R;
 
 import java.util.List;
 
-public class DonHang_Adapter extends RecyclerView.Adapter<DonHang_Adapter.ProductViewHolder> {
+public class DonHang_Adapter extends RecyclerView.Adapter<DonHang_Adapter.ViewHolder> {
     private List<Product_DonHang> productList;
 
     public DonHang_Adapter(List<Product_DonHang> productList) {
@@ -23,32 +23,19 @@ public class DonHang_Adapter extends RecyclerView.Adapter<DonHang_Adapter.Produc
 
     @NonNull
     @Override
-    public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        // Inflate the item layout
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_donhang, parent, false);
-        return new ProductViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ProductViewHolder holder, int position) {
-        // Get the data model based on position
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Product_DonHang product = productList.get(position);
-
-        // Set item views based on your views and data model
-        holder.productName.setText(product.getName());
-        holder.productColor.setText("Màu: " + product.getColor());
-        holder.productPrice.setText(product.getPrice());
-        holder.productImage.setImageResource(product.getImageResId());
-        holder.productQuantity.setText("Số lượng: " + product.getSoluong());
-
-        // Set up listeners for buttons if needed
-        holder.btnHuy.setOnClickListener(v -> {
-            // Handle "Hủy Đơn" button click
-        });
-
-        holder.btnXemChiTiet.setOnClickListener(v -> {
-            // Handle "Xem chi tiết" button click
-        });
+        holder.nameTextView.setText(product.getName());
+        holder.colorTextView.setText(product.getColor());
+        holder.priceTextView.setText(product.getPrice());
+        holder.soluongTextView.setText(product.getSoluong());
+        holder.imageView.setImageResource(product.getImageResId());
     }
 
     @Override
@@ -61,20 +48,20 @@ public class DonHang_Adapter extends RecyclerView.Adapter<DonHang_Adapter.Produc
         notifyDataSetChanged();
     }
 
-    class ProductViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView nameTextView;
+        public TextView colorTextView;
+        public TextView priceTextView;
+        public TextView soluongTextView;
+        public ImageView imageView;
 
-        ImageView productImage;
-        TextView productName, productColor, productPrice, productQuantity, btnHuy, btnXemChiTiet;
-
-        public ProductViewHolder(@NonNull View itemView) {
+        public ViewHolder(View itemView) {
             super(itemView);
-            productImage = itemView.findViewById(R.id.productImage);
-            productName = itemView.findViewById(R.id.productName);
-            productColor = itemView.findViewById(R.id.productColor);
-            productPrice = itemView.findViewById(R.id.productPrice);
-            productQuantity = itemView.findViewById(R.id.soLuong);
-            btnHuy = itemView.findViewById(R.id.btnHuy);
-            btnXemChiTiet = itemView.findViewById(R.id.btnXemChiTiet);
+            nameTextView = itemView.findViewById(R.id.productName);
+            colorTextView = itemView.findViewById(R.id.productColor);
+            priceTextView = itemView.findViewById(R.id.productPrice);
+            soluongTextView = itemView.findViewById(R.id.soLuong);
+            imageView = itemView.findViewById(R.id.productImage);
         }
     }
 }
