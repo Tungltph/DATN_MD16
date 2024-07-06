@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datn_md16.Adapter.KhuyenMaiAdapter;
 import com.example.datn_md16.DTO.KhuyenMai;
-import com.example.datn_md16.Interfa.ApiResponse;
+import com.example.datn_md16.Interfa.ApiResponseKhuyenMai;
 import com.example.datn_md16.Interfa.ApiService;
 import com.example.datn_md16.R;
 
@@ -59,12 +59,12 @@ public class Acti_KhuyenMai extends AppCompatActivity {
         ApiService apiService = retrofit.create(ApiService.class);
 
         // Gọi API để lấy phản hồi ApiResponse
-        Call<ApiResponse> call = apiService.getKhuyenMai();
-        call.enqueue(new Callback<ApiResponse>() {
+        Call<ApiResponseKhuyenMai> call = apiService.getKhuyenMai();
+        call.enqueue(new Callback<ApiResponseKhuyenMai>() {
             @Override
-            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+            public void onResponse(Call<ApiResponseKhuyenMai> call, Response<ApiResponseKhuyenMai> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    ApiResponse apiResponse = response.body();
+                    ApiResponseKhuyenMai apiResponse = response.body();
                     List<KhuyenMai> khuyenMaiList = apiResponse.getData();
                     adapter.setData(khuyenMaiList); // Đặt dữ liệu vào adapter để hiển thị trên RecyclerView
                 } else {
@@ -73,7 +73,7 @@ public class Acti_KhuyenMai extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<ApiResponse> call, Throwable t) {
+            public void onFailure(Call<ApiResponseKhuyenMai> call, Throwable t) {
                 Toast.makeText(Acti_KhuyenMai.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
                 Log.e("Acti_KhuyenMai", "Error: " + t.getMessage());
             }

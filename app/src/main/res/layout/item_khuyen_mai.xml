@@ -45,7 +45,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="Ngày bắt đầu"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
 
                 <TextView
                     android:id="@+id/tvNgayKetThuc"
@@ -53,7 +53,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:text="Ngày kết thúc"
-                    android:textSize="10sp" />
+                    android:textSize="12sp" />
 
             </LinearLayout>
 
