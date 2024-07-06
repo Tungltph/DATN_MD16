@@ -13,52 +13,136 @@
         android:padding="5dp">
 
         <ImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:src="@drawable/img_sale"/>
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:src="@drawable/img_sale" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
             android:layout_weight="1"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="10dp"
             android:orientation="vertical">
+
             <TextView
                 android:id="@+id/tvTenKhuyenMai"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="tên km"
+                android:text="Tên khuyến mãi"
                 android:textSize="14sp"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tvGiamGia"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="giảm giá"
-                android:layout_marginTop="10px"
-                android:textSize="12sp" />
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
 
-            <TextView
-                android:id="@+id/tvThoiGian"
+                <TextView
+                    android:id="@+id/tvNgayBatDau"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày bắt đầu"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/tvNgayKetThuc"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày kết thúc"
+                    android:textSize="10sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="thời gian"
-                android:textSize="10sp"
-                android:layout_marginTop="10px"
-                android:textColor="@android:color/darker_gray"/>
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Số lượng : "
+                    android:textStyle="bold"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/tvSoLuong"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Số lượng"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Giảm giá : "
+                    android:textStyle="bold"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/tvGiaKhoiDiem"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Giá khởi điểm"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Số lần áp dụng : "
+                    android:textStyle="bold"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/tvSoLanApDung"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:text="Số lần áp dụng"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+
         </LinearLayout>
 
         <Button
             android:id="@+id/btnApDung"
             android:layout_width="70dp"
             android:layout_height="39dp"
-            android:layout_gravity="center"
             android:text="Dùng sau"
-            android:textSize="8dp"
+            android:textSize="8sp"
             android:background="@drawable/border"
-            android:textColor="@color/black"/>
+            android:textColor="@color/black"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp" />
     </LinearLayout>
 
 </LinearLayout>

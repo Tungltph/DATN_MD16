@@ -72,7 +72,7 @@ public class HomeFrag extends Fragment {
 
         // Retrofit setup
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.4:3000/api/sanPham/") // Change base URL here
+                .baseUrl("http://192.168.9.103:3000/api/sanPham/") // Change base URL here
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

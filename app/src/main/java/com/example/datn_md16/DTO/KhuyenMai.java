@@ -9,15 +9,25 @@ public class KhuyenMai {
     @SerializedName("ten")
     private String ten;
 
-    @SerializedName("giamGia")
-    private String giamGia;
+    @SerializedName("ngayBatDau")
+    private String ngayBatDau;
 
-    @SerializedName("thoiGian")
-    private String thoiGian;
+    @SerializedName("ngayKetThuc")
+    private String ngayKetThuc;
+
+    @SerializedName("soLuong")
+    private int soLuong;
+
+    @SerializedName("giaKhoiDiem")
+    private double giaKhoiDiem;
+
+    @SerializedName("soLanApDung")
+    private int soLanApDung;
 
     @SerializedName("trangThai")
     private boolean trangThai;
 
+    // Getters and setters
     public String getId() {
         return id;
     }
@@ -34,20 +44,44 @@ public class KhuyenMai {
         this.ten = ten;
     }
 
-    public String getGiamGia() {
-        return giamGia;
+    public String getNgayBatDau() {
+        return ngayBatDau;
     }
 
-    public void setGiamGia(String giamGia) {
-        this.giamGia = giamGia;
+    public void setNgayBatDau(String ngayBatDau) {
+        this.ngayBatDau = ngayBatDau;
     }
 
-    public String getThoiGian() {
-        return thoiGian;
+    public String getNgayKetThuc() {
+        return ngayKetThuc;
     }
 
-    public void setThoiGian(String thoiGian) {
-        this.thoiGian = thoiGian;
+    public void setNgayKetThuc(String ngayKetThuc) {
+        this.ngayKetThuc = ngayKetThuc;
+    }
+
+    public int getSoLuong() {
+        return soLuong;
+    }
+
+    public void setSoLuong(int soLuong) {
+        this.soLuong = soLuong;
+    }
+
+    public double getGiaKhoiDiem() {
+        return giaKhoiDiem;
+    }
+
+    public void setGiaKhoiDiem(double giaKhoiDiem) {
+        this.giaKhoiDiem = giaKhoiDiem;
+    }
+
+    public int getSoLanApDung() {
+        return soLanApDung;
+    }
+
+    public void setSoLanApDung(int soLanApDung) {
+        this.soLanApDung = soLanApDung;
     }
 
     public boolean isTrangThai() {
