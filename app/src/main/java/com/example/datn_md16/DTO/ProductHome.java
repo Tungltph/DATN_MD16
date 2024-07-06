@@ -1,40 +1,50 @@
 package com.example.datn_md16.DTO;
 
 public class ProductHome {
-    private int imageRes; // Resource ID của hình ảnh sản phẩm
-    private String name; // Tên sản phẩm
-    private String price; // Giá sản phẩm
-    private float rating; // Đánh giá sản phẩm
+    private String tenDienThoai;
+    private String giaGoc;
+    private String giamGia;
+    private String hinhAnh;
+    private float rating;
 
-    public ProductHome(int imageRes, String name, String price, float rating) {
-        this.imageRes = imageRes;
-        this.name = name;
-        this.price = price;
+    public ProductHome(String tenDienThoai, String giaGoc, String giamGia, String hinhAnh, float rating) {
+        this.tenDienThoai = tenDienThoai;
+        this.giaGoc = giaGoc;
+        this.giamGia = giamGia;
+        this.hinhAnh = hinhAnh;
         this.rating = rating;
     }
 
-    public int getImageRes() {
-        return imageRes;
+    public String getTenDienThoai() {
+        return tenDienThoai;
     }
 
-    public void setImageRes(int imageRes) {
-        this.imageRes = imageRes;
+    public void setTenDienThoai(String tenDienThoai) {
+        this.tenDienThoai = tenDienThoai;
     }
 
-    public String getName() {
-        return name;
+    public String getGiaGoc() {
+        return giaGoc;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setGiaGoc(String giaGoc) {
+        this.giaGoc = giaGoc;
     }
 
-    public String getPrice() {
-        return price;
+    public String getGiamGia() {
+        return giamGia;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setGiamGia(String giamGia) {
+        this.giamGia = giamGia;
+    }
+
+    public String getHinhAnh() {
+        return hinhAnh;
+    }
+
+    public void setHinhAnh(String hinhAnh) {
+        this.hinhAnh = hinhAnh;
     }
 
     public float getRating() {
