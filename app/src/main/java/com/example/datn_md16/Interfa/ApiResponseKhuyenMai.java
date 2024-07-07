@@ -4,7 +4,7 @@ import com.example.datn_md16.DTO.KhuyenMai;
 
 import java.util.List;
 
-public class ApiResponse {
+public class ApiResponseKhuyenMai {
     private int status;
     private String msg;
     private List<KhuyenMai> data;

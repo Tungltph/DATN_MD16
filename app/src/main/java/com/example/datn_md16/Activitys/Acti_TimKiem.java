@@ -1,30 +1,35 @@
 package com.example.datn_md16.Activitys;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.datn_md16.Adapter.TimKiemProductAdapter;
-import com.example.datn_md16.DTO.Product_TimKiem;
+import com.example.datn_md16.Adapter.TimKiemAdapter;
+import com.example.datn_md16.DTO.TimKiemDTO;
+import com.example.datn_md16.Interfa.ApiResponseKhuyenMai;
+import com.example.datn_md16.Interfa.ApiService;
 import com.example.datn_md16.R;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Acti_TimKiem extends AppCompatActivity {
 
     private RecyclerView recyclerView;
-    private TimKiemProductAdapter adapter;
-    private List<Product_TimKiem> productList;
-    ImageView imgGioHangTimKiem;
+    private TimKiemAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,40 +46,39 @@ public class Acti_TimKiem extends AppCompatActivity {
         setTitle(getString(R.string.toolbarTimKiem));
 
         recyclerView = findViewById(R.id.rcv_TimKiem);
-        productList = getProducts(); // Lấy danh sách sản phẩm cần hiển thị
-        imgGioHangTimKiem = findViewById(R.id.imggioHnagTimKiem);
-        imgGioHangTimKiem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(Acti_TimKiem.this, Acti_GioHang.class));
-            }
-        });
-
-        // Khởi tạo và thiết lập Adapter
-        adapter = new TimKiemProductAdapter(this, productList);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2)); // Sử dụng GridLayoutManager với 2 cột
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new TimKiemAdapter(getApplicationContext());
         recyclerView.setAdapter(adapter);
 
-        // Thiết lập sự kiện nhấp vào mục
-        adapter.setOnItemClickListener(new TimKiemProductAdapter.OnItemClickListener() {
+        // Khởi tạo Retrofit
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.9.103:3000/api/sanPham/") // Thay thế địa chỉ IP của server Node.js của bạn
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        // Tạo đối tượng dịch vụ API từ Retrofit
+        ApiService apiService = retrofit.create(ApiService.class);
+
+        // Gọi API để lấy phản hồi ApiResponseKhuyenMai
+        Call<List<TimKiemDTO>> call = apiService.getTimKiem();
+        call.enqueue(new Callback<List<TimKiemDTO>>() {
             @Override
-            public void onItemClick(Product_TimKiem product) {
-                Intent intent = new Intent(Acti_TimKiem.this, Acti_ChiTietSP.class);
-                startActivity(intent);
+            public void onResponse(Call<List<TimKiemDTO>> call, Response<List<TimKiemDTO>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<TimKiemDTO> timKiemDTOList = response.body();
+                    adapter.setData(timKiemDTOList); // Đặt dữ liệu vào adapter để hiển thị trên RecyclerView
+                } else {
+                    Toast.makeText(Acti_TimKiem.this, "Không thể lấy dữ liệu từ server", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<TimKiemDTO>> call, Throwable t) {
+                Toast.makeText(Acti_TimKiem.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
+                Log.e("Acti_TimKiem", "Error: " + t.getMessage());
             }
         });
-    }
-
-    private List<Product_TimKiem> getProducts() {
-        List<Product_TimKiem> products = new ArrayList<>();
-        products.add(new Product_TimKiem(R.drawable.img_1, "IPhone 15 Pro Max 256GB\nChính hãng VNA", "9.000.000"));
-        products.add(new Product_TimKiem(R.drawable.img_1, "IPhone 15 Pro Max 256GB\nChính hãng VNA", "9.000.000"));
-        products.add(new Product_TimKiem(R.drawable.img_1, "IPhone 15 Pro Max 256GB\nChính hãng VNA", "9.000.000"));
-        products.add(new Product_TimKiem(R.drawable.img_1, "IPhone 15 Pro Max 256GB\nChính hãng VNA", "9.000.000"));
-        products.add(new Product_TimKiem(R.drawable.img_1, "IPhone 15 Pro Max 256GB\nChính hãng VNA", "9.000.000"));
-        products.add(new Product_TimKiem(R.drawable.img_1, "IPhone 15 Pro Max 256GB\nChính hãng VNA", "9.000.000"));
-        // Thêm các sản phẩm khác nếu cần
-        return products;
     }
 
     @Override
