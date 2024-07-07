@@ -1,135 +1,191 @@
-package com.example.datn_md16.Activitys;
+    package com.example.datn_md16.Activitys;
 
-import android.app.Dialog;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
+    import android.app.Dialog;
+    import android.os.Bundle;
+    import android.view.MenuItem;
+    import android.view.View;
+    import android.view.ViewGroup;
+    import android.widget.Button;
+    import android.widget.ImageView;
+    import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+    import com.google.gson.Gson;
+    import com.google.gson.GsonBuilder;
 
-import com.example.datn_md16.Adapter.DiaChiAdapter;
-import com.example.datn_md16.DTO.DiaChiDTO;
-import com.example.datn_md16.R;
-import com.google.android.material.textfield.TextInputEditText;
+    import okhttp3.OkHttpClient;
+    import okhttp3.logging.HttpLoggingInterceptor;
+    import retrofit2.Call;
+    import retrofit2.Callback;
+    import retrofit2.Response;
+    import retrofit2.Retrofit;
+    import retrofit2.converter.gson.GsonConverterFactory;
 
-import java.util.ArrayList;
-import java.util.List;
+    import androidx.annotation.NonNull;
+    import androidx.appcompat.app.AppCompatActivity;
+    import androidx.appcompat.widget.Toolbar;
+    import androidx.recyclerview.widget.LinearLayoutManager;
+    import androidx.recyclerview.widget.RecyclerView;
 
-public class Acti_DiaChi extends AppCompatActivity {
+    import com.example.datn_md16.Adapter.DiaChiAdapter;
+    import com.example.datn_md16.DTO.DiaChiDTO;
+    import com.example.datn_md16.Interface.ApiResponse;
+    import com.example.datn_md16.Interface.ApiService;
+    import com.example.datn_md16.R;
+    import com.google.android.material.textfield.TextInputEditText;
 
-    private RecyclerView recyclerView;
-    private DiaChiAdapter diaChiAdapter;
-    private List<DiaChiDTO> diaChiList;
+    import java.util.ArrayList;
+    import java.util.List;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dia_chi);
+    public class Acti_DiaChi extends AppCompatActivity {
 
-        // Thiết lập Toolbar và hiển thị nút back
-        Toolbar toolbar = findViewById(R.id.toolbarDiaChi);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Hiển thị nút back
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        private RecyclerView recyclerView;
+        private DiaChiAdapter diaChiAdapter;
+        private List<DiaChiDTO> diaChiList;
+        private ApiService apiService;
+        private Gson gson;
 
-        // Đặt tiêu đề cho Toolbar từ chuỗi trong strings.xml
-        setTitle(getString(R.string.toolbarDiaChi));
+        @Override
+        protected void onCreate(Bundle savedInstanceState) {
+                super.onCreate(savedInstanceState);
+             setContentView(R.layout.activity_dia_chi);
 
-        // Thiết lập RecyclerView
-        recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+             gson = new GsonBuilder()
+                    .setLenient()
+                    .create();
 
-        // Lấy dữ liệu mẫu
-        diaChiList = getData();
-        diaChiAdapter = new DiaChiAdapter(diaChiList);
-        recyclerView.setAdapter(diaChiAdapter);
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+                    .build();
 
-        ImageView imgDiaChi = findViewById(R.id.imgThemDiaChi);
-        imgDiaChi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialogThemDiaChi();
-            }
-        });
-    }
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(ApiService.BASE_URL)
+                    .client(client)
+                    .addConverterFactory(GsonConverterFactory.create(gson))
+                    .build();
 
-    private void showDialogThemDiaChi() {
-        Dialog dialog = new Dialog(Acti_DiaChi.this);
-        dialog.setContentView(R.layout.dialog_them_diachi);
 
-        // Lấy các EditText từ dialog
-        TextInputEditText etName = dialog.findViewById(R.id.etNameDiaChi);
-        TextInputEditText etPhoneNumber = dialog.findViewById(R.id.etPhoneNumberDiaChi);
-        TextInputEditText etAddress = dialog.findViewById(R.id.etAddressDiaChi);
+            Toolbar toolbar = findViewById(R.id.toolbarDiaChi);
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        // Lấy nút huỷ và xác nhận từ dialog
-        Button btnCancel = dialog.findViewById(R.id.btnCancelDiaChi);
-        Button btnConfirm = dialog.findViewById(R.id.btnConfirmDiaChi);
+            setTitle(getString(R.string.toolbarDiaChi));
 
-        // Xử lý sự kiện click cho nút huỷ
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+            recyclerView = findViewById(R.id.recyclerView);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Xử lý sự kiện click cho nút xác nhận
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Lấy thông tin từ EditText
-                String name = etName.getText().toString().trim();
-                String phoneNumber = etPhoneNumber.getText().toString().trim();
-                String address = etAddress.getText().toString().trim();
+            apiService = retrofit.create(ApiService.class);
 
-                // Kiểm tra dữ liệu nhập vào
-                if (name.isEmpty() || phoneNumber.isEmpty() || address.isEmpty()) {
-                    // Hiển thị thông báo nếu có dữ liệu nhập thiếu
-                    // Có thể thêm logic xử lý lỗi tại đây
-                    return;
+            diaChiList = new ArrayList<>();
+            diaChiAdapter = new DiaChiAdapter(diaChiList, apiService);
+            recyclerView.setAdapter(diaChiAdapter);
+
+            ImageView imgDiaChi = findViewById(R.id.imgThemDiaChi);
+            imgDiaChi.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    showDialogThemDiaChi();
+                }
+            });
+
+            fetchData();
+        }
+
+        private void showDialogThemDiaChi() {
+            Dialog dialog = new Dialog(Acti_DiaChi.this);
+            dialog.setContentView(R.layout.dialog_them_diachi);
+
+            TextInputEditText etName = dialog.findViewById(R.id.etNameDiaChi);
+            TextInputEditText etPhoneNumber = dialog.findViewById(R.id.etPhoneNumberDiaChi);
+            TextInputEditText etAddress = dialog.findViewById(R.id.etAddressDiaChi);
+
+            Button btnCancel = dialog.findViewById(R.id.btnCancelDiaChi);
+            Button btnConfirm = dialog.findViewById(R.id.btnConfirmDiaChi);
+
+            btnCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            btnConfirm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String name = etName.getText().toString().trim();
+                    String phoneNumber = etPhoneNumber.getText().toString().trim();
+                    String address = etAddress.getText().toString().trim();
+
+                    if (name.isEmpty()) {
+                        Toast.makeText(getApplicationContext(), "Tên không được để trống", Toast.LENGTH_SHORT).show();
+                    } else if (phoneNumber.isEmpty()) {
+                        Toast.makeText(getApplicationContext(), "Số điện thoại không để trống", Toast.LENGTH_SHORT).show();
+                    } else if (!phoneNumber.matches("\\d+")) {
+                        Toast.makeText(getApplicationContext(), "Số điện thoại phải là số", Toast.LENGTH_SHORT).show();
+                    } else if (phoneNumber.length() != 10) {
+                        Toast.makeText(getApplicationContext(), "Số điện thoại chỉ được 10 kí tự", Toast.LENGTH_SHORT).show();
+                    } else if (address.isEmpty()) {
+                        Toast.makeText(getApplicationContext(), "Địa chỉ không được để trống", Toast.LENGTH_SHORT).show();
+                    } else {
+                        DiaChiDTO newDiaChi = new DiaChiDTO(name, phoneNumber, address);
+
+                        Call<Void> call = apiService.addDiaChi(newDiaChi);
+                        call.enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+                                    diaChiList.add(newDiaChi);
+                                    diaChiAdapter.notifyDataSetChanged();
+                                    Toast.makeText(getApplicationContext(), "Thêm địa chỉ thành công", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getApplicationContext(), "Thêm địa chỉ thất bại", Toast.LENGTH_SHORT).show();
+                                }
+                                dialog.dismiss();
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Toast.makeText(getApplicationContext(), "Thêm địa chỉ thất bại: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+                }
+            });
+
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            dialog.show();
+        }
+
+        private void fetchData() {
+            Call<ApiResponse> call = apiService.getAllDiaChi();
+            call.enqueue(new Callback<ApiResponse>() {
+                @Override
+                public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                    if (response.isSuccessful() && response.body() != null) {
+                        List<DiaChiDTO> fetchedData = response.body().getData();
+                        diaChiList.clear();
+                        diaChiList.addAll(fetchedData);
+                        diaChiAdapter.notifyDataSetChanged();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Failed to fetch data", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
-                // Tạo đối tượng DiaChiDTO mới
-                DiaChiDTO newDiaChi = new DiaChiDTO(name, address, phoneNumber);
-
-                // Thêm vào danh sách và cập nhật RecyclerView
-                diaChiList.add(newDiaChi);
-                diaChiAdapter.notifyDataSetChanged();
-                Toast.makeText(getApplicationContext(),"Thêm địa chỉ thành công ",Toast.LENGTH_SHORT).show();
-
-                // Đóng dialog sau khi thêm thành công
-                dialog.dismiss();
-            }
-        });
-
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.show();
-    }
-
-    private List<DiaChiDTO> getData() {
-        List<DiaChiDTO> data = new ArrayList<>();
-        data.add(new DiaChiDTO("User 1", "16 Trịnh Văn Bô", "0343357756"));
-        data.add(new DiaChiDTO("User 2", "12 Nguyễn Văn Cừ", "0343357757"));
-        data.add(new DiaChiDTO("User 3", "8 Lý Thường Kiệt", "0343357758"));
-        // Thêm nhiều dữ liệu nếu cần
-        return data;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        if (item.getItemId() == android.R.id.home) {
-            onBackPressed(); // Xử lý khi nhấn nút back trên Toolbar
-            return true;
+                @Override
+                public void onFailure(Call<ApiResponse> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Network error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
         }
-        return super.onOptionsItemSelected(item);
+
+
+        @Override
+        public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+            if (item.getItemId() == android.R.id.home) {
+                onBackPressed();
+                return true;
+            }
+            return super.onOptionsItemSelected(item);
+        }
     }
-}

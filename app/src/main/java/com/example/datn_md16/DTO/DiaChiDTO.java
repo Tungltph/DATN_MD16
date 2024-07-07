@@ -1,37 +1,73 @@
 package com.example.datn_md16.DTO;
 
+import com.google.gson.annotations.SerializedName;
+
 public class DiaChiDTO {
-    private String name;
-    private String address;
-    private String phone;
+    @SerializedName("_id")
+    private String id;
 
-    public DiaChiDTO(String name, String address, String phone) {
-        this.name = name;
-        this.address = address;
-        this.phone = phone;
+    @SerializedName("ten")
+    private String ten;
+
+    @SerializedName("sdt")
+    private String sdt;
+
+    @SerializedName("diaChi")
+    private String diaChi;
+
+    // Các constructor và getter/setter
+    public DiaChiDTO(String id, String ten, String sdt, String diaChi) {
+        this.id = id;
+        this.ten = ten;
+        this.sdt = sdt;
+        this.diaChi = diaChi;
     }
 
-    public String getName() {
-        return name;
+    public DiaChiDTO(String ten, String sdt, String diaChi) {
+        this.ten = ten;
+        this.sdt = sdt;
+        this.diaChi = diaChi;
     }
 
-    public String getAddress() {
-        return address;
+    public String getId() {
+        return id;
     }
 
-    public String getPhone() {
-        return phone;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getTen() {
+        return ten;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setTen(String ten) {
+        this.ten = ten;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public String getSdt() {
+        return sdt;
+    }
+
+    public void setSdt(String sdt) {
+        this.sdt = sdt;
+    }
+
+    public String getDiaChi() {
+        return diaChi;
+    }
+
+    public void setDiaChi(String diaChi) {
+        this.diaChi = diaChi;
+    }
+
+    @Override
+    public String toString() {
+        return "DiaChiDTO{" +
+                "id='" + id + '\'' +
+                ", ten='" + ten + '\'' +
+                ", sdt='" + sdt + '\'' +
+                ", diaChi='" + diaChi + '\'' +
+                '}';
     }
 }
