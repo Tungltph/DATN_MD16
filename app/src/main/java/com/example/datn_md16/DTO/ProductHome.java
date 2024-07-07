@@ -1,11 +1,11 @@
 package com.example.datn_md16.DTO;
 
 public class ProductHome {
-    private String tenDienThoai;
-    private String giaGoc;
-    private String giamGia;
-    private String hinhAnh;
-    private float rating;
+    private String tenDienThoai; // Product name
+    private String giaGoc; // Original price
+    private String giamGia; // Discount price
+    private String hinhAnh; // Image URL
+    private float rating; // Rating
 
     public ProductHome(String tenDienThoai, String giaGoc, String giamGia, String hinhAnh, float rating) {
         this.tenDienThoai = tenDienThoai;

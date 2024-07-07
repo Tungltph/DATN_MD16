@@ -89,4 +89,13 @@
                 android:layout_marginStart="20dp" />
         </LinearLayout>
     </LinearLayout>
+    <ImageView
+        android:id="@+id/imgNew"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="top|start"
+        android:contentDescription="Biểu tượng trái tim"
+        android:src="@drawable/ic_new"
+        android:layout_margin="8dp"
+        android:padding="4dp" />
 </FrameLayout>
