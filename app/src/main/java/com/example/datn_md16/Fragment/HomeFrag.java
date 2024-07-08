@@ -33,7 +33,7 @@ public class HomeFrag extends Fragment {
     private HotItemAdapter hotItemAdapter;
     private NewItemAdapter newItemAdapter;
 
-    private static final String BASE_URL = "http://192.168.1.4:3000/api/sanPham/"; // Thay thế bằng URL thực tế của bạn
+    private static final String BASE_URL = "http://192.168.1.5:3000/api/sanPham/"; // Thay thế bằng URL thực tế của bạn
 
     @Nullable
     @Override
