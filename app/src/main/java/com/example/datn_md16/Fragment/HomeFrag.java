@@ -1,10 +1,14 @@
 package com.example.datn_md16.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,6 +17,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.datn_md16.Activitys.Acti_GioHang;
+import com.example.datn_md16.Activitys.Acti_TimKiem;
 import com.example.datn_md16.Adapter.HotItemAdapter;
 import com.example.datn_md16.Adapter.NewItemAdapter;
 import com.example.datn_md16.DTO.ProductHome;
@@ -33,7 +39,10 @@ public class HomeFrag extends Fragment {
     private HotItemAdapter hotItemAdapter;
     private NewItemAdapter newItemAdapter;
 
-    private static final String BASE_URL = "http://192.168.1.5:3000/api/sanPham/"; // Thay thế bằng URL thực tế của bạn
+    TextView tvSearchHome;
+    ImageView imgGioaHang;
+
+    private static final String BASE_URL = "http://192.168.1.63:3000/api/sanPham/"; // Thay thế bằng URL thực tế của bạn
 
     @Nullable
     @Override
@@ -42,12 +51,34 @@ public class HomeFrag extends Fragment {
 
         rvHotProducts = view.findViewById(R.id.rvHotProducts);
         rvNewProducts = view.findViewById(R.id.rvNewProducts);
+        imgGioaHang = view.findViewById(R.id.idGioHangHome);
+
+        imgGioaHang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), Acti_GioHang.class);
+                startActivity(intent);
+            }
+        });
 
         rvHotProducts.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         rvNewProducts.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
         fetchHotProducts();
         fetchNewProducts();
+
+        tvSearchHome = view.findViewById(R.id.tvSearchHome);
+        tvSearchHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Tạo một Intent để chuyển từ màn hình home sang màn hình tìm kiếm
+                Intent intent = new Intent(getActivity(), Acti_TimKiem.class);
+                // Bắt đầu activity tìm kiếm
+                startActivity(intent);
+            }
+        });
+
+
 
         return view;
     }
@@ -69,17 +100,19 @@ public class HomeFrag extends Fragment {
                     hotItemAdapter = new HotItemAdapter(getContext(), hotProductList);
                     rvHotProducts.setAdapter(hotItemAdapter);
                 } else {
-                    Toast.makeText(getContext(), "Không thể lấy dữ liệu sản phẩm hot từ server", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getContext(), "Không thể lấy dữ liệu sản phẩm hot từ server", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<ProductHome>> call, Throwable t) {
-                Toast.makeText(getContext(), "Lỗi kết nối khi lấy sản phẩm hot", Toast.LENGTH_SHORT).show();
+              //  Toast.makeText(getContext(), "Lỗi kết nối khi lấy sản phẩm hot", Toast.LENGTH_SHORT).show();
                 Log.e("HomeFragment", "Error: " + t.getMessage());
             }
         });
     }
+
+
 
     private void fetchNewProducts() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -98,13 +131,13 @@ public class HomeFrag extends Fragment {
                     newItemAdapter = new NewItemAdapter(getContext(), newProductList);
                     rvNewProducts.setAdapter(newItemAdapter);
                 } else {
-                    Toast.makeText(getContext(), "Không thể lấy dữ liệu sản phẩm mới từ server", Toast.LENGTH_SHORT).show();
+                 //   Toast.makeText(getContext(), "Không thể lấy dữ liệu sản phẩm mới từ server", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<ProductHome>> call, Throwable t) {
-                Toast.makeText(getContext(), "Lỗi kết nối khi lấy sản phẩm mới", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getContext(), "Lỗi kết nối khi lấy sản phẩm mới", Toast.LENGTH_SHORT).show();
                 Log.e("HomeFragment", "Error: " + t.getMessage());
             }
         });

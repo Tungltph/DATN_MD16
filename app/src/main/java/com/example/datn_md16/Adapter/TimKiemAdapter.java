@@ -1,6 +1,7 @@
 package com.example.datn_md16.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,11 +11,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.datn_md16.Activitys.Acti_ChiTietSP;
 import com.example.datn_md16.DTO.TimKiemDTO;
 import com.example.datn_md16.R;
-//import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHolder> {
@@ -23,13 +27,33 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
 
     public TimKiemAdapter(Context context) {
         this.context = context;
-        this.dataList = new ArrayList<>(); // Khởi tạo dataList để tránh NullPointerException
+        this.dataList = new ArrayList<>();
     }
 
     public void setData(List<TimKiemDTO> dataList) {
         this.dataList.clear();
         this.dataList.addAll(dataList);
         notifyDataSetChanged();
+    }
+
+    public void sortDataList(final boolean ascending) {
+        Collections.sort(dataList, new Comparator<TimKiemDTO>() {
+            @Override
+            public int compare(TimKiemDTO o1, TimKiemDTO o2) {
+                // Remove dots and convert price from string to integer for comparison
+                int gia1 = Integer.parseInt(o1.getGiamGia().replaceAll("\\.", ""));
+                int gia2 = Integer.parseInt(o2.getGiamGia().replaceAll("\\.", ""));
+                return ascending ? Integer.compare(gia1, gia2) : Integer.compare(gia2, gia1);
+            }
+        });
+        notifyDataSetChanged();
+    }
+
+    public void sortDefault() {
+        // Perform default sorting logic here based on MongoDB default order
+        // Example:
+        // return o1.getId().compareTo(o2.getId()); // Sort by ID ascending
+        // return 0; // Example if no change in order
     }
 
     @NonNull
@@ -41,7 +65,7 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if (dataList == null || dataList.isEmpty()) return; // Kiểm tra null hoặc rỗng để tránh lỗi
+        if (dataList == null || dataList.isEmpty()) return;
 
         TimKiemDTO item = dataList.get(position);
 
@@ -51,12 +75,25 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
         holder.giaGocTextView.setText(item.getGiaGoc());
 
         // Load image using Picasso/Glide or any other image loading library
-       // Picasso.get().load(item.getHinhAnh()).into(holder.hinhAnhImageView);
+        Picasso.get().load(item.getHinhAnh()).into(holder.hinhAnhImageView);
+
+        // Handle item click to open detail activity
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Start Acti_ChiTietSP and pass necessary data
+                Intent intent = new Intent(context, Acti_ChiTietSP.class);
+                intent.putExtra("sanPhamPosition", position); // Pass item position as identifier
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // Add this line if needed
+                context.startActivity(intent);
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
-        return dataList != null ? dataList.size() : 0; // Trả về số lượng item, nếu dataList null thì trả về 0
+        return dataList != null ? dataList.size() : 0;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
