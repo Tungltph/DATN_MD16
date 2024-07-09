@@ -52,9 +52,7 @@
             android:textColor="#9E9E9E"
             android:paddingTop="2dp"
             android:layout_marginStart="20dp"
-            />
-<!--            android:paintFlags="strike-through" -->
-
+            android:paintFlags="strike-through" />
 
     </LinearLayout>
 
