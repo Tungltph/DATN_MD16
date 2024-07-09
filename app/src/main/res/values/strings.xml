@@ -14,9 +14,8 @@
 
 
     <string-array name="spinner_items_gia">
-        <item>Giá...</item>
-        <item>Giá cao - thấp</item>
         <item>Giá thấp - cao</item>
+        <item>Giá cao - thấp</item>
     </string-array>
 
 

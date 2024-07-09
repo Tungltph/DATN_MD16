@@ -13,7 +13,7 @@
         import com.google.gson.GsonBuilder;
 
         import okhttp3.OkHttpClient;
-        import okhttp3.logging.HttpLoggingInterceptor;
+//        import okhttp3.logging.HttpLoggingInterceptor;
         import retrofit2.Call;
         import retrofit2.Callback;
         import retrofit2.Response;
@@ -53,15 +53,15 @@
                         .setLenient()
                         .create();
 
-                OkHttpClient client = new OkHttpClient.Builder()
-                        .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
-                        .build();
-
-                Retrofit retrofit = new Retrofit.Builder()
-                        .baseUrl(ApiService.BASE_URL)
-                        .client(client)
-                        .addConverterFactory(GsonConverterFactory.create(gson))
-                        .build();
+//                OkHttpClient client = new OkHttpClient.Builder()
+//                        .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
+//                        .build();
+//
+//                Retrofit retrofit = new Retrofit.Builder()
+//                        .baseUrl(ApiService.BASE_URL)
+//                        .client(client)
+//                        .addConverterFactory(GsonConverterFactory.create(gson))
+//                        .build();
 
 
                 Toolbar toolbar = findViewById(R.id.toolbarDiaChi);
@@ -74,7 +74,7 @@
                 recyclerView = findViewById(R.id.recyclerView);
                 recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-                apiService = retrofit.create(ApiService.class);
+//                apiService = retrofit.create(ApiService.class);
 
                 diaChiList = new ArrayList<>();
                 diaChiAdapter = new DiaChiAdapter(diaChiList, apiService);
