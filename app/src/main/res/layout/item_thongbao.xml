@@ -3,26 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:layout_margin="20dp"
+    android:background="@drawable/border"
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/noiDungTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textStyle="bold"
+        android:text="Thông báo !"
         android:layout_marginBottom="8dp"/>
 
     <TextView
-        android:id="@+id/thoiGianTextView"
+        android:id="@+id/txtNoiDung"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="16sp"
+        android:text="noi dung"
         android:layout_marginBottom="8dp"/>
-
-    <TextView
-        android:id="@+id/idKHTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"/>
 </LinearLayout>

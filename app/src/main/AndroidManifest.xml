@@ -21,7 +21,7 @@
             android:exported="false" />
         <!-- Đảm bảo LoginActivity là Activity khởi động đầu tiên -->
         <activity
-            android:name=".ManChay"
+            android:name=".Activitys.DangKi"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,8 +29,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- Khai báo các Activity khác ở đây -->
-<!--        <activity android:name=".ManChay" />-->
-        <activity android:name=".Activitys.DangKi" />
+        <activity android:name=".ManChay" />
+<!--        <activity android:name=".Activitys.DangKi" />-->
         <activity android:name=".Activitys.Acti_hoSoCuaToi" />
         <activity android:name=".Activitys.Acti_DiaChi" />
         <activity android:name=".Activitys.Acti_KhuyenMai" />
@@ -38,6 +38,8 @@
         <activity android:name=".Activitys.Acti_TimKiem" />
         <activity android:name=".Activitys.Acti_GioHang" />
         <activity android:name=".Activitys.Acti_ChiTietSP" />
+        <activity android:name=".Activitys.DangNhap" />
+
     </application>
 
 </manifest>

@@ -51,7 +51,7 @@ public class DienThoaiAdapter extends RecyclerView.Adapter<DienThoaiAdapter.Dien
         holder.tvDoPhanGiai.setText("Độ phân giải: " + dienThoai.getDoPhanGiai());
         holder.tvGiaGoc.setText("Giá gốc: " + dienThoai.getGiaGoc());
         holder.tvGiamGia.setText("Giảm giá: " + dienThoai.getGiamGia());
-        holder.tvTrangThai.setText("Trạng thái: " + (dienThoai.isTrangThai() ? "Còn hàng" : "Hết hàng"));
+
 
         // Load hình ảnh từ URL sử dụng Glide
         Glide.with(context).load(dienThoai.getHinhAnh()).into(holder.ivHinhAnh);
@@ -93,7 +93,6 @@ public class DienThoaiAdapter extends RecyclerView.Adapter<DienThoaiAdapter.Dien
             tvDoPhanGiai = itemView.findViewById(R.id.tvDoPhanGiai);
             tvGiaGoc = itemView.findViewById(R.id.tvGiaGoc);
             tvGiamGia = itemView.findViewById(R.id.tvGiamGia);
-            tvTrangThai = itemView.findViewById(R.id.tvTrangThai);
             ivHinhAnh = itemView.findViewById(R.id.ivHinhAnh);
         }
     }
