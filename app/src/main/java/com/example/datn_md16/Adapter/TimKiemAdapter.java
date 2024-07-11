@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.datn_md16.Activitys.Acti_ChiTietSP;
 import com.example.datn_md16.DTO.TimKiemDTO;
 import com.example.datn_md16.R;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -40,20 +41,18 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
         Collections.sort(dataList, new Comparator<TimKiemDTO>() {
             @Override
             public int compare(TimKiemDTO o1, TimKiemDTO o2) {
-                // Remove dots and convert price from string to integer for comparison
-                int gia1 = Integer.parseInt(o1.getGiamGia().replaceAll("\\.", ""));
-                int gia2 = Integer.parseInt(o2.getGiamGia().replaceAll("\\.", ""));
-                return ascending ? Integer.compare(gia1, gia2) : Integer.compare(gia2, gia1);
+                try {
+                    // Remove non-digit characters and convert to integer for comparison
+                    int gia1 = Integer.parseInt(o1.getGiamGia().replaceAll("[\\D]", ""));
+                    int gia2 = Integer.parseInt(o2.getGiamGia().replaceAll("[\\D]", ""));
+                    return ascending ? Integer.compare(gia1, gia2) : Integer.compare(gia2, gia1);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    return 0; // Handle appropriately when parsing fails
+                }
             }
         });
         notifyDataSetChanged();
-    }
-
-    public void sortDefault() {
-        // Perform default sorting logic here based on MongoDB default order
-        // Example:
-        // return o1.getId().compareTo(o2.getId()); // Sort by ID ascending
-        // return 0; // Example if no change in order
     }
 
     @NonNull
@@ -74,21 +73,26 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
         holder.giamGiaTextView.setText(item.getGiamGia());
         holder.giaGocTextView.setText(item.getGiaGoc());
 
-        // Load image using Picasso/Glide or any other image loading library
+        // Load image using Picasso
         Picasso.get().load(item.getHinhAnh()).into(holder.hinhAnhImageView);
 
         // Handle item click to open detail activity
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Start Acti_ChiTietSP and pass necessary data
-                Intent intent = new Intent(context, Acti_ChiTietSP.class);
-                intent.putExtra("sanPhamPosition", position); // Pass item position as identifier
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // Add this line if needed
-                context.startActivity(intent);
+                if (item != null) {
+                    // Convert item to JSON
+                    Gson gson = new Gson();
+                    String itemJson = gson.toJson(item);
+
+                    // Start Acti_ChiTietSP and pass necessary data
+                    Intent intent = new Intent(context, Acti_ChiTietSP.class);
+                    intent.putExtra("sanPhamJson", itemJson); // Pass item as JSON
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
             }
         });
-
     }
 
     @Override
