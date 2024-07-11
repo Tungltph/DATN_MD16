@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.datn_md16.Activitys.Acti_ChiTietSP;
 import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.R;
-//import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class HotItemAdapter extends RecyclerView.Adapter<HotItemAdapter.ViewHold
         holder.txtPrice.setText(product.getGiaGoc());
         holder.txtRating.setText(String.valueOf(product.getRating()));
         holder.ratingBar.setRating(product.getRating());
-  //      Picasso.get().load(product.getHinhAnh()).into(holder.imgProduct);
+        Picasso.get().load(product.getHinhAnh()).into(holder.imgProduct);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
