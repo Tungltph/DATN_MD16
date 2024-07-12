@@ -1,13 +1,10 @@
 package com.example.datn_md16.Fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.datn_md16.Activitys.Acti_TimKiem;
 import com.example.datn_md16.Adapter.HotItemAdapter;
 import com.example.datn_md16.Adapter.NewItemAdapter;
 import com.example.datn_md16.DTO.ProductHome;
@@ -37,9 +33,7 @@ public class HomeFrag extends Fragment {
     private HotItemAdapter hotItemAdapter;
     private NewItemAdapter newItemAdapter;
 
-    TextView tvSearchHome;
-
-    private static final String BASE_URL = "http://192.168.9.104:3000/api/sanPham/"; // Thay thế bằng URL thực tế của bạn
+    private static final String BASE_URL = "http://192.168.1.11:3000/api/sanPham/"; // Thay thế bằng URL thực tế của bạn
 
     @Nullable
     @Override
@@ -54,19 +48,6 @@ public class HomeFrag extends Fragment {
 
         fetchHotProducts();
         fetchNewProducts();
-
-        tvSearchHome = view.findViewById(R.id.tvSearchHome);
-        tvSearchHome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Tạo một Intent để chuyển từ màn hình home sang màn hình tìm kiếm
-                Intent intent = new Intent(getActivity(), Acti_TimKiem.class);
-                // Bắt đầu activity tìm kiếm
-                startActivity(intent);
-            }
-        });
-
-
 
         return view;
     }

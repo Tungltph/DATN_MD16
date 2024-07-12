@@ -17,6 +17,7 @@ import java.util.concurrent.Executors;
 import okhttp3.OkHttpClient;
 
 import okhttp3.logging.HttpLoggingInterceptor;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -86,7 +87,7 @@ public class DangNhap extends AppCompatActivity {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.104:3000/api/account/")
+                .baseUrl("http://192.168.1.11:3000/api/account/")
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .callbackExecutor(Executors.newSingleThreadExecutor())
