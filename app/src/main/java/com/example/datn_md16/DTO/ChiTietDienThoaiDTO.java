@@ -55,9 +55,6 @@ public class ChiTietDienThoaiDTO {
     @SerializedName("giamGia")
     private String giamGia;
 
-    @SerializedName("trangThai")
-    private boolean trangThai;
-
     @SerializedName("mauSchema")
     private List<Mau> mauSchema;
 
@@ -201,13 +198,6 @@ public class ChiTietDienThoaiDTO {
         this.giamGia = giamGia;
     }
 
-    public boolean isTrangThai() {
-        return trangThai;
-    }
-
-    public void setTrangThai(boolean trangThai) {
-        this.trangThai = trangThai;
-    }
 
     public List<Mau> getMauSchema() {
         return mauSchema;

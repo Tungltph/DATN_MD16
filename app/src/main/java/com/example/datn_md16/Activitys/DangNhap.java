@@ -15,7 +15,7 @@ import com.example.datn_md16.R;
 import java.util.List;
 import java.util.concurrent.Executors;
 import okhttp3.OkHttpClient;
-
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,8 +42,8 @@ public class DangNhap extends AppCompatActivity {
         loginButton = findViewById(R.id.loginButton);
         registerTextView = findViewById(R.id.registerTextView);
 
-//        setupRetrofit();
-//        fetchUserData();
+        setupRetrofit();
+        fetchUserData();
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,23 +76,23 @@ public class DangNhap extends AppCompatActivity {
         });
     }
 
-//    private void setupRetrofit() {
-//        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-//        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
-//
-//        OkHttpClient client = new OkHttpClient.Builder()
-//                .addInterceptor(logging)
-//                .build();
-//
-//        Retrofit retrofit = new Retrofit.Builder()
-//                .baseUrl("http://192.168.1.5:3000/api/account/")
-//                .client(client)
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .callbackExecutor(Executors.newSingleThreadExecutor())
-//                .build();
-//
-//        apiService = retrofit.create(ApiService.class);
-//    }
+    private void setupRetrofit() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+
+        OkHttpClient client = new OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .build();
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.1.11:3000/api/account/")
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .callbackExecutor(Executors.newSingleThreadExecutor())
+                .build();
+
+        apiService = retrofit.create(ApiService.class);
+    }
 
     private void fetchUserData() {
         Call<AccountResponse> call = apiService.getAccounts();

@@ -35,81 +35,6 @@
             android:textSize="18sp"
             android:textStyle="bold"
             android:paddingTop="8dp" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Giá :"
-            android:id="@+id/tvgia"
-            />
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-            <ImageView
-                android:layout_width="20sp"
-                android:layout_height="20sp"
-                android:src="@drawable/start"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4.9"
-                android:id="@+id/SaoTb"
-                android:textColor="#FF1B00"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="/(5.0) | "
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Số lượng sản phẩm còn : "
-                android:id="@+id/Slsp"
-                />
-
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center"
-            >
-
-            <Button
-                android:id="@+id/btnMauden"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:backgroundTint="#ffffff"
-                android:foreground="@drawable/button_border"
-                android:text="Màu Đen"
-                android:layout_marginRight="10sp"
-                android:textColor="#000000" />
-
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Màu ghi"
-                android:id="@+id/btnMauGhi"
-                android:layout_marginRight="10sp"
-                android:backgroundTint="#ffffff"
-                android:textColor="#000000"
-                android:foreground="@drawable/button_border"
-                />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/btnmMauTrang"
-                android:text="Mau Trang"
-                android:layout_marginRight="10sp"
-                android:textColor="#000000"
-                android:backgroundTint="#ffffff"
-                android:foreground="@drawable/button_border"
-
-                />
-        </LinearLayout>
 
         <TextView
             android:id="@+id/tvCamera"
@@ -215,6 +140,5 @@
             android:layout_height="wrap_content"
             android:text="Trạng thái"
             android:textSize="14sp" />
-
     </LinearLayout>
 </LinearLayout>
