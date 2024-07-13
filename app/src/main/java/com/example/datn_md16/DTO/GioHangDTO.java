@@ -1,80 +1,50 @@
-
 package com.example.datn_md16.DTO;
 
 public class GioHangDTO {
-    private String id;
-    private String productName;
-    private String productColor;
-    private String productPrice;
-    private String productImage;
-    private int quantity;
-    private boolean isChecked;
+    private String _id;
+    private String idSanPham; // Giữ nguyên là String
+    private String idAccount; // Giữ nguyên là String
+    private int soLuong;
+    private String idMau; // Giữ nguyên là String
 
-    public GioHangDTO(String id, String productName, String productColor, String productPrice, String productImage, int quantity, boolean isChecked) {
-        this.id = id;
-        this.productName = productName;
-        this.productColor = productColor;
-        this.productPrice = productPrice;
-        this.productImage = productImage;
-        this.quantity = quantity;
-        this.isChecked = isChecked;
+    // Các getter và setter
+    public String get_id() {
+        return _id;
     }
 
-    public String getId() {
-        return id;
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public String getIdSanPham() {
+        return idSanPham;
     }
 
-    public String getProductName() {
-        return productName;
+    public void setIdSanPham(String idSanPham) {
+        this.idSanPham = idSanPham;
     }
 
-    public void setProductName(String productName) {
-        this.productName = productName;
+    public String getIdAccount() {
+        return idAccount;
     }
 
-    public String getProductColor() {
-        return productColor;
+    public void setIdAccount(String idAccount) {
+        this.idAccount = idAccount;
     }
 
-    public void setProductColor(String productColor) {
-        this.productColor = productColor;
+    public int getSoLuong() {
+        return soLuong;
     }
 
-    public String getProductPrice() {
-        return productPrice;
+    public void setSoLuong(int soLuong) {
+        this.soLuong = soLuong;
     }
 
-    public void setProductPrice(String productPrice) {
-        this.productPrice = productPrice;
+    public String getIdMau() {
+        return idMau;
     }
 
-    public String getProductImage() {
-        return productImage;
+    public void setIdMau(String idMau) {
+        this.idMau = idMau;
     }
-
-    public void setProductImage(String productImage) {
-        this.productImage = productImage;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    public boolean isChecked() {
-        return isChecked;
-    }
-
-    public void setChecked(boolean checked) {
-        isChecked = checked;
-    }
-    // Các getter và setter tương ứng
 }
-

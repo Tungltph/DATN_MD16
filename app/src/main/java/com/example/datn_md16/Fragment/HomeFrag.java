@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.datn_md16.Activitys.Acti_GioHang;
 import com.example.datn_md16.Activitys.Acti_TimKiem;
 import com.example.datn_md16.Adapter.HotItemAdapter;
 import com.example.datn_md16.Adapter.NewItemAdapter;
@@ -36,10 +38,12 @@ public class HomeFrag extends Fragment {
     private RecyclerView rvHotProducts, rvNewProducts;
     private HotItemAdapter hotItemAdapter;
     private NewItemAdapter newItemAdapter;
+    ImageView idGioHangHome;
+
 
     TextView tvSearchHome;
 
-    private static final String BASE_URL = "http://192.168.9.104:3000/api/sanPham/"; // Thay thế bằng URL thực tế của bạn
+    private static final String BASE_URL = "http://192.168.1.63:3000/api/sanPham/"; // Thay thế bằng URL thực tế của bạn
 
     @Nullable
     @Override
@@ -48,6 +52,15 @@ public class HomeFrag extends Fragment {
 
         rvHotProducts = view.findViewById(R.id.rvHotProducts);
         rvNewProducts = view.findViewById(R.id.rvNewProducts);
+        idGioHangHome = view.findViewById(R.id.idGioHangHome);
+        idGioHangHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), Acti_GioHang.class);
+                startActivity(intent);
+            }
+        });
+
 
         rvHotProducts.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         rvNewProducts.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));

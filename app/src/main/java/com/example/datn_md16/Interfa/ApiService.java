@@ -3,7 +3,9 @@ package com.example.datn_md16.Interfa;
 import com.example.datn_md16.DTO.AccountRequest;
 import com.example.datn_md16.DTO.AccountResponse;
 import com.example.datn_md16.DTO.ChiTietDienThoaiDTO;
+import com.example.datn_md16.DTO.GioHangDTO;
 import com.example.datn_md16.DTO.ProductHome;
+import com.example.datn_md16.DTO.SanPhamDTO;
 import com.example.datn_md16.DTO.TimKiemDTO;
 
 import java.util.List;
@@ -30,6 +32,13 @@ public interface ApiService {
 
     @GET("/api/account")
     Call<AccountResponse> getAccounts();
+
+
+    @GET("api/giohang")
+    Call<List<GioHangDTO>> getGioHang();
+
+    @GET("api/sanpham/{id}")
+    Call<SanPhamDTO> getProductById(@Path("id") String productId);
 
 
 

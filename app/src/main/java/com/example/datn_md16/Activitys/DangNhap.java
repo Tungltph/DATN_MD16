@@ -87,7 +87,7 @@ public class DangNhap extends AppCompatActivity {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.11:3000/api/account/")
+                .baseUrl("http://192.168.1.63:3000/api/account/")
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .callbackExecutor(Executors.newSingleThreadExecutor())

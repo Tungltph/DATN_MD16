@@ -3,6 +3,7 @@ package com.example.datn_md16.Activitys;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,12 +12,18 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datn_md16.Adapter.GioHangAdapter;
+
 import com.example.datn_md16.DTO.GioHangDTO;
+import com.example.datn_md16.Interfa.ApiService;
 import com.example.datn_md16.R;
 
-
-import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.OnTotalPriceChangeListener {
 
@@ -28,35 +35,44 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gio_hang);
 
-        // Thiết lập Toolbar và hiển thị nút back
+        // Thiết lập Toolbar
         Toolbar toolbar = findViewById(R.id.toolbarGioHang);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-        // Đặt tiêu đề cho Toolbar từ chuỗi trong strings.xml
         setTitle(getString(R.string.toolbarGioHang));
 
         // Khởi tạo RecyclerView và Adapter
         RecyclerView recyclerView = findViewById(R.id.rcGioHang);
         totalPriceTextView = findViewById(R.id.totalPrice);
 
-        List<GioHangDTO> gioHangList = createSampleData(); // Khởi tạo dữ liệu mẫu
+        // Khởi tạo Retrofit
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.1.63:3000/") // Chỉ cần URL gốc
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        adapter = new GioHangAdapter(gioHangList, this);
-        adapter.setOnTotalPriceChangeListener(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
+        ApiService apiService = retrofit.create(ApiService.class);
 
-        updateTotalPrice(0); // Khởi tạo giá trị ban đầu cho tổng thanh toán
-    }
+        // Gọi API và lấy dữ liệu
+        apiService.getGioHang().enqueue(new Callback<List<GioHangDTO>>() {
+            @Override
+            public void onResponse(Call<List<GioHangDTO>> call, Response<List<GioHangDTO>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<GioHangDTO> gioHangList = response.body();
+                    adapter = new GioHangAdapter(gioHangList, Acti_GioHang.this);
+                    adapter.setOnTotalPriceChangeListener(Acti_GioHang.this);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(Acti_GioHang.this));
+                    recyclerView.setAdapter(adapter);
+                } else {
+                    Toast.makeText(Acti_GioHang.this, "Failed to load data", Toast.LENGTH_SHORT).show();
+                }
+            }
 
-    private List<GioHangDTO> createSampleData() {
-        List<GioHangDTO> sampleData = new ArrayList<>();
-        sampleData.add(new GioHangDTO("1", "iPhone 15 Pro", "Đen", "15000000đ", "url_image", 1, true));
-        sampleData.add(new GioHangDTO("2", "Samsung Galaxy S21", "Trắng", "12000000đ", "url_image", 2, false));
-        sampleData.add(new GioHangDTO("3", "Google Pixel 6", "Xanh", "10000000đ", "url_image", 1, true));
-        return sampleData;
+            @Override
+            public void onFailure(Call<List<GioHangDTO>> call, Throwable t) {
+                Toast.makeText(Acti_GioHang.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -71,9 +87,5 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
             return true;
         }
         return super.onOptionsItemSelected(item);
-    }
-
-    private void updateTotalPrice(int totalPrice) {
-        totalPriceTextView.setText("Tổng thanh toán:\n " + totalPrice + "đ");
     }
 }

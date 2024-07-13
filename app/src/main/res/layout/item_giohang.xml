@@ -2,7 +2,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="15dp"
+    android:padding="15px"
     android:layout_marginTop="8dp"
     android:background="@drawable/border">
 
@@ -15,7 +15,7 @@
         <CheckBox
             android:id="@+id/checkbox"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
         <ImageView
             android:id="@+id/productImage"
@@ -37,8 +37,7 @@
                 android:layout_height="wrap_content"
                 android:text="iPhone 15 Pro"
                 android:textColor="@android:color/black"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/productColor"
@@ -54,33 +53,31 @@
                 android:layout_height="wrap_content"
                 android:text="15.000.000đ"
                 android:textColor="@android:color/holo_red_dark"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/soLuong"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Số lượng :"
+                android:text="Số lượng:"
                 android:textColor="@android:color/black"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="10px"
                 android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_marginTop="4dp">
+                android:gravity="center">
 
                 <TextView
                     android:id="@+id/btnDecrease"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:background="@drawable/border"
                     android:gravity="center"
                     android:text="-"
-                    android:textColorHint="#000000"
-                    android:textColor="@android:color/black" />
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/tvQuantity"
@@ -88,18 +85,16 @@
                     android:layout_height="wrap_content"
                     android:padding="10dp"
                     android:text="0"
-                    android:textSize="18sp" />
+                    android:textSize="24sp" />
 
                 <TextView
-                    android:id="@+id/btnCong"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:id="@+id/btnIncrease"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
                     android:background="@drawable/border"
                     android:gravity="center"
                     android:text="+"
-
-                    android:textColor="@android:color/black" />
-
+                    android:textColor="@color/black" />
             </LinearLayout>
         </LinearLayout>
 
@@ -107,8 +102,7 @@
             android:id="@+id/removeItemButton"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@android:drawable/ic_delete"
-            android:layout_marginStart="8dp" />
+            android:src="@android:drawable/ic_delete" />
     </LinearLayout>
 
 </LinearLayout>
