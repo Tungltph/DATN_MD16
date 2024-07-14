@@ -50,7 +50,21 @@ public class NewItemAdapter extends RecyclerView.Adapter<NewItemAdapter.ViewHold
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, Acti_ChiTietSP.class);
-                // Truyền dữ liệu cần thiết qua intent
+                intent.putExtra("TenDienThoai", product.getTenDienThoai());
+                intent.putExtra("GiaGoc", product.getGiaGoc());
+                intent.putExtra("HinhAnh", product.getHinhAnh());
+                intent.putExtra("Camera", product.getCamera());
+                intent.putExtra("CameraTruoc", product.getCameraTruoc());
+                intent.putExtra("KichThuoc", product.getKichThuoc());
+                intent.putExtra("CPU", product.getcPU());
+                intent.putExtra("Ram", product.getRam());
+                intent.putExtra("Sim", product.getSim());
+                intent.putExtra("Pin", product.getPin());
+                intent.putExtra("HeDieuHanh", product.getHeDieuHanh());
+                intent.putExtra("NamSanXuat", product.getNamSanXuat());
+                intent.putExtra("CongNgheManHinh", product.getCongNgheManHinh());
+                intent.putExtra("MoTaThem", product.getMoTaThem());
+                intent.putExtra("DoPhanGiai", product.getDoPhanGiai());
                 context.startActivity(intent);
             }
         });

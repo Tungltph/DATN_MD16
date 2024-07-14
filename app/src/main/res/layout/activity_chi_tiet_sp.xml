@@ -1,144 +1,463 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
-
-    <!-- Toolbar -->
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbarChiTietSP"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
+    android:background="@color/white"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp">
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/ivHinhAnh"
+        <!-- Toolbar -->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbarChiTietSP"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_foreground" />
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
-        <TextView
-            android:id="@+id/tvTenDienThoai"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tên điện thoại"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:paddingTop="8dp" />
+            android:orientation="vertical"
+            android:padding="10dp">
 
-        <TextView
-            android:id="@+id/tvCamera"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Camera"
-            android:textSize="14sp" />
+            <ImageView
+                android:id="@+id/ivHinhAnh"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_launcher_foreground" />
 
-        <TextView
-            android:id="@+id/tvCameraTruoc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Camera trước"
-            android:textSize="14sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tvKichThuoc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Kích thước"
-            android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/tvTenDienThoai"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Tên điện thoại"
+                    android:gravity="center_horizontal"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvCPU"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="CPU"
-            android:textSize="14sp" />
+                <ImageView
+                    android:id="@+id/ic_yeuThichSP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_favorite"
+                    android:layout_gravity="end" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvRam"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="RAM"
-            android:textSize="14sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tvSim"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sim"
-            android:textSize="14sp" />
+                <Button
+                    android:id="@+id/btnDen"
+                    android:layout_width="100dp"
+                    android:background="@drawable/border"
+                    android:textColor="@color/black"
+                    android:layout_height="40dp"
+                    android:layout_marginRight="20dp"
+                    android:text="Đen"/>
 
-        <TextView
-            android:id="@+id/tvPin"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Pin"
-            android:textSize="14sp" />
+                <Button
+                    android:id="@+id/btnTrang"
+                    android:layout_width="100dp"
+                    android:background="@drawable/border"
+                    android:textColor="@color/black"
+                    android:layout_height="40dp"
+                    android:text="Trắng"/>
 
-        <TextView
-            android:id="@+id/tvHeDieuHanh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Hệ điều hành"
-            android:textSize="14sp" />
+                <Button
+                    android:id="@+id/btnGhi"
+                    android:layout_width="100dp"
+                    android:background="@drawable/border"
+                    android:textColor="@color/black"
+                    android:layout_marginLeft="20dp"
+                    android:layout_height="40dp"
+                    android:text="Ghi"/>
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvNamSanXuat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Năm sản xuất"
-            android:textSize="14sp" />
+            <!-- Chi tiết điện thoại -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Giá :  "
+                    android:textStyle="bold"
+                    android:textColor="#EA0C0C"
+                    android:textSize="25sp" />
 
-        <TextView
-            android:id="@+id/tvCongNgheManHinh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Công nghệ màn hình"
-            android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/tvGiamGia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
 
-        <TextView
-            android:id="@+id/tvMoTaThem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Mô tả thêm"
-            android:textSize="14sp" />
+                    android:textStyle="bold"
 
-        <TextView
-            android:id="@+id/tvDoPhanGiai"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Độ phân giải"
-            android:textSize="14sp" />
+                    android:textSize="25sp" />
 
-        <TextView
-            android:id="@+id/tvGiaGoc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Giá gốc"
-            android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/tvGiaGoc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="#EA0C0C"
+                    android:text="5555 "
+                    android:layout_marginStart="10dp"
+                    android:textSize="25sp" />
+            </LinearLayout>
 
-        <TextView
-            android:id="@+id/tvGiamGia"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Giảm giá"
-            android:textSize="14sp" />
+            <!-- Thông tin sản phẩm -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="• Camera :  "
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/tvTrangThai"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Trạng thái"
-            android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/tvCamera"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Camera"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="• Camera trước :  "
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvCameraTruoc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Camera trước"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="• Kích Thước :  "
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvKichThuoc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Kích thước"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="• CPU :  "
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvCPU"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CPU"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="• Ram :  "
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvRam"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CPU"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="• Sim :  "
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvSim"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CPU"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="• Pin :  "
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvPin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="CPU"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="• Hệ điều hành :  "
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvHeDieuHanh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hệ điều hành"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="• Năm sản xuất :  "
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvNamSanXuat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="14sp"
+                    android:text="Năm sản xuất"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="• Công nghệ màn hình :  "
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvCongNgheManHinh"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Công nghệ màn hình"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="• Mô tả thêm :  "
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvMoTaThem"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mô tả thêm"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="1dp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="• Độ phân giải :  "
+                    android:textStyle="bold"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvDoPhanGiai"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Độ phân giải"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:padding="10dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/border"
+                    android:gravity="end">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Số lượng"
+                        android:textSize="18sp"
+                        android:layout_gravity="center"
+                        android:textColor="@android:color/black"
+                        android:layout_marginEnd="50dp" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:padding="4dp">
+
+                        <Button
+                            android:id="@+id/button_decrease"
+                            android:layout_width="55dp"
+                            android:layout_height="30dp"
+                            android:text="-"
+                            android:textSize="10sp"
+                            android:textColor="@color/black"
+                            android:background="@drawable/border" />
+
+                        <TextView
+                            android:id="@+id/text_quantity"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:text="1"
+                            android:textSize="18sp"
+                            android:gravity="center"
+                            android:background="@android:color/white"
+                            android:textColor="@android:color/black" />
+
+                        <Button
+                            android:id="@+id/button_increase"
+                            android:layout_width="55dp"
+                            android:layout_height="30dp"
+                            android:text="+"
+                            android:textSize="10sp"
+                            android:background="@drawable/border"
+                            android:textColor="@color/black"
+                            />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center"
+                    android:layout_marginTop="16dp">
+
+                    <Button
+                        android:id="@+id/button_buy_now"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginRight="30dp"
+                        android:text="Mua Ngay"
+                        android:background="@drawable/border"
+                        android:textColor="@color/black"/>
+
+                    <Button
+                        android:id="@+id/button_add_to_cart"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="30dp"
+                        android:text="Thêm giỏ hàng"
+                        android:background="@drawable/border"
+                        android:textColor="@color/black"
+                        android:layout_marginStart="8dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+
+</ScrollView>
