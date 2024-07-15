@@ -37,7 +37,7 @@ public class DangKi extends AppCompatActivity {
     private void setupRetrofit() {
         // Khởi tạo Retrofit
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.11:3000/api/account/")
+                .baseUrl("http://192.168.9.102:3000/api/account/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

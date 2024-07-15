@@ -93,6 +93,7 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
                 }
             }
         });
+
     }
 
     @Override

@@ -2,19 +2,23 @@ package com.example.datn_md16.Activitys;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.R;
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 public class Acti_ChiTietSP extends AppCompatActivity {
 
-    private TextView txtProductName, txtPrice, txtRating;
+    private TextView txtProductName, txtPrice;
     private ImageView imgProduct;
     private RatingBar ratingBar;
     private TextView tvCamera, tvCameraTruoc, tvKichThuoc, tvCPU, tvRam, tvSim, tvPin, tvHeDieuHanh, tvNamSanXuat, tvCongNgheManHinh, tvMoTaThem, tvDoPhanGiai;
@@ -23,6 +27,13 @@ public class Acti_ChiTietSP extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chi_tiet_sp);
+
+        // Thiết lập Toolbar và hiển thị nút back
+        Toolbar toolbar = findViewById(R.id.toolbarChiTietSP);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Hiển thị nút back
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        setTitle(getString(R.string.toolbarChiTietSP_title));
 
         // Ánh xạ các view
         txtProductName = findViewById(R.id.tvTenDienThoai);
@@ -43,37 +54,37 @@ public class Acti_ChiTietSP extends AppCompatActivity {
 
         // Nhận dữ liệu từ Intent
         Intent intent = getIntent();
-        String tenDienThoai = intent.getStringExtra("TenDienThoai");
-        String giaGoc = intent.getStringExtra("GiaGoc");
-        String hinhAnh = intent.getStringExtra("HinhAnh");
-        String camera = intent.getStringExtra("Camera");
-        String cameraTruoc = intent.getStringExtra("CameraTruoc");
-        String kichThuoc = intent.getStringExtra("KichThuoc");
-        String cpu = intent.getStringExtra("CPU");
-        String ram = intent.getStringExtra("Ram");
-        String sim = intent.getStringExtra("Sim");
-        String pin = intent.getStringExtra("Pin");
-        String heDieuHanh = intent.getStringExtra("HeDieuHanh");
-        String namSanXuat = intent.getStringExtra("NamSanXuat");
-        String congNgheManHinh = intent.getStringExtra("CongNgheManHinh");
-        String moTaThem = intent.getStringExtra("MoTaThem");
-        String doPhanGiai = intent.getStringExtra("DoPhanGiai");
+        String sanPhamJson = intent.getStringExtra("sanPhamJson");
+
+        // Chuyển đổi JSON thành đối tượng ProductHome
+        Gson gson = new Gson();
+        ProductHome product = gson.fromJson(sanPhamJson, ProductHome.class);
 
         // Hiển thị dữ liệu lên các view
-        txtProductName.setText(tenDienThoai);
-        txtPrice.setText(giaGoc);
-        Picasso.get().load(hinhAnh).into(imgProduct);
-        tvCamera.setText(camera);
-        tvCameraTruoc.setText(cameraTruoc);
-        tvKichThuoc.setText(kichThuoc);
-        tvCPU.setText(cpu);
-        tvRam.setText(ram);
-        tvSim.setText(sim);
-        tvPin.setText(pin);
-        tvHeDieuHanh.setText(heDieuHanh);
-        tvNamSanXuat.setText(namSanXuat);
-        tvCongNgheManHinh.setText(congNgheManHinh);
-        tvMoTaThem.setText(moTaThem);
-        tvDoPhanGiai.setText(doPhanGiai);
+        if (product != null) {
+            txtProductName.setText(product.getTenDienThoai());
+            txtPrice.setText(product.getGiaGoc());
+            Picasso.get().load(product.getHinhAnh()).into(imgProduct);
+            tvCamera.setText(product.getCamera());
+            tvCameraTruoc.setText(product.getCameraTruoc());
+            tvKichThuoc.setText(product.getKichThuoc());
+            tvCPU.setText(product.getcPU());
+            tvRam.setText(product.getRam());
+            tvSim.setText(product.getSim());
+            tvPin.setText(product.getPin());
+            tvHeDieuHanh.setText(product.getHeDieuHanh());
+            tvNamSanXuat.setText(product.getNamSanXuat());
+            tvCongNgheManHinh.setText(product.getCongNgheManHinh());
+            tvMoTaThem.setText(product.getMoTaThem());
+            tvDoPhanGiai.setText(product.getDoPhanGiai());
+        }
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed(); // Xử lý khi nhấn nút back trên Toolbar
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
