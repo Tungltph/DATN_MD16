@@ -16,7 +16,7 @@ import com.example.datn_md16.R;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
-public class Acti_ChiTietSP extends AppCompatActivity {
+public class    Acti_ChiTietSP extends AppCompatActivity {
 
     private TextView txtProductName, txtPrice;
     private ImageView imgProduct;
