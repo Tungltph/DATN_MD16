@@ -1,11 +1,12 @@
 package com.example.datn_md16.DTO;
 
+import java.util.List;
+
 public class SanPhamDTO {
     private String _id;
-    private String tenSanPham;
-    private String gia;
+    private String tenDienThoai; // Cập nhật theo JSON bạn cung cấp
     private String hinhAnh;
-    private String moTa;
+    private List<MauSchemaDTO> mauSchema; // Trường để chứa giá
 
     // Getter và Setter
     public String getId() {
@@ -17,19 +18,11 @@ public class SanPhamDTO {
     }
 
     public String getTenSanPham() {
-        return tenSanPham;
+        return tenDienThoai;
     }
 
-    public void setTenSanPham(String tenSanPham) {
-        this.tenSanPham = tenSanPham;
-    }
-
-    public String getGia() {
-        return gia;
-    }
-
-    public void setGia(String gia) {
-        this.gia = gia;
+    public void setTenSanPham(String tenDienThoai) {
+        this.tenDienThoai = tenDienThoai;
     }
 
     public String getHinhAnh() {
@@ -40,11 +33,33 @@ public class SanPhamDTO {
         this.hinhAnh = hinhAnh;
     }
 
-    public String getMoTa() {
-        return moTa;
+    public List<MauSchemaDTO> getMauSchema() {
+        return mauSchema;
     }
 
-    public void setMoTa(String moTa) {
-        this.moTa = moTa;
+    public void setMauSchema(List<MauSchemaDTO> mauSchema) {
+        this.mauSchema = mauSchema;
+    }
+
+    public static class MauSchemaDTO {
+        private String mau;
+        private int giaTien; // Cập nhật theo JSON
+
+        public String getMau() {
+            return mau;
+        }
+
+        public void setMau(String mau) {
+            this.mau = mau;
+        }
+
+        public int getGiaTien() {
+            return giaTien;
+        }
+
+        public void setGiaTien(int giaTien) {
+            this.giaTien = giaTien;
+        }
     }
 }
+

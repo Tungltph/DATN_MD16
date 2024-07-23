@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".Activity.GioHangActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarGioHang"
@@ -19,12 +20,12 @@
         android:layout_weight="1"
         android:gravity="center_vertical"
         android:orientation="vertical">
-       <androidx.recyclerview.widget.RecyclerView
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:id="@+id/rcGioHang"
-           android:padding="10sp"
-           />
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rcGioHang"
+            android:padding="10sp"
+            />
     </LinearLayout>
 
     <LinearLayout
@@ -46,12 +47,12 @@
             android:textSize="18sp"/>
 
         <Button
-            android:id="@+id/checkoutButton"
+            android:id="@+id/btnthanhtoan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="#00BCD4"
             android:text="Thanh toán"
-            android:textColor="@android:color/white"
-            android:backgroundTint="#00BCD4"/>
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
 </LinearLayout>

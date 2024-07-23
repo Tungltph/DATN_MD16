@@ -222,6 +222,17 @@ public class ChiTietDienThoaiDTO {
         @SerializedName("soLuong")
         private int soLuong;
 
+        @SerializedName("_id")
+        private String id;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
         @SerializedName("giaTien")
         private double giaTien;
 

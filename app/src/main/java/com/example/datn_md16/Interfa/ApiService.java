@@ -12,6 +12,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -39,6 +40,12 @@ public interface ApiService {
 
     @GET("api/sanpham/{id}")
     Call<SanPhamDTO> getProductById(@Path("id") String productId);
+
+    @POST("/api/gioHang/add/")
+    Call<Void> adddToCart(@Body GioHangDTO gioHang);
+
+    @DELETE("/api/gioHang/delete/{id}")
+    Call<Void> deleteItemFromCart(@Path("id") String id);
 
 
 

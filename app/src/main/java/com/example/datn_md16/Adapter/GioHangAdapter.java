@@ -1,19 +1,20 @@
 package com.example.datn_md16.Adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-
 import com.example.datn_md16.DTO.GioHangDTO;
 import com.example.datn_md16.DTO.SanPhamDTO;
 import com.example.datn_md16.Interfa.ApiService;
@@ -39,7 +40,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
 
         // Khởi tạo Retrofit
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.63:3000/api/gioHang/") // Thay đổi địa chỉ của bạn
+                .baseUrl("http://192.168.1.2:3000/") // Thay đổi địa chỉ của bạn
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -62,9 +63,16 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
         GioHangDTO gioHang = gioHangList.get(position);
 
         // Gọi API để lấy thông tin sản phẩm
-        loadProductInfo(gioHang.getIdSanPham(), holder);
+        loadProductInfo(gioHang, holder);
 
         holder.tvQuantity.setText(String.valueOf(gioHang.getSoLuong()));
+        holder.checkBox.setChecked(gioHang.isChecked());
+
+        // Xử lý sự kiện thay đổi checkbox
+        holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            gioHang.setChecked(isChecked);
+            updateTotalPrice();
+        });
 
         // Xử lý sự kiện tăng giảm số lượng
         holder.btnDecrease.setOnClickListener(v -> {
@@ -84,28 +92,112 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
             holder.tvQuantity.setText(String.valueOf(quantity));
             updateTotalPrice();
         });
+
+        // Xử lý sự kiện xóa sản phẩm
+        holder.xoa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Xác nhận và gọi API để xóa sản phẩm
+                new AlertDialog.Builder(context)
+                        .setTitle("Xóa sản phẩm")
+                        .setMessage("Bạn có chắc chắn muốn xóa sản phẩm này?")
+                        .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                // Gọi API để xóa sản phẩm
+                                productService.deleteItemFromCart(gioHang.get_id()).enqueue(new Callback<Void>() {
+                                    @Override
+                                    public void onResponse(Call<Void> call, Response<Void> response) {
+                                        if (response.isSuccessful()) {
+                                            Toast.makeText(context, "Xóa sản phẩm thành công", Toast.LENGTH_SHORT).show();
+                                            // Cập nhật danh sách giỏ hàng
+                                            gioHangList.remove(holder.getAdapterPosition());
+                                            notifyItemRemoved(holder.getAdapterPosition());
+                                            updateTotalPrice();
+                                        } else {
+                                            Toast.makeText(context, "Lỗi: " + response.message(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Void> call, Throwable t) {
+                                        Toast.makeText(context, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }
+                        })
+                        .setNegativeButton("Không", null)
+                        .show();
+            }
+        });
+
     }
 
-    private void loadProductInfo(String productId, GioHangViewHolder holder) {
-        productService.getProductById(productId).enqueue(new Callback<SanPhamDTO>() {
+    private void loadProductInfo(GioHangDTO gioHang, GioHangViewHolder holder) {
+        productService.getProductById(gioHang.getIdSanPham()).enqueue(new Callback<SanPhamDTO>() {
             @Override
             public void onResponse(Call<SanPhamDTO> call, Response<SanPhamDTO> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     SanPhamDTO sanPham = response.body();
+                    gioHang.setSanPham(sanPham);
+
+                    // Lấy giá từ mauSchema
+                    String priceText = "Không có thông tin giá";
+                    if (sanPham.getMauSchema() != null && !sanPham.getMauSchema().isEmpty()) {
+                        priceText = sanPham.getMauSchema().get(0).getGiaTien() + "đ";
+                    }
+
                     holder.productName.setText(sanPham.getTenSanPham());
-                    holder.productPrice.setText(String.valueOf(sanPham.getGia()));
+                    holder.productPrice.setText(priceText);
                     Glide.with(context).load(sanPham.getHinhAnh()).into(holder.productImage);
+                } else {
+                    holder.productName.setText("Sản phẩm không tìm thấy");
+                    holder.productPrice.setText("Không có thông tin giá");
                 }
             }
 
             @Override
             public void onFailure(Call<SanPhamDTO> call, Throwable t) {
-                // Xử lý lỗi khi không thể lấy thông tin sản phẩm
                 holder.productName.setText("Sản phẩm không tìm thấy");
-                holder.productPrice.setText("0đ");
+                holder.productPrice.setText("Không có thông tin giá");
             }
         });
     }
+
+    private void showDeleteConfirmationDialog(GioHangDTO gioHang, int position) {
+        new AlertDialog.Builder(context)
+                .setTitle("Xác nhận xóa")
+                .setMessage("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?")
+                .setPositiveButton("Có", (dialog, which) -> {
+                    // Xóa sản phẩm khỏi giỏ hàng
+                    deleteItemFromCart(gioHang.getIdSanPham(), position);
+                })
+                .setNegativeButton("Hủy", null)
+                .show();
+    }
+
+    private void deleteItemFromCart(String id, int position) {
+        productService.deleteItemFromCart(id).enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    // Xóa sản phẩm khỏi danh sách và cập nhật RecyclerView
+                    gioHangList.remove(position);
+                    notifyItemRemoved(position);
+                    updateTotalPrice();
+                    Toast.makeText(context, "Sản phẩm đã được xóa", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(context, "Lỗi khi xóa sản phẩm", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(context, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     @Override
     public int getItemCount() {
@@ -113,9 +205,8 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
     }
 
     public class GioHangViewHolder extends RecyclerView.ViewHolder {
-        private TextView productName, productPrice, tvQuantity,btnDecrease,btnIncrease;
-        private ImageView productImage;
-
+        private TextView productName, productPrice, tvQuantity, btnDecrease, btnIncrease;
+        private ImageView productImage, xoa;
         private CheckBox checkBox;
 
         public GioHangViewHolder(@NonNull View itemView) {
@@ -127,31 +218,24 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
             btnDecrease = itemView.findViewById(R.id.btnDecrease);
             btnIncrease = itemView.findViewById(R.id.btnIncrease);
             checkBox = itemView.findViewById(R.id.checkbox);
+            xoa = itemView.findViewById(R.id.xoagiohang);
         }
     }
 
     private void updateTotalPrice() {
-        final int[] totalPrice = {0};
+        int totalPrice = 0;
         for (GioHangDTO gioHang : gioHangList) {
-            // Gọi lại API để lấy giá cho từng sản phẩm
-            productService.getProductById(gioHang.getIdSanPham()).enqueue(new Callback<SanPhamDTO>() {
-                @Override
-                public void onResponse(Call<SanPhamDTO> call, Response<SanPhamDTO> response) {
-                    if (response.isSuccessful() && response.body() != null) {
-                        SanPhamDTO sanPham = response.body();
-                        int price = Integer.parseInt(sanPham.getGia().replaceAll("[^\\d.]", ""));
-                        totalPrice[0] += price * gioHang.getSoLuong();
-                        if (onTotalPriceChangeListener != null) {
-                            onTotalPriceChangeListener.onTotalPriceChanged(totalPrice[0]);
-                        }
-                    }
+            if (gioHang.isChecked() && gioHang.getSanPham() != null) { // Chỉ tính tổng cho các sản phẩm đã được chọn
+                SanPhamDTO sanPham = gioHang.getSanPham();
+                int price = 0;
+                if (sanPham.getMauSchema() != null && !sanPham.getMauSchema().isEmpty()) {
+                    price = sanPham.getMauSchema().get(0).getGiaTien(); // Lấy giá từ mauSchema
                 }
-
-                @Override
-                public void onFailure(Call<SanPhamDTO> call, Throwable t) {
-                    // Xử lý lỗi khi không thể lấy thông tin sản phẩm
-                }
-            });
+                totalPrice += price * gioHang.getSoLuong();
+            }
+        }
+        if (onTotalPriceChangeListener != null) {
+            onTotalPriceChangeListener.onTotalPriceChanged(totalPrice);
         }
     }
 

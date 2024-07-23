@@ -6,6 +6,8 @@ public class GioHangDTO {
     private String idAccount; // Giữ nguyên là String
     private int soLuong;
     private String idMau; // Giữ nguyên là String
+    private boolean isChecked; // Thêm trường này
+    private SanPhamDTO sanPham; // Thêm trường này để lưu thông tin sản phẩm
 
     // Các getter và setter
     public String get_id() {
@@ -46,5 +48,21 @@ public class GioHangDTO {
 
     public void setIdMau(String idMau) {
         this.idMau = idMau;
+    }
+
+    public boolean isChecked() {
+        return isChecked;
+    }
+
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
+
+    public SanPhamDTO getSanPham() {
+        return sanPham;
+    }
+
+    public void setSanPham(SanPhamDTO sanPham) {
+        this.sanPham = sanPham;
     }
 }

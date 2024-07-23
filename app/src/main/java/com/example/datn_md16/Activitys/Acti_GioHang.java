@@ -2,6 +2,8 @@ package com.example.datn_md16.Activitys;
 
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -12,11 +14,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datn_md16.Adapter.GioHangAdapter;
-
 import com.example.datn_md16.DTO.GioHangDTO;
 import com.example.datn_md16.Interfa.ApiService;
 import com.example.datn_md16.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -29,6 +31,7 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
 
     private TextView totalPriceTextView;
     private GioHangAdapter adapter;
+    private List<GioHangDTO> gioHangList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,9 +48,13 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
         RecyclerView recyclerView = findViewById(R.id.rcGioHang);
         totalPriceTextView = findViewById(R.id.totalPrice);
 
+        Button btnthanhtoan = findViewById(R.id.btnthanhtoan);
+
+        btnthanhtoan.setOnClickListener(v -> processPayment());
+
         // Khởi tạo Retrofit
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.63:3000/") // Chỉ cần URL gốc
+                .baseUrl("http://192.168.1.2:3000/") // Chỉ cần URL gốc
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -58,7 +65,7 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
             @Override
             public void onResponse(Call<List<GioHangDTO>> call, Response<List<GioHangDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<GioHangDTO> gioHangList = response.body();
+                    gioHangList = response.body();
                     adapter = new GioHangAdapter(gioHangList, Acti_GioHang.this);
                     adapter.setOnTotalPriceChangeListener(Acti_GioHang.this);
                     recyclerView.setLayoutManager(new LinearLayoutManager(Acti_GioHang.this));
@@ -75,6 +82,52 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
         });
     }
 
+    private void processPayment() {
+        if (gioHangList == null || gioHangList.isEmpty()) {
+            Toast.makeText(this, "Giỏ hàng trống", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Lọc các sản phẩm đã được chọn
+        List<GioHangDTO> selectedItems = new ArrayList<>();
+        for (GioHangDTO item : gioHangList) {
+            if (item.isChecked()) {
+                selectedItems.add(item);
+            }
+        }
+
+        if (selectedItems.isEmpty()) {
+            Toast.makeText(this, "Chưa chọn sản phẩm nào để thanh toán", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Khởi tạo Retrofit
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.1.2:3000/") // Chỉ cần URL gốc
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ApiService apiService = retrofit.create(ApiService.class);
+
+        // Gửi thông tin giỏ hàng đã chọn tới máy chủ
+//        apiService.createInvoice(selectedItems).enqueue(new Callback<Void>() {
+//            @Override
+//            public void onResponse(Call<Void> call, Response<Void> response) {
+//                if (response.isSuccessful()) {
+//                    Toast.makeText(Acti_GioHang.this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
+//                    // Xoá các sản phẩm đã thanh toán khỏi giỏ hàng hoặc thực hiện các hành động khác cần thiết
+//                } else {
+//                    Toast.makeText(Acti_GioHang.this, "Thanh toán thất bại", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<Void> call, Throwable t) {
+//                Toast.makeText(Acti_GioHang.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+    }
+
     @Override
     public void onTotalPriceChanged(int totalPrice) {
         totalPriceTextView.setText("Tổng thanh toán:\n " + totalPrice + "đ");
@@ -89,3 +142,4 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
         return super.onOptionsItemSelected(item);
     }
 }
+
