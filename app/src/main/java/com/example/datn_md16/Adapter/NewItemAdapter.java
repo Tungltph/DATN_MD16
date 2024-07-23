@@ -16,6 +16,7 @@ import com.example.datn_md16.Activitys.Acti_ChiTietSP;
 import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.R;
 
+import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -49,23 +50,16 @@ public class NewItemAdapter extends RecyclerView.Adapter<NewItemAdapter.ViewHold
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, Acti_ChiTietSP.class);
-                intent.putExtra("TenDienThoai", product.getTenDienThoai());
-                intent.putExtra("GiaGoc", product.getGiaGoc());
-                intent.putExtra("HinhAnh", product.getHinhAnh());
-                intent.putExtra("Camera", product.getCamera());
-                intent.putExtra("CameraTruoc", product.getCameraTruoc());
-                intent.putExtra("KichThuoc", product.getKichThuoc());
-                intent.putExtra("CPU", product.getcPU());
-                intent.putExtra("Ram", product.getRam());
-                intent.putExtra("Sim", product.getSim());
-                intent.putExtra("Pin", product.getPin());
-                intent.putExtra("HeDieuHanh", product.getHeDieuHanh());
-                intent.putExtra("NamSanXuat", product.getNamSanXuat());
-                intent.putExtra("CongNgheManHinh", product.getCongNgheManHinh());
-                intent.putExtra("MoTaThem", product.getMoTaThem());
-                intent.putExtra("DoPhanGiai", product.getDoPhanGiai());
-                context.startActivity(intent);
+                if (product != null) {
+                    Gson gson = new Gson();
+                    String itemJson = gson.toJson(product);
+
+                    // Start Acti_ChiTietSP and pass necessary data
+                    Intent intent = new Intent(context, Acti_ChiTietSP.class);
+                    intent.putExtra("sanPhamJson", itemJson); // Pass item as JSON
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    context.startActivity(intent);
+                }
             }
         });
     }
