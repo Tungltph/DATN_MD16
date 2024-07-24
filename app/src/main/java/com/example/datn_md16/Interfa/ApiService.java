@@ -52,5 +52,8 @@ public interface ApiService {
     @POST("/api/account/")
     Call<AccountRequest> registerAccount(@Body AccountRequest accountRequest);
 
+    @GET("/api/sanPham")
+    Call<List<ProductHome>> getProducts();
+
 
 }

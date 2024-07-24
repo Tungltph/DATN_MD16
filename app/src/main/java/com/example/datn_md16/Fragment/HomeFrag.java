@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,7 +19,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datn_md16.Activitys.Acti_GioHang;
+import com.example.datn_md16.Activitys.Acti_Oppo;
+import com.example.datn_md16.Activitys.Acti_Samsung;
 import com.example.datn_md16.Activitys.Acti_TimKiem;
+import com.example.datn_md16.Activitys.Acti_Xiaomi;
+import com.example.datn_md16.Activitys.Acti_vivo;
+import com.example.datn_md16.Activitys.Acty_iphone;
 import com.example.datn_md16.Adapter.HotItemAdapter;
 import com.example.datn_md16.Adapter.NewItemAdapter;
 import com.example.datn_md16.DTO.ProductHome;
@@ -40,10 +46,10 @@ public class HomeFrag extends Fragment {
     private NewItemAdapter newItemAdapter;
     ImageView idGioHangHome;
 
-
+    private Button btnip, btnss, btnvv, btnxm, btnop;
     TextView tvSearchHome;
 
-    private static final String BASE_URL = "http://192.168.1.2:3000/api/sanPham/"; // Thay thế bằng URL thực tế của bạn
+    private static final String BASE_URL = "http://192.168.1.11:3000/api/sanPham/"; // Thay thế bằng URL thực tế của bạn
 
     @Nullable
     @Override
@@ -53,10 +59,51 @@ public class HomeFrag extends Fragment {
         rvHotProducts = view.findViewById(R.id.rvHotProducts);
         rvNewProducts = view.findViewById(R.id.rvNewProducts);
         idGioHangHome = view.findViewById(R.id.idGioHangHome);
+        btnxm = view.findViewById(R.id.btnXiaomi);
+        btnip = view.findViewById(R.id.btnIphone);
+        btnop = view.findViewById(R.id.btnOppo);
+        btnss = view.findViewById(R.id.btnss);
+        btnvv = view.findViewById(R.id.btnVivo);
+
         idGioHangHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), Acti_GioHang.class);
+                startActivity(intent);
+            }
+        });
+        btnip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), Acty_iphone.class);
+                startActivity(intent);
+            }
+        });
+        btnop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), Acti_Oppo.class);
+                startActivity(intent);
+            }
+        });
+        btnss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), Acti_Samsung.class);
+                startActivity(intent);
+            }
+        });
+        btnvv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), Acti_vivo.class);
+                startActivity(intent);
+            }
+        });
+        btnxm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), Acti_Xiaomi.class);
                 startActivity(intent);
             }
         });
@@ -72,12 +119,11 @@ public class HomeFrag extends Fragment {
         tvSearchHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Tạo một Intent để chuyển từ màn hình home sang màn hình tìm kiếm
                 Intent intent = new Intent(getActivity(), Acti_TimKiem.class);
-                // Bắt đầu activity tìm kiếm
                 startActivity(intent);
             }
         });
+
 
 
 

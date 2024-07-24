@@ -41,7 +41,9 @@ public class HotItemAdapter extends RecyclerView.Adapter<HotItemAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ProductHome product = productList.get(position);
         holder.txtProductName.setText(product.getTenDienThoai());
-        holder.txtPrice.setText(product.getGiaGoc());
+        if (product.getMauSchema() != null && !product.getMauSchema().isEmpty()) {
+            holder.txtPrice.setText(product.getMauSchema().get(0).getGiaTien() + " VND");
+        }
         holder.txtRating.setText(String.valueOf(product.getRating()));
         holder.ratingBar.setRating(product.getRating());
         Picasso.get().load(product.getHinhAnh()).into(holder.imgProduct);

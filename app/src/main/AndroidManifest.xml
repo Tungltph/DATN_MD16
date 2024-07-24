@@ -16,14 +16,27 @@
         android:theme="@style/Theme.DATN_MD16"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-
+        <activity
+            android:name=".Activitys.Acti_Xiaomi"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.Acti_vivo"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.Acti_Oppo"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.Acti_Samsung"
+            android:exported="false" />
+        <activity
+            android:name=".Activitys.Acty_iphone"
+            android:exported="false" />
         <activity
             android:name=".Activitys.MainActivity"
-            android:exported="false" />
-
-        <!-- Khai báo các Activity khác ở đây -->
-        <activity android:name=".ManChay" android:exported="true" />
-
+            android:exported="false" /> <!-- Khai báo các Activity khác ở đây -->
+        <activity
+            android:name=".ManChay"
+            android:exported="true" />
         <activity
             android:name=".Activitys.DangKi"
             android:exported="true">
@@ -33,7 +46,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".Activitys.Acti_hoSoCuaToi" />
         <activity android:name=".Activitys.Acti_DiaChi" />
         <activity android:name=".Activitys.Acti_KhuyenMai" />
