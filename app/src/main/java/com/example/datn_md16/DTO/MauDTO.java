@@ -1,23 +1,32 @@
 package com.example.datn_md16.DTO;
 
 public class MauDTO {
-    private String _id;
-    private String tenMau;
+    private String mau;
+    private int soLuong;
+    private int giaTien;
 
-    // Getter và Setter
-    public String getId() {
-        return _id;
+    // Getters and Setters
+    public String getMau() {
+        return mau;
     }
 
-    public void setId(String _id) {
-        this._id = _id;
+    public void setMau(String mau) {
+        this.mau = mau;
     }
 
-    public String getTenMau() {
-        return tenMau;
+    public int getSoLuong() {
+        return soLuong;
     }
 
-    public void setTenMau(String tenMau) {
-        this.tenMau = tenMau;
+    public void setSoLuong(int soLuong) {
+        this.soLuong = soLuong;
+    }
+
+    public int getGiaTien() {
+        return giaTien;
+    }
+
+    public void setGiaTien(int giaTien) {
+        this.giaTien = giaTien;
     }
 }

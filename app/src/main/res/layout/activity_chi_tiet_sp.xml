@@ -57,39 +57,7 @@
                     android:layout_gravity="end" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/color_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="16dp">
 
-                <Button
-                    android:id="@+id/btnDen"
-                    android:layout_width="100dp"
-                    android:background="@drawable/border"
-                    android:textColor="@color/black"
-                    android:layout_height="40dp"
-                    android:layout_marginRight="20dp"
-                    android:text="Đen"/>
-
-                <Button
-                    android:id="@+id/btnTrang"
-                    android:layout_width="100dp"
-                    android:background="@drawable/border"
-                    android:textColor="@color/black"
-                    android:layout_height="40dp"
-                    android:text="Trắng"/>
-
-                <Button
-                    android:id="@+id/btnGhi"
-                    android:layout_width="100dp"
-                    android:background="@drawable/border"
-                    android:textColor="@color/black"
-                    android:layout_marginLeft="20dp"
-                    android:layout_height="40dp"
-                    android:text="Ghi"/>
-            </LinearLayout>
 
             <!-- Chi tiết điện thoại -->
             <LinearLayout

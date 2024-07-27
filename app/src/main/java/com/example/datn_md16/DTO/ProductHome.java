@@ -27,6 +27,7 @@ public class ProductHome implements Serializable {
     private int __v;
     private float rating; // Rating
 
+
     // Constructor, getters, and setters
 
     public ProductHome(String _id, String tenDienThoai, String camera, String cameraTruoc, String kichThuoc,
