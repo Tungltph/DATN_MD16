@@ -54,7 +54,7 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
 
         // Khởi tạo Retrofit
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.2:3000/") // Chỉ cần URL gốc
+                .baseUrl("http://192.168.1.8:3000/") // Chỉ cần URL gốc
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -103,7 +103,7 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
 
         // Khởi tạo Retrofit
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.2:3000/") // Chỉ cần URL gốc
+                .baseUrl("http://192.168.1.8:3000/") // Chỉ cần URL gốc
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

@@ -43,7 +43,7 @@
                 android:id="@+id/productColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Màu: Đen"
+                android:text="Màu: Đendfsds"
                 android:textColor="@android:color/darker_gray"
                 android:textSize="14sp" />
 

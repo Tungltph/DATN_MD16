@@ -40,7 +40,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
 
         // Khởi tạo Retrofit
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.2:3000/") // Thay đổi địa chỉ của bạn
+                .baseUrl("http://192.168.1.8:3000/") // Thay đổi địa chỉ của bạn
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -143,16 +143,20 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
 
                     // Lấy giá từ mauSchema
                     String priceText = "Không có thông tin giá";
+                    String colorText = "Không có thông tin màu";
                     if (sanPham.getMauSchema() != null && !sanPham.getMauSchema().isEmpty()) {
                         priceText = sanPham.getMauSchema().get(0).getGiaTien() + "đ";
+                        colorText = "Màu điện thoại : " + sanPham.getMauSchema().get(0).getMau();
                     }
 
                     holder.productName.setText(sanPham.getTenSanPham());
                     holder.productPrice.setText(priceText);
+                    holder.mau.setText(colorText);
                     Glide.with(context).load(sanPham.getHinhAnh()).into(holder.productImage);
                 } else {
                     holder.productName.setText("Sản phẩm không tìm thấy");
                     holder.productPrice.setText("Không có thông tin giá");
+                    holder.mau.setText("Không có thông tin màu");
                 }
             }
 
@@ -160,9 +164,11 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
             public void onFailure(Call<SanPhamDTO> call, Throwable t) {
                 holder.productName.setText("Sản phẩm không tìm thấy");
                 holder.productPrice.setText("Không có thông tin giá");
+                holder.mau.setText("Không có thông tin màu");
             }
         });
     }
+
 
     private void showDeleteConfirmationDialog(GioHangDTO gioHang, int position) {
         new AlertDialog.Builder(context)
@@ -205,7 +211,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
     }
 
     public class GioHangViewHolder extends RecyclerView.ViewHolder {
-        private TextView productName, productPrice, tvQuantity, btnDecrease, btnIncrease;
+        private TextView productName, productPrice, tvQuantity, btnDecrease, btnIncrease,mau;
         private ImageView productImage, xoa;
         private CheckBox checkBox;
 
@@ -219,6 +225,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
             btnIncrease = itemView.findViewById(R.id.btnIncrease);
             checkBox = itemView.findViewById(R.id.checkbox);
             xoa = itemView.findViewById(R.id.xoagiohang);
+            mau = itemView.findViewById(R.id.productColor);
         }
     }
 
