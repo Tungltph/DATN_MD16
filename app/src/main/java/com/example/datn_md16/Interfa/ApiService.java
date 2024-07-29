@@ -17,6 +17,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
     @GET("/api/khuyenMai")
@@ -40,7 +41,7 @@ public interface ApiService {
     Call<List<GioHangDTO>> getGioHang();
 
     @GET("/api/sanPhamYT/")
-    Call<List<SanPhamYeuThichDTO>> getSanPhamYT();
+    Call<SanPhamYeuThichResponse> getSanPhamYeuThich();
 
     @GET("api/sanpham/{id}")
     Call<SanPhamDTO> getProductById(@Path("id") String productId);

@@ -82,6 +82,7 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
         });
     }
 
+
     private void processPayment() {
         if (gioHangList == null || gioHangList.isEmpty()) {
             Toast.makeText(this, "Giỏ hàng trống", Toast.LENGTH_SHORT).show();

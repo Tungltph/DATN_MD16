@@ -1,17 +1,19 @@
 package com.example.datn_md16.DTO;
 
+import com.google.gson.annotations.SerializedName;
+
 public class SanPhamYeuThichDTO {
+    private String _id;
+    private String id_sanPham; // Giữ nguyên là String
+    private String id_user; // Giữ nguyên là String
+    private SanPhamDTO sanPham; // Thêm trường này để lưu thông tin sản phẩm
 
-    private String id;
-    private String id_sanPham;
-    private String id_user;
-
-    public String getId() {
-        return id;
+    public String get_id() {
+        return _id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public String getId_sanPham() {
@@ -29,4 +31,13 @@ public class SanPhamYeuThichDTO {
     public void setId_user(String id_user) {
         this.id_user = id_user;
     }
+
+    public SanPhamDTO getSanPham() {
+        return sanPham;
+    }
+
+    public void setSanPham(SanPhamDTO sanPham) {
+        this.sanPham = sanPham;
+    }
 }
+

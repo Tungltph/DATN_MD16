@@ -1,9 +1,12 @@
 package com.example.datn_md16.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -12,62 +15,60 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datn_md16.Adapter.SanPhamYeuThichAdapter;
 import com.example.datn_md16.DTO.SanPhamYeuThichDTO;
-import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.Interfa.ApiService;
+import com.example.datn_md16.Interfa.SanPhamYeuThichResponse;
 import com.example.datn_md16.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class YeuThichFrag extends Fragment {
-
-    private RecyclerView recyclerView;
     private SanPhamYeuThichAdapter adapter;
-    private List<SanPhamYeuThichDTO> sanPhamYeuThichList;
+    private List<SanPhamYeuThichDTO> sanPhamYeuThichDTOS;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_yeuthich, container, false);
 
-        recyclerView = view.findViewById(R.id.rcv_YT);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2)); // Số cột là 2
+        RecyclerView recyclerView = view.findViewById(R.id.rcv_YT);
+        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2)); // Sử dụng GridLayoutManager với 2 cột
 
-        sanPhamYeuThichList = new ArrayList<>();
-        adapter = new SanPhamYeuThichAdapter(sanPhamYeuThichList);
-        recyclerView.setAdapter(adapter);
+        // Khởi tạo Retrofit
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.9.104:3000/") // Chỉ cần URL gốc
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
-        // Load data from API
-        loadSanPhamYeuThich();
+        // Tạo đối tượng dịch vụ API từ Retrofit
+        ApiService apiService = retrofit.create(ApiService.class);
 
-        return view;
-    }
-
-    private void loadSanPhamYeuThich() {
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
-
-        // Thay đổi endpoint và parameters theo yêu cầu của bạn
-        Call<List<SanPhamYeuThichDTO>> call = apiService.getSanPhamYT();
-
-        call.enqueue(new Callback<List<SanPhamYeuThichDTO>>() {
+        // Gọi API để lấy phản hồi ApiResponse
+        Call<SanPhamYeuThichResponse> call = apiService.getSanPhamYeuThich();
+        call.enqueue(new Callback<SanPhamYeuThichResponse>() {
             @Override
-            public void onResponse(Call<List<SanPhamYeuThichDTO>> call, Response<List<SanPhamYeuThichDTO>> response) {
+            public void onResponse(Call<SanPhamYeuThichResponse> call, Response<SanPhamYeuThichResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    sanPhamYeuThichList.clear();
-                    sanPhamYeuThichList.addAll(response.body());
-                    adapter.notifyDataSetChanged();
+                    sanPhamYeuThichDTOS = response.body().getData();
+                    adapter = new SanPhamYeuThichAdapter(sanPhamYeuThichDTOS, getContext());
+                    recyclerView.setAdapter(adapter);
+                } else {
+                    Toast.makeText(getContext(), "Không thể lấy dữ liệu từ server", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<SanPhamYeuThichDTO>> call, Throwable t) {
-                // Xử lý lỗi
+            public void onFailure(Call<SanPhamYeuThichResponse> call, Throwable t) {
+                Toast.makeText(getContext(), "Lỗi kết nối", Toast.LENGTH_SHORT).show();
+                Log.e("YeuThichFrag", "Error: " + t.getMessage());
             }
         });
-    }
 
+        return view;
+    }
 }
