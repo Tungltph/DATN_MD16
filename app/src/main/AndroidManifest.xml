@@ -36,17 +36,14 @@
             android:exported="false" /> <!-- Khai báo các Activity khác ở đây -->
         <activity
             android:name=".ManChay"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true" />
         <activity
             android:name=".Activitys.DangKi"
             android:exported="true">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".Activitys.Acti_hoSoCuaToi" />
         <activity android:name=".Activitys.Acti_DiaChi" />

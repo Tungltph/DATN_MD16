@@ -1,10 +1,14 @@
 package com.example.datn_md16.Fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,65 +16,141 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.datn_md16.Adapter.DonHang_Adapter;
-import com.example.datn_md16.DTO.Product_DonHang;
+import com.example.datn_md16.Adapter.DonHangHomeAdapter;
+import com.example.datn_md16.DTO.DonHangDTO;
+import com.example.datn_md16.Interfa.ApiService;
 import com.example.datn_md16.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HoaDonFrag extends Fragment {
 
+    private ApiService apiService;
     private RecyclerView recyclerView;
-    private DonHang_Adapter adapter;
-    private List<Product_DonHang> productList;
+    private DonHangHomeAdapter adapter;
+    private List<DonHangDTO.DonHang> donHangList = new ArrayList<>();
+    private Button btnChoXacNhan, btnChoGiaoHang, btnDangGiao, btnDaGiao, btnDaHuy;
+    private String userId;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_don_hang, container, false);
 
+        // Lấy ID người dùng từ SharedPreferences
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("user_prefs", Context.MODE_PRIVATE);
+        userId = sharedPreferences.getString("user_id", null);
+
+        Log.d("HoaDonFrag", "User ID retrieved: " + userId);
+        if (userId == null) {
+            Toast.makeText(getContext(), "Không có thông tin người dùng", Toast.LENGTH_SHORT).show();
+            return view;
+        }
+
         recyclerView = view.findViewById(R.id.recyclerViewOrders);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
-        // Khởi tạo danh sách sản phẩm
-        productList = new ArrayList<>();
-        productList.add(new Product_DonHang("iPhone 15 Pro", "Đen", "15.000.000đ", "1", R.drawable.img_1, "ChoXacNhan"));
-        productList.add(new Product_DonHang("Samsung Galaxy S23", "Xanh", "20.000.000đ", "1", R.drawable.img_1, "ChoGiaoHang"));
-        productList.add(new Product_DonHang("MacBook Pro", "Bạc", "30.000.000đ", "1", R.drawable.img_1, "DangGiao"));
-        productList.add(new Product_DonHang("iPad Air", "Trắng", "12.000.000đ", "1", R.drawable.img_1, "DaGiao")); // Thêm sản phẩm "Đã Giao"
-        productList.add(new Product_DonHang("iPhon 11", "Đỏ", "8.000.000đ", "1", R.drawable.img_1, "DaHuy")); // Thêm sản phẩm "Đã Hủy"
-        // Thêm nhiều sản phẩm vào danh sách
-
-        // Khởi tạo adapter
-        adapter = new DonHang_Adapter(productList);
+        adapter = new DonHangHomeAdapter(donHangList, getContext());
         recyclerView.setAdapter(adapter);
 
-        // Cài đặt listener cho các nút
-        Button btnChoXacNhan = view.findViewById(R.id.btnChoXacNhan);
-        Button btnChoGiaoHang = view.findViewById(R.id.btnChoGiaoHang);
-        Button btnDangGiao = view.findViewById(R.id.btnDangGiao);
-        Button btnDaGiao = view.findViewById(R.id.btnDaGiao);
-        Button btnDaHuy = view.findViewById(R.id.btnDaHuy);
+        // Khởi tạo Retrofit với cấu hình OkHttpClient
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(60, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
+                .writeTimeout(60, TimeUnit.SECONDS)
+                .build();
 
-        // Ví dụ về listener cho các nút
-        btnChoXacNhan.setOnClickListener(v -> filterProducts("ChoXacNhan"));
-        btnChoGiaoHang.setOnClickListener(v -> filterProducts("ChoGiaoHang"));
-        btnDangGiao.setOnClickListener(v -> filterProducts("DangGiao"));
-        btnDaGiao.setOnClickListener(v -> filterProducts("DaGiao"));
-        btnDaHuy.setOnClickListener(v -> filterProducts("DaHuy"));
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.0.102:3000/api/donHang/")  // Đảm bảo URL gốc không có đường dẫn cụ thể
+                .client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        apiService = retrofit.create(ApiService.class);
+
+        // Khởi tạo các nút trạng thái
+        btnChoXacNhan = view.findViewById(R.id.btnChoXacNhan);
+        btnChoGiaoHang = view.findViewById(R.id.btnChoGiaoHang);
+        btnDangGiao = view.findViewById(R.id.btnDangGiao);
+        btnDaGiao = view.findViewById(R.id.btnDaGiao);
+        btnDaHuy = view.findViewById(R.id.btnDaHuy);
+
+        // Gán sự kiện cho các nút trạng thái
+        btnChoXacNhan.setOnClickListener(v -> filterDonHang("Chờ xác nhận"));
+        btnChoGiaoHang.setOnClickListener(v -> filterDonHang("Đang xử lý"));
+        btnDangGiao.setOnClickListener(v -> filterDonHang("Đang giao hàng"));
+        btnDaGiao.setOnClickListener(v -> filterDonHang("Đã giao hàng"));
+        btnDaHuy.setOnClickListener(v -> filterDonHang("Đã hủy"));
+
+        // Gọi API để lấy danh sách đơn hàng
+        loadDonHang();
 
         return view;
     }
 
-    private void filterProducts(String category) {
-        // Lọc danh sách sản phẩm dựa trên category và cập nhật adapter
-        List<Product_DonHang> filteredList = new ArrayList<>();
-        for (Product_DonHang product : productList) {
-            if (product.getStatus().equals(category)) {
-                filteredList.add(product);
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Gọi phương thức để tải lại dữ liệu khi fragment được hiển thị lại
+        loadDonHang();
+    }
+
+    private void loadDonHang() {
+        Log.d("HoaDonFrag", "Loading orders for user ID: " + userId); // Log ID người dùng
+        apiService.getDonHangByUser(userId).enqueue(new Callback<DonHangDTO>() {
+            @Override
+            public void onResponse(@NonNull Call<DonHangDTO> call, @NonNull Response<DonHangDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Log.d("HoaDonFrag", "Orders loaded: " + response.body().getData().size()); // Log số lượng đơn hàng tải được
+                    donHangList.clear();
+                    donHangList.addAll(response.body().getData());
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getContext(), "Không có dữ liệu", Toast.LENGTH_SHORT).show();
+                }
             }
-        }
-        adapter.updateList(filteredList);
+
+            @Override
+            public void onFailure(@NonNull Call<DonHangDTO> call, @NonNull Throwable t) {
+                Toast.makeText(getContext(), "Lỗi khi tải dữ liệu: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void filterDonHang(String status) {
+        apiService.getDonHangByUser(userId).enqueue(new Callback<DonHangDTO>() {
+            @Override
+            public void onResponse(@NonNull Call<DonHangDTO> call, @NonNull Response<DonHangDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<DonHangDTO.DonHang> allDonHangList = response.body().getData();
+                    List<DonHangDTO.DonHang> filteredList = new ArrayList<>();
+                    for (DonHangDTO.DonHang donHang : allDonHangList) {
+                        if (donHang.getTrangThaiDonHang().equals(status)) {
+                            filteredList.add(donHang);
+                        }
+                    }
+
+                    donHangList.clear();
+                    donHangList.addAll(filteredList);
+                    adapter.notifyDataSetChanged();
+                    Toast.makeText(getContext(), "Đơn hàng trạng thái: " + status, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Không có dữ liệu với trạng thái: " + status, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<DonHangDTO> call, @NonNull Throwable t) {
+                Toast.makeText(getContext(), "Lỗi khi tải dữ liệu: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

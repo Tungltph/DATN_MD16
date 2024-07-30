@@ -3,6 +3,7 @@ package com.example.datn_md16.Interfa;
 import com.example.datn_md16.DTO.AccountRequest;
 import com.example.datn_md16.DTO.AccountResponse;
 import com.example.datn_md16.DTO.ChiTietDienThoaiDTO;
+import com.example.datn_md16.DTO.DonHangDTO;
 import com.example.datn_md16.DTO.GioHangDTO;
 import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.DTO.SanPhamDTO;
@@ -68,4 +69,7 @@ public interface ApiService {
 
     @DELETE("/api/thongbao/{id}")
     Call<Void> deleteThongBao(@Path("id") String id);
+
+    @GET("/api/donHang/")
+    Call<DonHangDTO> getDonHangByUser(@Query("_id") String userId);
 }

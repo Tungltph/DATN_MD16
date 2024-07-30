@@ -15,7 +15,7 @@ public class AccountResponse {
 
     public static class Account {
         @SerializedName("_id")
-        public String id;
+        public String _id;
 
         @SerializedName("taiKhoan")
         public String taiKhoan;
