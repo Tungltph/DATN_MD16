@@ -1,25 +1,43 @@
-<!-- item_thongbao.xml -->
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:layout_margin="20dp"
     android:background="@drawable/border"
+    android:layout_margin="10dp"
     android:padding="16dp">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:id="@+id/txtTieuDe"
+        android:layout_width="wrap_content"
+        android:text="tieu de"
         android:textStyle="bold"
-        android:text="Thông báo !"
-        android:layout_marginBottom="8dp"/>
+        android:layout_height="wrap_content"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/txtNoiDung"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="10px"
         android:text="noi dung"
-        android:layout_marginBottom="8dp"/>
+        android:layout_height="wrap_content"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/txtThoiGian"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="10px"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="thoi gian"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@android:drawable/ic_menu_delete"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone" />
 </LinearLayout>

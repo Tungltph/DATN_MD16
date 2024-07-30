@@ -2,6 +2,9 @@ package com.example.datn_md16.DTO;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+import java.util.List;
+
 public class TimKiemDTO {
     @SerializedName("tenDienThoai")
     private String tenSanPham;
@@ -14,6 +17,8 @@ public class TimKiemDTO {
 
     @SerializedName("hinhAnh")
     private String hinhAnh;
+
+    private List<MauSchema> mauSchema;
 
     @SerializedName("camera")
     private String camera;
@@ -187,5 +192,59 @@ public class TimKiemDTO {
 
     public void setHinhAnh(String hinhAnh) {
         this.hinhAnh = hinhAnh;
+    }
+
+    public List<MauSchema> getMauSchema() {
+        return mauSchema;
+    }
+
+
+
+    public static class MauSchema implements Serializable {
+        private String mau;
+        private int soLuong;
+        private int giaTien;
+        private String _id;
+
+        public MauSchema(String mau, int soLuong, int giaTien, String _id) {
+            this.mau = mau;
+            this.soLuong = soLuong;
+            this.giaTien = giaTien;
+            this._id = _id;
+        }
+
+
+
+        public String getMau() {
+            return mau;
+        }
+
+        public void setMau(String mau) {
+            this.mau = mau;
+        }
+
+        public int getSoLuong() {
+            return soLuong;
+        }
+
+        public void setSoLuong(int soLuong) {
+            this.soLuong = soLuong;
+        }
+
+        public int getGiaTien() {
+            return giaTien;
+        }
+
+        public void setGiaTien(int giaTien) {
+            this.giaTien = giaTien;
+        }
+
+        public String get_id() {
+            return _id;
+        }
+
+        public void set_id(String _id) {
+            this._id = _id;
+        }
     }
 }

@@ -43,14 +43,6 @@
             android:textSize="12dp"
             android:paddingTop="4dp" />
 
-        <TextView
-            android:id="@+id/tv_giaGocTimKiem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="18.999.999đ"
-            android:textSize="7dp"
-            android:paddingTop="2dp"
-            android:layout_marginStart="20dp" />
 
     </LinearLayout>
 

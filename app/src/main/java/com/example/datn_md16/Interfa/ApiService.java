@@ -7,6 +7,7 @@ import com.example.datn_md16.DTO.GioHangDTO;
 import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.DTO.SanPhamDTO;
 import com.example.datn_md16.DTO.SanPhamYeuThichDTO;
+import com.example.datn_md16.DTO.ThongBaoDTO;
 import com.example.datn_md16.DTO.TimKiemDTO;
 
 import java.util.List;
@@ -46,6 +47,8 @@ public interface ApiService {
     @GET("api/sanpham/{id}")
     Call<SanPhamDTO> getProductById(@Path("id") String productId);
 
+
+
     @POST("/api/gioHang/add/")
     Call<Void> adddToCart(@Body GioHangDTO gioHang);
 
@@ -60,5 +63,9 @@ public interface ApiService {
     @GET("/api/sanPham")
     Call<List<ProductHome>> getProducts();
 
+    @GET("/api/thongBao/")
+    Call<ThongBaoResponse> getThongBao();
 
+    @DELETE("/api/thongbao/{id}")
+    Call<Void> deleteThongBao(@Path("id") String id);
 }

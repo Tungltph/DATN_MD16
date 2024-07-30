@@ -2,13 +2,18 @@ package com.example.datn_md16.Activitys;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -37,6 +42,8 @@ public class Acti_TimKiem extends AppCompatActivity {
     private TimKiemAdapter adapter;
     private Spinner spinnerGia;
     private Button btnMoiNhat;
+    private EditText edtSearch;
+    private TextView noResultsTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +62,13 @@ public class Acti_TimKiem extends AppCompatActivity {
         recyclerView = findViewById(R.id.rcv_TimKiem);
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new TimKiemAdapter(getApplicationContext());
+
+        noResultsTextView = findViewById(R.id.tv_no_results); // Khởi tạo TextView thông báo
+
+        adapter = new TimKiemAdapter(getApplicationContext(), noResultsTextView);
         recyclerView.setAdapter(adapter);
 
+        edtSearch = findViewById(R.id.edtSearch);
         spinnerGia = findViewById(R.id.spinner_gia);
         btnMoiNhat = findViewById(R.id.btnMoiNhat);
 
@@ -65,6 +76,37 @@ public class Acti_TimKiem extends AppCompatActivity {
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.spinner_items_gia, android.R.layout.simple_spinner_item);
         spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerGia.setAdapter(spinnerAdapter);
+
+        // Lắng nghe sự thay đổi của EditText để tìm kiếm
+        edtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.filterData(s.toString()); // Gọi filterData với chuỗi tìm kiếm hiện tại
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+        // Xử lý sự kiện nhấn vào biểu tượng xóa
+        edtSearch.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (edtSearch.getRight() - edtSearch.getCompoundDrawables()[2].getBounds().width())) {
+                        // Xóa nội dung của EditText
+                        edtSearch.setText("");
+                        // Gọi phương thức lọc lại dữ liệu
+                        adapter.filterData("");
+                        return true;
+                    }
+                }
+                return false;
+            }
+        });
 
         // Lắng nghe sự kiện chọn của Spinner
         spinnerGia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

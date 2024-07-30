@@ -24,16 +24,22 @@ import java.util.List;
 
 public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHolder> {
     private List<TimKiemDTO> dataList;
+    private List<TimKiemDTO> originalDataList;
     private Context context;
+    private TextView noResultsTextView;
 
-    public TimKiemAdapter(Context context) {
+    public TimKiemAdapter(Context context, TextView noResultsTextView) {
         this.context = context;
         this.dataList = new ArrayList<>();
+        this.originalDataList = new ArrayList<>();
+        this.noResultsTextView = noResultsTextView;
     }
 
     public void setData(List<TimKiemDTO> dataList) {
         this.dataList.clear();
         this.dataList.addAll(dataList);
+        this.originalDataList.clear();
+        this.originalDataList.addAll(dataList);
         notifyDataSetChanged();
     }
 
@@ -42,17 +48,42 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
             @Override
             public int compare(TimKiemDTO o1, TimKiemDTO o2) {
                 try {
-                    // Remove non-digit characters and convert to integer for comparison
                     int gia1 = Integer.parseInt(o1.getGiamGia().replaceAll("[\\D]", ""));
                     int gia2 = Integer.parseInt(o2.getGiamGia().replaceAll("[\\D]", ""));
                     return ascending ? Integer.compare(gia1, gia2) : Integer.compare(gia2, gia1);
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
-                    return 0; // Handle appropriately when parsing fails
+                    return 0;
                 }
             }
         });
         notifyDataSetChanged();
+    }
+
+    public void filterData(String query) {
+        List<TimKiemDTO> filteredList = new ArrayList<>();
+        if (query == null || query.isEmpty()) {
+            filteredList.addAll(this.originalDataList);
+        } else {
+            query = query.toLowerCase().trim();
+            for (TimKiemDTO item : this.originalDataList) {
+                if (item.getTenSanPham() != null && item.getTenSanPham().toLowerCase().contains(query)) {
+                    filteredList.add(item);
+                }
+            }
+        }
+
+        // Cập nhật dữ liệu và thông báo cho RecyclerView
+        this.dataList.clear();
+        this.dataList.addAll(filteredList);
+        notifyDataSetChanged();
+
+        // Hiển thị thông báo nếu không có kết quả
+        if (filteredList.isEmpty()) {
+            noResultsTextView.setVisibility(View.VISIBLE);
+        } else {
+            noResultsTextView.setVisibility(View.GONE);
+        }
     }
 
     @NonNull
@@ -68,32 +99,27 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
 
         TimKiemDTO item = dataList.get(position);
 
-        // Set data to views in item_timkiem.xml layout
+        if (item.getMauSchema() != null && !item.getMauSchema().isEmpty()) {
+            holder.giamGiaTextView.setText(item.getMauSchema().get(0).getGiaTien() + " VND");
+        }
         holder.tenSanPhamTextView.setText(item.getTenSanPham());
-        holder.giamGiaTextView.setText(item.getGiamGia());
-        holder.giaGocTextView.setText(item.getGiaGoc());
 
-        // Load image using Picasso
         Picasso.get().load(item.getHinhAnh()).into(holder.hinhAnhImageView);
 
-        // Handle item click to open detail activity
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (item != null) {
-                    // Convert item to JSON
                     Gson gson = new Gson();
                     String itemJson = gson.toJson(item);
 
-                    // Start Acti_ChiTietSP and pass necessary data
                     Intent intent = new Intent(context, Acti_ChiTietSP.class);
-                    intent.putExtra("sanPhamJson", itemJson); // Pass item as JSON
+                    intent.putExtra("sanPhamJson", itemJson);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }
             }
         });
-
     }
 
     @Override
@@ -102,14 +128,13 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tenSanPhamTextView, giamGiaTextView, giaGocTextView;
+        TextView tenSanPhamTextView, giamGiaTextView;
         ImageView hinhAnhImageView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tenSanPhamTextView = itemView.findViewById(R.id.tv_ten_sanPham_timKiem);
             giamGiaTextView = itemView.findViewById(R.id.tv_giamGia_timKiem);
-            giaGocTextView = itemView.findViewById(R.id.tv_giaGocTimKiem);
             hinhAnhImageView = itemView.findViewById(R.id.iv_product_image);
         }
     }
