@@ -43,7 +43,7 @@ public class Acti_Samsung extends AppCompatActivity {
 
     private void fetchProducts() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.11:3000/api/sanPham/")
+                .baseUrl("http://192.168.0.102:3000/api/sanPham/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

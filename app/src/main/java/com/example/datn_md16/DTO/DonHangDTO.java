@@ -269,6 +269,17 @@ public class DonHangDTO {
         @SerializedName("hoTen")
         private String hoTen; // Ensure this matches the actual data if present
 
+        @SerializedName("sdt")
+        private String Sdt;
+
+        public String getSdt() {
+            return Sdt;
+        }
+
+        public void setSdt(String sdt) {
+            Sdt = sdt;
+        }
+
         // Getters and Setters
         public String getId() {
             return id;

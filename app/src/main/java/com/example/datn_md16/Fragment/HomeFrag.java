@@ -2,12 +2,13 @@ package com.example.datn_md16.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +18,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.datn_md16.Activitys.Acti_GioHang;
 import com.example.datn_md16.Activitys.Acti_Oppo;
@@ -25,13 +27,16 @@ import com.example.datn_md16.Activitys.Acti_TimKiem;
 import com.example.datn_md16.Activitys.Acti_Xiaomi;
 import com.example.datn_md16.Activitys.Acti_vivo;
 import com.example.datn_md16.Activitys.Acty_iphone;
+import com.example.datn_md16.Adapter.BannerAdapter;
 import com.example.datn_md16.Adapter.HotItemAdapter;
 import com.example.datn_md16.Adapter.NewItemAdapter;
 import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.R;
 import com.example.datn_md16.Interfa.ApiService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -41,10 +46,16 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class HomeFrag extends Fragment {
 
-    private RecyclerView rvHotProducts, rvNewProducts;
+    private ViewPager2 bannerViewPager;
+    private RecyclerView rvHotProducts;
+    private RecyclerView rvNewProducts;
+    private ImageView idGioHangHome;
+    private List<String> bannerUrls;
     private HotItemAdapter hotItemAdapter;
     private NewItemAdapter newItemAdapter;
-    ImageView idGioHangHome;
+    private Handler handler;
+    private Runnable runnable;
+    private int currentPage = 0;
 
     private Button btnip, btnss, btnvv, btnxm, btnop;
     TextView tvSearchHome;
@@ -55,7 +66,7 @@ public class HomeFrag extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_home, container, false);
-
+        bannerViewPager = view.findViewById(R.id.bannerViewPager);
         rvHotProducts = view.findViewById(R.id.rvHotProducts);
         rvNewProducts = view.findViewById(R.id.rvNewProducts);
         idGioHangHome = view.findViewById(R.id.idGioHangHome);
@@ -64,6 +75,28 @@ public class HomeFrag extends Fragment {
         btnop = view.findViewById(R.id.btnOppo);
         btnss = view.findViewById(R.id.btnss);
         btnvv = view.findViewById(R.id.btnVivo);
+        bannerUrls = new ArrayList<>();
+        bannerUrls.add("https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone_15_pro_max_256gb_-_2_1_2.png");
+        bannerUrls.add("https://i.pinimg.com/736x/23/34/1f/23341f65daa921a20072874cdd1dc360.jpg");
+        bannerUrls.add("https://img.global.news.samsung.com/in/wp-content/uploads/2019/02/295-A-Series-KV-Banner-36x24inch-e1551339667384.jpg");
+
+        BannerAdapter bannerAdapter = new BannerAdapter(getContext(), bannerUrls);
+        bannerViewPager.setAdapter(bannerAdapter);
+
+        handler = new Handler(Looper.getMainLooper());
+        runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (currentPage == bannerUrls.size()) {
+                    currentPage = 0;
+                }
+                bannerViewPager.setCurrentItem(currentPage++, true);
+                handler.postDelayed(this, 3000); // 3000ms = 3s
+            }
+
+        };
+        handler.postDelayed(runnable, 3000);
+
 
         idGioHangHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,7 +141,6 @@ public class HomeFrag extends Fragment {
             }
         });
 
-
         rvHotProducts.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
         rvNewProducts.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
 
@@ -124,15 +156,12 @@ public class HomeFrag extends Fragment {
             }
         });
 
-
-
-
         return view;
     }
 
     private void fetchHotProducts() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
+                .baseUrl("http://192.168.0.102:3000/api/sanPham/hot/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -173,7 +202,11 @@ public class HomeFrag extends Fragment {
             public void onResponse(Call<List<ProductHome>> call, Response<List<ProductHome>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<ProductHome> newProductList = response.body();
-                    newItemAdapter = new NewItemAdapter(getContext(), newProductList);
+                    // Lọc sản phẩm có trạng thái là true
+                    List<ProductHome> filteredNewProductList = newProductList.stream()
+                            .filter(ProductHome::isTrangThai) // Sử dụng method reference
+                            .collect(Collectors.toList());
+                    newItemAdapter = new NewItemAdapter(getContext(), filteredNewProductList);
                     rvNewProducts.setAdapter(newItemAdapter);
                 } else {
                     Toast.makeText(getContext(), "Không thể lấy dữ liệu sản phẩm mới từ server", Toast.LENGTH_SHORT).show();
@@ -186,5 +219,6 @@ public class HomeFrag extends Fragment {
                 Log.e("HomeFragment", "Error: " + t.getMessage());
             }
         });
+
     }
 }
