@@ -160,7 +160,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
     private void addToCart(GioHangDTO gioHang) {
         // Sử dụng Retrofit để gửi yêu cầu
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.104:3000/") // Chỉ cần URL gốc
+                .baseUrl("http://192.168.0.102:3000/") // Chỉ cần URL gốc
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

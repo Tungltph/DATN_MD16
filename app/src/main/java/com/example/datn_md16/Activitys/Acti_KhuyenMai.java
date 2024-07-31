@@ -51,7 +51,7 @@ public class Acti_KhuyenMai extends AppCompatActivity {
 
         // Khởi tạo Retrofit
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.10:3000/api/KhuyenMai/") // Thay thế địa chỉ IP của server Node.js của bạn
+                .baseUrl("http://192.168.0.102:3000/api/KhuyenMai/") // Thay thế địa chỉ IP của server Node.js của bạn
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

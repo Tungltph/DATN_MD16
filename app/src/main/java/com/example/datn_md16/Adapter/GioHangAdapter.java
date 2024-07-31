@@ -40,7 +40,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
 
         // Khởi tạo Retrofit
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.104:3000/") // Thay đổi địa chỉ của bạn
+                .baseUrl("http://192.168.0.102:3000/") // Thay đổi địa chỉ của bạn
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
