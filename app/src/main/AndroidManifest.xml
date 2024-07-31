@@ -53,6 +53,7 @@
         <activity android:name=".Activitys.Acti_GioHang" />
         <activity android:name=".Activitys.Acti_ChiTietSP" />
         <activity android:name=".Activitys.DangNhap" />
+        <activity android:name=".Activitys.Acti_ThanhToan" />
     </application>
 
 </manifest>

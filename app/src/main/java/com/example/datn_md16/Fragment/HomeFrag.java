@@ -49,7 +49,7 @@ public class HomeFrag extends Fragment {
     private Button btnip, btnss, btnvv, btnxm, btnop;
     TextView tvSearchHome;
 
-    private static final String BASE_URL = "http://192.168.0.102:3000/api/sanPham/"; // Thay thế bằng URL thực tế của bạn
+    private static final String BASE_URL = "http://192.168.1.8:3000/api/sanPham/"; // Thay thế bằng URL thực tế của bạn
 
     @Nullable
     @Override

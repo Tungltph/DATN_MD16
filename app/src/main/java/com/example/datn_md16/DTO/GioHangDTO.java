@@ -1,6 +1,9 @@
 package com.example.datn_md16.DTO;
 
-public class GioHangDTO {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class GioHangDTO implements Parcelable {
     private String _id;
     private String idSanPham; // Giữ nguyên là String
     private String idAccount; // Giữ nguyên là String
@@ -9,7 +12,12 @@ public class GioHangDTO {
     private boolean isChecked; // Thêm trường này
     private SanPhamDTO sanPham; // Thêm trường này để lưu thông tin sản phẩm
 
-    // Các getter và setter
+    // Constructor
+    public GioHangDTO() {
+    }
+
+    // Getter và Setter
+
     public String get_id() {
         return _id;
     }
@@ -65,4 +73,44 @@ public class GioHangDTO {
     public void setSanPham(SanPhamDTO sanPham) {
         this.sanPham = sanPham;
     }
+
+    // Parcelable implementation
+    protected GioHangDTO(Parcel in) {
+        _id = in.readString();
+        idSanPham = in.readString();
+        idAccount = in.readString();
+        soLuong = in.readInt();
+        idMau = in.readString();
+        isChecked = in.readByte() != 0;
+        sanPham = in.readParcelable(SanPhamDTO.class.getClassLoader());
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(_id);
+        dest.writeString(idSanPham);
+        dest.writeString(idAccount);
+        dest.writeInt(soLuong);
+        dest.writeString(idMau);
+        dest.writeByte((byte) (isChecked ? 1 : 0));
+        dest.writeParcelable(sanPham, flags);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<GioHangDTO> CREATOR = new Creator<GioHangDTO>() {
+        @Override
+        public GioHangDTO createFromParcel(Parcel in) {
+            return new GioHangDTO(in);
+        }
+
+        @Override
+        public GioHangDTO[] newArray(int size) {
+            return new GioHangDTO[size];
+        }
+    };
 }
+

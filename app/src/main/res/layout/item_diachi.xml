@@ -7,6 +7,8 @@
     android:background="@drawable/border"
     android:padding="10dp">
 
+
+
     <TextView
         android:id="@+id/tvName"
         android:layout_width="wrap_content"
@@ -14,8 +16,9 @@
         android:text="Tên: User"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:layout_alignParentStart="true"
+
         android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"/>
 
     <TextView
@@ -25,7 +28,8 @@
         android:text="Địa chỉ: 16 Trịnh Văn Bô"
         android:layout_below="@id/tvName"
         android:layout_marginTop="4dp"
-        android:layout_alignParentStart="true"/>
+
+        android:layout_marginStart="8dp"/>
 
     <TextView
         android:id="@+id/tvPhone"
@@ -34,7 +38,8 @@
         android:text="Sđt: 0343357756"
         android:layout_below="@id/tvAddress"
         android:layout_marginTop="4dp"
-        android:layout_alignParentStart="true"/>
+
+        android:layout_marginStart="8dp"/>
 
     <ImageView
         android:id="@+id/btnDelete"
