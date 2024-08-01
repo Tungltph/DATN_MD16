@@ -1,14 +1,21 @@
 package com.example.datn_md16.DTO;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import java.util.List;
 
-public class SanPhamDTO {
+public class SanPhamDTO implements Parcelable {
     private String _id;
-    private String tenDienThoai; // Cập nhật theo JSON bạn cung cấp
+    private String tenDienThoai;
     private String hinhAnh;
-    private List<MauSchemaDTO> mauSchema; // Trường để chứa giá
+    private List<MauSchemaDTO> mauSchema;
+
+    // Constructor
+    public SanPhamDTO() {
+    }
 
     // Getter và Setter
+
     public String getId() {
         return _id;
     }
@@ -41,9 +48,49 @@ public class SanPhamDTO {
         this.mauSchema = mauSchema;
     }
 
-    public static class MauSchemaDTO {
+    // Parcelable implementation
+    protected SanPhamDTO(Parcel in) {
+        _id = in.readString();
+        tenDienThoai = in.readString();
+        hinhAnh = in.readString();
+        mauSchema = in.createTypedArrayList(MauSchemaDTO.CREATOR);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(_id);
+        dest.writeString(tenDienThoai);
+        dest.writeString(hinhAnh);
+        dest.writeTypedList(mauSchema);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<SanPhamDTO> CREATOR = new Creator<SanPhamDTO>() {
+        @Override
+        public SanPhamDTO createFromParcel(Parcel in) {
+            return new SanPhamDTO(in);
+        }
+
+        @Override
+        public SanPhamDTO[] newArray(int size) {
+            return new SanPhamDTO[size];
+        }
+    };
+
+    // Inner class MauSchemaDTO
+    public static class MauSchemaDTO implements Parcelable {
         private String mau;
-        private int giaTien; // Cập nhật theo JSON
+        private int giaTien;
+
+        // Constructor
+        public MauSchemaDTO() {
+        }
+
+        // Getter và Setter
 
         public String getMau() {
             return mau;
@@ -60,6 +107,36 @@ public class SanPhamDTO {
         public void setGiaTien(int giaTien) {
             this.giaTien = giaTien;
         }
+
+        // Parcelable implementation
+        protected MauSchemaDTO(Parcel in) {
+            mau = in.readString();
+            giaTien = in.readInt();
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(mau);
+            dest.writeInt(giaTien);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public static final Creator<MauSchemaDTO> CREATOR = new Creator<MauSchemaDTO>() {
+            @Override
+            public MauSchemaDTO createFromParcel(Parcel in) {
+                return new MauSchemaDTO(in);
+            }
+
+            @Override
+            public MauSchemaDTO[] newArray(int size) {
+                return new MauSchemaDTO[size];
+            }
+        };
     }
 }
+
 
