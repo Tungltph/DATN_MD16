@@ -1,5 +1,6 @@
 package com.example.datn_md16.Adapter;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -35,13 +36,14 @@ public class DiaChiAdapter extends RecyclerView.Adapter<DiaChiAdapter.DiaChiView
     private List<DiaChiDTO> diaChiList;
     private ApiService apiService;
     private Context context;
-    private List<GioHangDTO> selectedItems; // Thêm biến selectedItems
+    private List<GioHangDTO> selectedItems;
+    private static final int REQUEST_CODE_SELECT_ADDRESS = 1;
 
     public DiaChiAdapter(List<DiaChiDTO> diaChiList, ApiService apiService, Context context, List<GioHangDTO> selectedItems) {
         this.diaChiList = diaChiList;
         this.apiService = apiService;
         this.context = context;
-        this.selectedItems = selectedItems; // Khởi tạo selectedItems
+        this.selectedItems = selectedItems;
     }
 
     @NonNull
@@ -61,17 +63,15 @@ public class DiaChiAdapter extends RecyclerView.Adapter<DiaChiAdapter.DiaChiView
         holder.itemView.setOnClickListener(v -> {
             Toast.makeText(v.getContext(), "Đã chọn địa chỉ", Toast.LENGTH_SHORT).show();
 
-            // Tạo Intent và gửi địa chỉ đã chọn
-            Intent intent = new Intent(context, Acti_ThanhToan.class);
-            intent.putExtra("selectedAddress", diaChi);
+            // Tạo Intent và trả kết quả về Activity
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("selectedAddress", diaChi);
+            resultIntent.putParcelableArrayListExtra("selectedItems", new ArrayList<>(selectedItems));
 
-            // Cập nhật danh sách sản phẩm và gửi qua Intent
-            intent.putParcelableArrayListExtra("selectedItems", new ArrayList<>(selectedItems));
-
-            // Khởi chạy Acti_ThanhToan
-            context.startActivity(intent);
+            // Trả kết quả về Acti_ThanhToan
+            ((Activity) context).setResult(Activity.RESULT_OK, resultIntent);
+            ((Activity) context).finish();
         });
-
 
         holder.btnDelete.setOnClickListener(v -> {
             // Hiển thị dialog xác nhận xóa
@@ -194,5 +194,5 @@ public class DiaChiAdapter extends RecyclerView.Adapter<DiaChiAdapter.DiaChiView
             btnEdit = itemView.findViewById(R.id.btnEdit);
         }
     }
-
 }
+

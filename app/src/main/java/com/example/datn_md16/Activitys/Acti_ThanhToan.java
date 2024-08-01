@@ -53,9 +53,9 @@ public class Acti_ThanhToan extends AppCompatActivity {
             DiaChiDTO diaChi = intent.getParcelableExtra("selectedAddress");
             selectedItems = intent.getParcelableArrayListExtra("selectedItems");
             if (diaChi != null) {
-                tvten.setText(diaChi.getTen());
-                tvdiachi.setText(diaChi.getDiaChi());
-                tvsdt.setText(diaChi.getSdt());
+//                tvten.setText(diaChi.getTen());
+//                tvdiachi.setText(diaChi.getDiaChi());
+//                tvsdt.setText(diaChi.getSdt());
                 textViewAddress.setText("Địa chỉ nhận hàng: " + diaChi.getDiaChi());
                 if (editTextAddress != null) {
                     editTextAddress.setText(diaChi.getDiaChi());
@@ -98,6 +98,9 @@ public class Acti_ThanhToan extends AppCompatActivity {
                 DiaChiDTO selectedAddress = data.getParcelableExtra("selectedAddress");
                 if (selectedAddress != null) {
                     textViewAddress.setText("Địa chỉ nhận hàng: " + selectedAddress.getDiaChi());
+                    tvten.setText("Tên khách hàng :"+selectedAddress.getTen());
+
+                    tvsdt.setText("Số điện thoại :"+selectedAddress.getSdt());
                     if (editTextAddress != null) {
                         editTextAddress.setText(selectedAddress.getDiaChi());
                     }

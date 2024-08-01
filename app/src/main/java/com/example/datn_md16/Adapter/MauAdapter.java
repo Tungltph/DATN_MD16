@@ -1,12 +1,15 @@
-package com.example.datn_md16.Adapter;// MauAdapter.java
+package com.example.datn_md16.Adapter;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.datn_md16.DTO.GioHangDTO;
 import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.R;
 
@@ -22,14 +25,15 @@ public class MauAdapter extends RecyclerView.Adapter<MauAdapter.MauViewHolder> {
         this.onMauClickListener = onMauClickListener;
     }
 
+    @NonNull
     @Override
-    public MauViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MauViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_mau, parent, false);
         return new MauViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MauViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MauViewHolder holder, int position) {
         ProductHome.MauSchema mau = mauList.get(position);
         holder.tvTenMau.setText(mau.getMau()); // Hiển thị tên màu
 
@@ -43,8 +47,10 @@ public class MauAdapter extends RecyclerView.Adapter<MauAdapter.MauViewHolder> {
             notifyItemChanged(previousSelectedPosition); // Cập nhật item trước đó
             notifyItemChanged(selectedPosition); // Cập nhật item hiện tại
 
+
             if (onMauClickListener != null) {
                 onMauClickListener.onMauClick(mau);
+                Toast.makeText(v.getContext(), "màu : "+mau ,Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -67,5 +73,3 @@ public class MauAdapter extends RecyclerView.Adapter<MauAdapter.MauViewHolder> {
         void onMauClick(ProductHome.MauSchema mau);
     }
 }
-
-

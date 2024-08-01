@@ -44,7 +44,7 @@ public class Acti_DiaChi extends AppCompatActivity {
     private RecyclerView recyclerView;
     private DiaChiAdapter diaChiAdapter;
     private List<DiaChiDTO> diaChiList;
-    private List<GioHangDTO> gioHangList; // Khai báo thêm danh sách GioHangDTO
+    private List<GioHangDTO> gioHangList;
     private ApiService apiService;
     private Gson gson;
 
@@ -53,11 +53,6 @@ public class Acti_DiaChi extends AppCompatActivity {
         resultIntent.putExtra("selectedAddress", diaChi);
         setResult(RESULT_OK, resultIntent);
         finish();
-    }
-
-    // Giả sử khi người dùng chọn địa chỉ từ RecyclerView
-    private void onAddressSelected(DiaChiDTO diaChi) {
-        selectAddress(diaChi);
     }
 
     @Override
@@ -92,17 +87,12 @@ public class Acti_DiaChi extends AppCompatActivity {
         apiService = retrofit.create(ApiService.class);
 
         diaChiList = new ArrayList<>();
-        gioHangList = new ArrayList<>(); // Khởi tạo danh sách GioHangDTO
+        gioHangList = new ArrayList<>();
         diaChiAdapter = new DiaChiAdapter(diaChiList, apiService, this, gioHangList);
         recyclerView.setAdapter(diaChiAdapter);
 
         ImageView imgDiaChi = findViewById(R.id.imgThemDiaChi);
-        imgDiaChi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showDialogThemDiaChi();
-            }
-        });
+        imgDiaChi.setOnClickListener(v -> showDialogThemDiaChi());
 
         fetchData();
     }
@@ -118,59 +108,64 @@ public class Acti_DiaChi extends AppCompatActivity {
         Button btnCancel = dialog.findViewById(R.id.btnCancelDiaChi);
         Button btnConfirm = dialog.findViewById(R.id.btnConfirmDiaChi);
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
+        btnCancel.setOnClickListener(v -> dialog.dismiss());
 
-        btnConfirm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name = etName.getText().toString().trim();
-                String phoneNumber = etPhoneNumber.getText().toString().trim();
-                String address = etAddress.getText().toString().trim();
+        btnConfirm.setOnClickListener(v -> {
+            String name = etName.getText().toString().trim();
+            String phoneNumber = etPhoneNumber.getText().toString().trim();
+            String address = etAddress.getText().toString().trim();
 
-                if (name.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Tên không được để trống", Toast.LENGTH_SHORT).show();
-                } else if (phoneNumber.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Số điện thoại không để trống", Toast.LENGTH_SHORT).show();
-                } else if (!phoneNumber.matches("\\d+")) {
-                    Toast.makeText(getApplicationContext(), "Số điện thoại phải là số", Toast.LENGTH_SHORT).show();
-                } else if (phoneNumber.length() != 10) {
-                    Toast.makeText(getApplicationContext(), "Số điện thoại chỉ được 10 kí tự", Toast.LENGTH_SHORT).show();
-                } else if (address.isEmpty()) {
-                    Toast.makeText(getApplicationContext(), "Địa chỉ không được để trống", Toast.LENGTH_SHORT).show();
-                } else {
-                    DiaChiDTO newDiaChi = new DiaChiDTO(name, phoneNumber, address);
-
-                    Call<Void> call = apiService.addDiaChi(newDiaChi);
-                    call.enqueue(new Callback<Void>() {
-                        @Override
-                        public void onResponse(Call<Void> call, Response<Void> response) {
-                            if (response.isSuccessful()) {
-                                diaChiList.add(newDiaChi);
-                                diaChiAdapter.notifyDataSetChanged();
-                                Toast.makeText(getApplicationContext(), "Thêm địa chỉ thành công", Toast.LENGTH_SHORT).show();
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Thêm địa chỉ thất bại", Toast.LENGTH_SHORT).show();
-                            }
-                            dialog.dismiss();
-                        }
-
-                        @Override
-                        public void onFailure(Call<Void> call, Throwable t) {
-                            Toast.makeText(getApplicationContext(), "Thêm địa chỉ thất bại: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
-                        }
-                    });
-                }
+            if (validateInput(name, phoneNumber, address)) {
+                DiaChiDTO newDiaChi = new DiaChiDTO(name, phoneNumber, address);
+                addAddress(dialog, newDiaChi);
             }
         });
 
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.show();
+    }
+
+    private boolean validateInput(String name, String phoneNumber, String address) {
+        if (name.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Tên không được để trống", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (phoneNumber.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Số điện thoại không để trống", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (!phoneNumber.matches("\\d+")) {
+            Toast.makeText(getApplicationContext(), "Số điện thoại phải là số", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (phoneNumber.length() != 10) {
+            Toast.makeText(getApplicationContext(), "Số điện thoại chỉ được 10 kí tự", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (address.isEmpty()) {
+            Toast.makeText(getApplicationContext(), "Địa chỉ không được để trống", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
+
+    private void addAddress(Dialog dialog, DiaChiDTO newDiaChi) {
+        Call<Void> call = apiService.addDiaChi(newDiaChi);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if (response.isSuccessful()) {
+                    diaChiList.add(newDiaChi);
+                    diaChiAdapter.notifyDataSetChanged();
+                    Toast.makeText(getApplicationContext(), "Thêm địa chỉ thành công", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Thêm địa chỉ thất bại", Toast.LENGTH_SHORT).show();
+                }
+                dialog.dismiss();
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Thêm địa chỉ thất bại: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            }
+        });
     }
 
     private void fetchData() {

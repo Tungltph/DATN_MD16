@@ -5,23 +5,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.example.datn_md16.R;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datn_md16.Adapter.MauAdapter;
 import com.example.datn_md16.DTO.GioHangDTO;
 import com.example.datn_md16.DTO.ProductHome;
-import com.example.datn_md16.DTO.SanPhamDTO;
 import com.example.datn_md16.Interfa.ApiService;
-import com.example.datn_md16.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -35,7 +32,6 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Acti_ChiTietSP extends AppCompatActivity {
-
     private TextView txtProductName, txtPrice;
     private ImageView imgProduct;
     private TextView tvCamera, tvCameraTruoc, tvKichThuoc, tvCPU, tvRam, tvSim, tvPin, tvHeDieuHanh, tvNamSanXuat, tvCongNgheManHinh, tvMoTaThem, tvDoPhanGiai;
@@ -74,6 +70,12 @@ public class Acti_ChiTietSP extends AppCompatActivity {
         buttonBuyNow = findViewById(R.id.button_buy_now);
         btnthemgiohang = findViewById(R.id.button_add_to_cart);
 
+        btnthemgiohang.setOnClickListener(v -> {
+            if (sanPham != null && sanPham.getMauSchema() != null) {
+                them_gio_hang(sanPham.getMauSchema());
+            }
+        });
+
         buttonBuyNow.setOnClickListener(v -> {
             if (sanPham != null && sanPham.getMauSchema() != null) {
                 showBottomSheetDialog(sanPham.getMauSchema());
@@ -84,7 +86,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
         String sanPhamJson = getIntent().getStringExtra("sanPhamJson");
 
         if (sanPhamJson != null) {
-            // Parse JSON data to ChiTietDienThoaiDTO object
+            // Parse JSON data to ProductHome object
             Gson gson = new Gson();
             sanPham = gson.fromJson(sanPhamJson, ProductHome.class);
 
@@ -112,9 +114,12 @@ public class Acti_ChiTietSP extends AppCompatActivity {
             tvCongNgheManHinh.setText(sanPham.getCongNgheManHinh());
             tvMoTaThem.setText(sanPham.getMoTaThem());
             tvDoPhanGiai.setText(sanPham.getDoPhanGiai());
-
             Picasso.get().load(sanPham.getHinhAnh()).into(imgProduct);
         }
+    }
+
+    private String getSelectedColor() {
+        return selectedColor != null ? selectedColor : "";
     }
 
     private void showBottomSheetDialog(List<ProductHome.MauSchema> mauList) {
@@ -125,75 +130,141 @@ public class Acti_ChiTietSP extends AppCompatActivity {
         GridLayoutManager layoutManager = new GridLayoutManager(this, 3); // 3 cột
         rcvMau.setLayoutManager(layoutManager);
 
-        // Ensure mauList is not empty
         if (mauList != null && !mauList.isEmpty()) {
             MauAdapter mauAdapter = new MauAdapter(mauList, mau -> {
-                // Cập nhật màu đã chọn và cập nhật giá và số lượng
                 selectedColor = mau.getMau();
                 updatePriceAndQuantity(mauList, selectedColor, sheetView.findViewById(R.id.tv_giamGia_gioHang), sheetView.findViewById(R.id.tv_soLuong));
             });
 
             rcvMau.setAdapter(mauAdapter);
 
-            // Set initial selected color to the first item in the list
             ProductHome.MauSchema firstColor = mauList.get(0);
             selectedColor = firstColor.getMau();
             updatePriceAndQuantity(mauList, selectedColor, sheetView.findViewById(R.id.tv_giamGia_gioHang), sheetView.findViewById(R.id.tv_soLuong));
         }
+        bottomSheetDialog.setContentView(sheetView);
+        bottomSheetDialog.show();
+    }
+
+    private void them_gio_hang(List<ProductHome.MauSchema> mauList) {
+        bottomSheetDialog = new BottomSheetDialog(Acti_ChiTietSP.this);
+        View sheetView = getLayoutInflater().inflate(R.layout.bottom_them_gio_hang, null);
+
+        RecyclerView rcvMau = sheetView.findViewById(R.id.rcv_Mau);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 3); // 3 cột
+        rcvMau.setLayoutManager(layoutManager);
+
+        TextView tvGiamGiaGioHang = sheetView.findViewById(R.id.tv_giamGia_gioHang);
+        TextView tvSoLuong = sheetView.findViewById(R.id.tv_soLuong);
+        TextView tvKQ = sheetView.findViewById(R.id.tvKQ);
+
+        if (mauList != null && !mauList.isEmpty()) {
+            // Khởi tạo selectedColor nếu chưa có giá trị
+            if (selectedColor == null) {
+                selectedColor = mauList.get(0).getMau(); // Chọn màu đầu tiên làm mặc định
+            }
+
+            MauAdapter mauAdapter = new MauAdapter(mauList, mau -> {
+                selectedColor = mau.getMau(); // Cập nhật màu đã chọn
+                updatePriceAndQuantity(mauList, selectedColor, tvGiamGiaGioHang, tvSoLuong);
+            });
+
+            rcvMau.setAdapter(mauAdapter);
+
+            // Cập nhật giá và số lượng dựa trên màu đã chọn
+            updatePriceAndQuantity(mauList, selectedColor, tvGiamGiaGioHang, tvSoLuong);
+        }
+
+        Button btnthemgiohang = sheetView.findViewById(R.id.btn_themgiohang);
+        TextView tvGiam = sheetView.findViewById(R.id.tvGiam);
+        TextView tvTang = sheetView.findViewById(R.id.tvTang);
+
+        tvGiam.setOnClickListener(view -> {
+            int quantity = Integer.parseInt(tvKQ.getText().toString());
+            if (quantity > 1) {
+                tvKQ.setText(String.valueOf(quantity - 1));
+                updatePriceAndQuantity(mauList, selectedColor, tvGiamGiaGioHang, tvSoLuong);
+            }
+        });
+
+        tvTang.setOnClickListener(view -> {
+            int quantity = Integer.parseInt(tvKQ.getText().toString());
+            tvKQ.setText(String.valueOf(quantity + 1));
+            updatePriceAndQuantity(mauList, selectedColor, tvGiamGiaGioHang, tvSoLuong);
+        });
+
+        btnthemgiohang.setOnClickListener(view -> {
+            int quantity = Integer.parseInt(tvKQ.getText().toString());
+            if (selectedColor != null && !selectedColor.trim().isEmpty()) {
+                addToCart(sanPham.get_id(), selectedColor, quantity);
+                bottomSheetDialog.dismiss();
+                Toast.makeText(Acti_ChiTietSP.this, "Đã chọn màu " + selectedColor, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(Acti_ChiTietSP.this, "Vui lòng chọn màu hợp lệ trước khi thêm vào giỏ hàng.", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         bottomSheetDialog.setContentView(sheetView);
         bottomSheetDialog.show();
     }
 
 
-    private void updatePriceAndQuantity(List<ProductHome.MauSchema> mauList, String color, TextView tvGiamGiaGioHang, TextView tvSoLuong) {
+
+
+    private void updatePriceAndQuantity(List<ProductHome.MauSchema> mauList, String selectedColor, TextView tvPrice, TextView tvQuantity) {
         for (ProductHome.MauSchema mau : mauList) {
-            if (mau.getMau().equals(color)) {
-                tvGiamGiaGioHang.setText(mau.getGiaTien() + " VND");
-                tvSoLuong.setText("" + mau.getSoLuong());
+            if (mau.getMau().equals(selectedColor)) {
+                tvPrice.setText(mau.getGiaTien() + " VND");
+                tvQuantity.setText(String.valueOf(mau.getSoLuong()));
                 break;
             }
         }
     }
 
 
-    private void addToCart(GioHangDTO gioHang) {
-        // Sử dụng Retrofit để gửi yêu cầu
+
+    private void addToCart(String productId, String color, int quantity) {
+        // Kiểm tra giá trị của col
+
+
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.104:3000/") // Chỉ cần URL gốc
+                .baseUrl("http://192.168.1.8:3000/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
         ApiService apiService = retrofit.create(ApiService.class);
+        GioHangDTO gioHang = new GioHangDTO();
+        gioHang.setIdSanPham(productId);
+        gioHang.setIdMau(color); // Sử dụng màu đã chọn
+        gioHang.setSoLuong(quantity);
 
         Call<Void> call = apiService.adddToCart(gioHang);
         call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
+            public void onResponse(@NonNull Call<Void> call, @NonNull Response<Void> response) {
                 if (response.isSuccessful()) {
-                    // Thêm sản phẩm vào giỏ hàng thành công
-                    Toast.makeText(Acti_ChiTietSP.this, "Đã thêm sản phẩm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Acti_ChiTietSP.this, "Đã thêm vào giỏ hàng!", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Xử lý khi thêm sản phẩm vào giỏ hàng thất bại
-                    Toast.makeText(Acti_ChiTietSP.this, "Không thể thêm sản phẩm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Acti_ChiTietSP.this, "Thêm vào giỏ hàng thất bại!", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                // Xử lý khi có lỗi xảy ra
-                Toast.makeText(Acti_ChiTietSP.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onFailure(@NonNull Call<Void> call, @NonNull Throwable t) {
+                Toast.makeText(Acti_ChiTietSP.this, "Lỗi mạng, vui lòng thử lại!", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+
+
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed();
+            finish(); // Hoặc sử dụng onBackPressed()
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 }
-
