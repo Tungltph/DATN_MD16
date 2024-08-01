@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -61,7 +62,6 @@ public class SanPhamYeuThichAdapter extends RecyclerView.Adapter<SanPhamYeuThich
 
         if (sanPhamYeuThichDTO == null || sanPhamYeuThichDTOS.isEmpty()) return;
 
-
         // Kiểm tra idSanPham không null
         if (sanPhamYeuThichDTO.getId_sanPham() != null) {
             // Gọi API để lấy thông tin sản phẩm
@@ -70,6 +70,36 @@ public class SanPhamYeuThichAdapter extends RecyclerView.Adapter<SanPhamYeuThich
             Log.e("SanPhamYeuThichAdapter", "idSanPham is null for position: " + position);
             holder.tvTenYT.setText("ID sản phẩm không hợp lệ");
         }
+
+        // Xử lý sự kiện bấm vào imgYeuThich để xóa sản phẩm khỏi danh sách yêu thích
+        holder.imgYeuThich.setOnClickListener(v -> {
+            // Xóa sản phẩm khỏi danh sách yêu thích
+            removeFavorite(sanPhamYeuThichDTO, position);
+        });
+    }
+
+    private void removeFavorite(SanPhamYeuThichDTO sanPhamYeuThichDTO, int position) {
+        // Gửi yêu cầu xóa sản phẩm khỏi danh sách yêu thích
+        productService.removeFavorite(sanPhamYeuThichDTO.get_id())
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            // Xóa thành công, cập nhật danh sách và giao diện
+                            sanPhamYeuThichDTOS.remove(position);
+                            notifyItemRemoved(position);
+                            notifyItemRangeChanged(position, sanPhamYeuThichDTOS.size());
+                            Toast.makeText(context.getApplicationContext(), "Xóa thành công", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Log.e("SanPhamYeuThichAdapter", "Failed to remove favorite. Code: " + response.code() + ", Message: " + response.message());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Log.e("SanPhamYeuThichAdapter", "Error: " + t.getMessage());
+                    }
+                });
     }
 
     private void loadProductInfo(SanPhamYeuThichDTO sanPhamYeuThichDTO, ViewHolder holder) {

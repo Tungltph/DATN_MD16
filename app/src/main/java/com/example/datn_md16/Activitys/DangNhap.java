@@ -42,7 +42,7 @@ public class DangNhap extends AppCompatActivity {
     private ApiService apiService;
     private List<AccountResponse.Account> userList;
 
-    private static final String PREFS_NAME = "user_prefs";
+    public static final String PREFS_NAME = "user_prefs";
     private static final String KEY_USER_ID = "user_id";
     private static final String KEY_USER_NAME = "user_name";
     private static final String KEY_SAVE_ACCOUNT = "save_account";
@@ -116,7 +116,7 @@ public class DangNhap extends AppCompatActivity {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.102:3000/api/account/")
+                .baseUrl("http://192.168.9.104:3000/api/account/")
                 .client(client)
                 .addConverterFactory(GsonConverterFactory.create())
                 .callbackExecutor(Executors.newSingleThreadExecutor())
@@ -214,4 +214,6 @@ public class DangNhap extends AppCompatActivity {
         editor.apply();
         Log.d("DangNhap", "Saved credentials cleared");
     }
+
+
 }

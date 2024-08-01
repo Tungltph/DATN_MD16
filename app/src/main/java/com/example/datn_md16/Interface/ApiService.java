@@ -12,12 +12,12 @@ import com.example.datn_md16.DTO.DiaChiDTO;
         import retrofit2.http.Path;
 
         public interface ApiService {
-            String BASE_URL = "http://192.168.0.102:3000/api/DiaChi/";
+            String BASE_URL = "http://192.168.9.104:3000/api/DiaChi/";
 
             @POST("add")
             Call<Void> addDiaChi(@Body DiaChiDTO diaChi);
 
-            @GET("http://192.168.0.102:3000/api/DiaChi/")
+            @GET("http://192.168.9.104:3000/api/DiaChi/")
             Call<ApiResponse> getAllDiaChi();
 
             @GET("{id}")

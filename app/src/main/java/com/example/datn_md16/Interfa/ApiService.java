@@ -70,6 +70,14 @@ public interface ApiService {
     @DELETE("/api/thongbao/{id}")
     Call<Void> deleteThongBao(@Path("id") String id);
 
+    @DELETE("/api/sanPhamYT/{id}")
+    Call<Void> removeFavorite(@Path("id") String id);
+
     @GET("/api/donHang/")
     Call<DonHangDTO> getDonHangByUser(@Query("_id") String userId);
+
+    @POST("/api/sanPhamYT/")
+    Call<Void> addYeuThich(@Body SanPhamYeuThichDTO sanPhamYeuThichDTO);
+
+
 }

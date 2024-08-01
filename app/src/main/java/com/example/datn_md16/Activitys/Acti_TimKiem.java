@@ -138,7 +138,7 @@ public class Acti_TimKiem extends AppCompatActivity {
 
         // Khởi tạo Retrofit
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.102:3000/api/sanPham/") // Thay thế địa chỉ IP của server Node.js của bạn
+                .baseUrl("http://192.168.9.104:3000/api/sanPham/") // Thay thế địa chỉ IP của server Node.js của bạn
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

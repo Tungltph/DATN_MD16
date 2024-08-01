@@ -8,6 +8,11 @@ public class SanPhamYeuThichDTO {
     private String id_user; // Giữ nguyên là String
     private SanPhamDTO sanPham; // Thêm trường này để lưu thông tin sản phẩm
 
+    public SanPhamYeuThichDTO(String id_sanPham, String id_user) {
+        this.id_sanPham = id_sanPham;
+        this.id_user = id_user;
+    }
+
     public String get_id() {
         return _id;
     }

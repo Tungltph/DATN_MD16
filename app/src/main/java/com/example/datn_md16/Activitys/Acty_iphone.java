@@ -42,7 +42,7 @@ public class Acty_iphone extends AppCompatActivity {
 
     private void fetchProducts() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.102:3000/api/sanPham/")
+                .baseUrl("http://192.168.9.104:3000/api/sanPham/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
