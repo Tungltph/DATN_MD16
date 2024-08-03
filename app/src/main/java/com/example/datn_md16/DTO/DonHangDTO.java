@@ -261,24 +261,16 @@ public class DonHangDTO {
         private String id;
 
         @SerializedName("tenQuyen")
-        private String tenQuyen; // Ensure this matches the actual data if present
+        private String tenQuyen;
 
         @SerializedName("taiKhoan")
         private String taiKhoan;
 
         @SerializedName("hoTen")
-        private String hoTen; // Ensure this matches the actual data if present
+        private String hoTen;
 
         @SerializedName("sdt")
-        private String Sdt;
-
-        public String getSdt() {
-            return Sdt;
-        }
-
-        public void setSdt(String sdt) {
-            Sdt = sdt;
-        }
+        private String sdt;
 
         // Getters and Setters
         public String getId() {
@@ -311,6 +303,14 @@ public class DonHangDTO {
 
         public void setHoTen(String hoTen) {
             this.hoTen = hoTen;
+        }
+
+        public String getSdt() {
+            return sdt;
+        }
+
+        public void setSdt(String sdt) {
+            this.sdt = sdt;
         }
     }
 }

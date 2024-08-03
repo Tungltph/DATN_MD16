@@ -35,25 +35,31 @@ public class MauAdapter extends RecyclerView.Adapter<MauAdapter.MauViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MauViewHolder holder, int position) {
         ProductHome.MauSchema mau = mauList.get(position);
-        holder.tvTenMau.setText(mau.getMau()); // Hiển thị tên màu
+        holder.tvTenMau.setText(mau.getMau());
 
-        // Cập nhật viền của item dựa trên trạng thái chọn
         holder.itemView.setSelected(selectedPosition == position);
 
-        // Thiết lập click listener
         holder.itemView.setOnClickListener(v -> {
             int previousSelectedPosition = selectedPosition;
             selectedPosition = holder.getAdapterPosition();
-            notifyItemChanged(previousSelectedPosition); // Cập nhật item trước đó
-            notifyItemChanged(selectedPosition); // Cập nhật item hiện tại
 
+            // Cập nhật selectedColor cho GioHangDTO tại vị trí đã chọn
+            ProductHome.MauSchema selectedGioHang = mauList.get(selectedPosition);
+            selectedGioHang.setSelectedColor(mau.getMau()); // Cập nhật màu được chọn
 
+            // Cập nhật giao diện
+            notifyItemChanged(previousSelectedPosition);
+            notifyItemChanged(selectedPosition);
+
+            // Gọi giao diện để xử lý sự kiện màu được chọn
             if (onMauClickListener != null) {
                 onMauClickListener.onMauClick(mau);
-                Toast.makeText(v.getContext(), "màu : "+mau ,Toast.LENGTH_SHORT).show();
+                Toast.makeText(v.getContext(), "Màu: " + mau.getMau(), Toast.LENGTH_SHORT).show();
             }
         });
+
     }
+
 
     @Override
     public int getItemCount() {
@@ -73,3 +79,4 @@ public class MauAdapter extends RecyclerView.Adapter<MauAdapter.MauViewHolder> {
         void onMauClick(ProductHome.MauSchema mau);
     }
 }
+

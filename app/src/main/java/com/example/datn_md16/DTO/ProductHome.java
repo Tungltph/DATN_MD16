@@ -278,5 +278,8 @@ public class ProductHome implements Serializable {
         public void set_id(String _id) {
             this._id = _id;
         }
+
+        public void setSelectedColor(String mau) {
+        }
     }
 }

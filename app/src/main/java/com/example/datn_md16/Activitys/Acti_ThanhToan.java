@@ -1,34 +1,54 @@
 package com.example.datn_md16.Activitys;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.datn_md16.Adapter.GioHangAdapter;
+import com.example.datn_md16.Adapter.Thaanh_Toan_Adapter;
 import com.example.datn_md16.DTO.DiaChiDTO;
+import com.example.datn_md16.DTO.DonHangDTO;
 import com.example.datn_md16.DTO.GioHangDTO;
+import com.example.datn_md16.DTO.KhuyenMai;
+import com.example.datn_md16.Fragment.DonHangFrag;
+import com.example.datn_md16.Fragment.HoaDonFrag;
+import com.example.datn_md16.Interface.ApiClient;
+import com.example.datn_md16.Interface.ApiService;
+
 import com.example.datn_md16.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+
 public class Acti_ThanhToan extends AppCompatActivity {
     private static final int REQUEST_CODE_SELECT_ADDRESS = 1;
+    private static final int REQUEST_CODE_SELECT_PROMOTION = 2;
     private List<GioHangDTO> selectedItems = new ArrayList<>();
     private TextView textViewAddress;
     private RecyclerView recyclerViewProducts;
-    private EditText editTextDiscountCode, editTextAddress;
-    private Spinner spinnerPaymentMethod;
-    private TextView textViewPaymentDetails;
-    private TextView textViewTotalAmount, tvten, tvdiachi, tvsdt;
+    private TextView tvKM;
+    private TextView textViewTotalAmount, tvten, tvsdt, tv_tongtiensanPham, tongtienkhuyenmai, tongtien;
     private Button buttonPlaceOrder;
+    private LinearLayout btnKm;
+    private RadioButton radioOnl, radioOff;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,16 +56,37 @@ public class Acti_ThanhToan extends AppCompatActivity {
         setContentView(R.layout.thanhtoan);
 
         // Khởi tạo các phần tử giao diện
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        toolbar.setNavigationOnClickListener(v -> onBackPressed());
+        setTitle(getString(R.string.toolbarThanhtoan));
+
         textViewAddress = findViewById(R.id.textViewAddress);
         tvten = findViewById(R.id.tvten);
-        tvdiachi = findViewById(R.id.tvdiachi);
         tvsdt = findViewById(R.id.tvsdt);
         recyclerViewProducts = findViewById(R.id.listViewProducts);
-        editTextDiscountCode = findViewById(R.id.editTextDiscountCode);
-        spinnerPaymentMethod = findViewById(R.id.spinnerPaymentMethod);
-        textViewPaymentDetails = findViewById(R.id.tv_tong_tien_sp);
+        btnKm = findViewById(R.id.btnKM);
+        radioOnl = findViewById(R.id.radioOnlinePayment);
+        radioOff = findViewById(R.id.radioCashOnDelivery);
+        tv_tongtiensanPham = findViewById(R.id.tv_tong_tien_sp);
+        tongtienkhuyenmai = findViewById(R.id.tv_tong_tien_khuyenmai);
+        tongtien = findViewById(R.id.tv_tongtien);
+
         textViewTotalAmount = findViewById(R.id.textViewTotalAmount);
         buttonPlaceOrder = findViewById(R.id.buttonPlaceOrder);
+        tvKM = findViewById(R.id.tvkhuyenmai);
+
+        // Nhận khuyến mãi từ Intent
+        KhuyenMai khuyenMai = getIntent().getParcelableExtra("selectedPromotion");
+        if (khuyenMai != null) {
+            tvKM.setText(String.valueOf(khuyenMai.getGiaKhoiDiem()));
+        }
+
+        btnKm.setOnClickListener(v -> {
+            Intent intent = new Intent(Acti_ThanhToan.this, Acti_KhuyenMai.class);
+            startActivityForResult(intent, REQUEST_CODE_SELECT_PROMOTION);
+        });
 
         // Nhận dữ liệu từ Intent
         Intent intent = getIntent();
@@ -53,21 +94,15 @@ public class Acti_ThanhToan extends AppCompatActivity {
             DiaChiDTO diaChi = intent.getParcelableExtra("selectedAddress");
             selectedItems = intent.getParcelableArrayListExtra("selectedItems");
             if (diaChi != null) {
-//                tvten.setText(diaChi.getTen());
-//                tvdiachi.setText(diaChi.getDiaChi());
-//                tvsdt.setText(diaChi.getSdt());
                 textViewAddress.setText("Địa chỉ nhận hàng: " + diaChi.getDiaChi());
-                if (editTextAddress != null) {
-                    editTextAddress.setText(diaChi.getDiaChi());
-                }
+                tvten.setText("Tên khách hàng: " + diaChi.getTen());
+                tvsdt.setText("Số điện thoại: " + diaChi.getSdt());
             }
 
-            selectedItems = intent.getParcelableArrayListExtra("selectedItems");
             if (selectedItems != null) {
                 updateUI(selectedItems);
             }
         }
-
 
         textViewAddress.setOnClickListener(v -> {
             Intent addressIntent = new Intent(Acti_ThanhToan.this, Acti_DiaChi.class);
@@ -75,19 +110,7 @@ public class Acti_ThanhToan extends AppCompatActivity {
             startActivityForResult(addressIntent, REQUEST_CODE_SELECT_ADDRESS);
         });
 
-
         buttonPlaceOrder.setOnClickListener(v -> placeOrder());
-    }
-
-    private void updateUI(List<GioHangDTO> selectedItems) {
-        GioHangAdapter adapter = new GioHangAdapter(selectedItems, this);
-        recyclerViewProducts.setLayoutManager(new LinearLayoutManager(this));
-        recyclerViewProducts.setAdapter(adapter);
-
-        textViewPaymentDetails.setText("Chi tiết thanh toán: ...");
-
-        int totalAmount = calculateTotalAmount(selectedItems);
-        textViewTotalAmount.setText("Tổng thanh toán: " + totalAmount + " đ");
     }
 
     @Override
@@ -98,19 +121,56 @@ public class Acti_ThanhToan extends AppCompatActivity {
                 DiaChiDTO selectedAddress = data.getParcelableExtra("selectedAddress");
                 if (selectedAddress != null) {
                     textViewAddress.setText("Địa chỉ nhận hàng: " + selectedAddress.getDiaChi());
-                    tvten.setText("Tên khách hàng :"+selectedAddress.getTen());
+                    tvten.setText("Tên khách hàng: " + selectedAddress.getTen());
+                    tvsdt.setText("Số điện thoại: " + selectedAddress.getSdt());
+                }
+            }
+            updateUI(selectedItems);
+        }
 
-                    tvsdt.setText("Số điện thoại :"+selectedAddress.getSdt());
-                    if (editTextAddress != null) {
-                        editTextAddress.setText(selectedAddress.getDiaChi());
-                    }
+        if (requestCode == REQUEST_CODE_SELECT_PROMOTION && resultCode == RESULT_OK) {
+            if (data != null) {
+                KhuyenMai khuyenMai = data.getParcelableExtra("selectedPromotion");
+                if (khuyenMai != null) {
+                    tvKM.setText(String.valueOf(khuyenMai.getGiaKhoiDiem()));
+                    updateUI(selectedItems); // Cập nhật giao diện khi khuyến mãi thay đổi
                 }
             }
         }
-        // Đảm bảo rằng dữ liệu sản phẩm được cập nhật
-        updateUI(selectedItems);
     }
 
+    private void updateUI(List<GioHangDTO> selectedItems) {
+        Thaanh_Toan_Adapter adapter = new Thaanh_Toan_Adapter(selectedItems, this);
+        recyclerViewProducts.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewProducts.setAdapter(adapter);
+
+        updateTotalAmount();
+    }
+
+    private int updateTotalAmount() {
+        int totalAmount = calculateTotalAmount(selectedItems);
+        int discountAmount = getDiscountFromTextView(); // Lấy giá trị khuyến mãi từ TextView tvKM
+
+        tv_tongtiensanPham.setText("Tổng tiền sản phẩm: " + totalAmount + " đ");
+        tongtienkhuyenmai.setText("Khuyến mãi: " + discountAmount + " đ");
+
+        int finalAmount = totalAmount - discountAmount;
+        tongtien.setText("Tổng tiền: " + finalAmount + " đ");
+        textViewTotalAmount.setText("Tổng tiền: " + finalAmount + " đ");
+
+        return finalAmount; // Trả về tổng tiền cuối cùng
+    }
+
+    private int getDiscountFromTextView() {
+        int discount = 0;
+        try {
+            float discountFloat = Float.parseFloat(tvKM.getText().toString());
+            discount = (int) discountFloat;
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return discount;
+    }
 
     private int calculateTotalAmount(List<GioHangDTO> items) {
         int total = 0;
@@ -124,25 +184,131 @@ public class Acti_ThanhToan extends AppCompatActivity {
     }
 
     private void placeOrder() {
-        // Xử lý logic đặt hàng
-    }
+        // Kiểm tra xem địa chỉ có được chọn không
+        if (textViewAddress.getText().toString().isEmpty()) {
+            Toast.makeText(this, "Vui lòng chọn địa chỉ giao hàng!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList("selectedItems", new ArrayList<>(selectedItems));
-        outState.putString("textViewAddress", textViewAddress.getText().toString());
-    }
+        // Kiểm tra phương thức thanh toán
+        if (!radioOnl.isChecked() && !radioOff.isChecked()) {
+            Toast.makeText(this, "Vui lòng chọn phương thức thanh toán!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(radioOff.isChecked()) {
 
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        if (savedInstanceState != null) {
-            selectedItems = savedInstanceState.getParcelableArrayList("selectedItems");
-            if (selectedItems != null) {
-                updateUI(selectedItems);
+            // Lấy ID khách hàng từ SharedPreferences
+            SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+            String userId = sharedPreferences.getString("user_id", null);
+
+            if (userId == null) {
+                Toast.makeText(this, "Lỗi xác thực người dùng!", Toast.LENGTH_SHORT).show();
+                return;
             }
-            textViewAddress.setText(savedInstanceState.getString("textViewAddress"));
+
+            // Tạo một đối tượng KhachHang
+            DonHangDTO.KhachHang khachHang = new DonHangDTO.KhachHang();
+            khachHang.setId(userId);
+            // Nếu cần thiết, bạn có thể thiết lập các thuộc tính khác của KhachHang ở đây
+
+            // Tạo một đơn hàng mới
+            DonHangDTO.DonHang donHang = new DonHangDTO.DonHang();
+            donHang.setSanPhamList(convertToSanPhamList(selectedItems));
+            donHang.setSoLuong(calculateTotalQuantity(selectedItems));
+            donHang.setTongTien(updateTotalAmount());
+            donHang.setTrangThaiThanhToan(radioOnl.isChecked()); // Trạng thái thanh toán dựa trên lựa chọn
+            donHang.setDiaChiGiaoHang(textViewAddress.getText().toString());
+            donHang.setPhuongThucThanhToan(radioOnl.isChecked() ? "Thẻ tín dụng" : "Tiền mặt");
+            donHang.setTrangThaiDonHang("Chờ xác nhận");
+            donHang.setKhachHang(khachHang); // Đặt đối tượng KhachHang vào đơn hàng
+
+            // Thực hiện gọi API để đặt hàng
+            ApiService apiService = ApiClient.getClient().create(ApiService.class);
+            Call<DonHangDTO> call = apiService.createOrder(donHang);
+
+            call.enqueue(new Callback<DonHangDTO>() {
+                @Override
+                public void onResponse(Call<DonHangDTO> call, Response<DonHangDTO> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(Acti_ThanhToan.this, "Đặt hàng thành công! Mời bạn tiếp tục mua sản phẩm mới", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Acti_ThanhToan.this, MainActivity.class);
+                        startActivity(intent);
+                        clearCart();
+                    } else {
+                        Toast.makeText(Acti_ThanhToan.this, "Đặt hàng thất bại!", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DonHangDTO> call, Throwable t) {
+                    Toast.makeText(Acti_ThanhToan.this, "Lỗi kết nối mạng!", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else if (radioOnl.isChecked()){
+            Toast.makeText(Acti_ThanhToan.this,"Thanh toán onl",Toast.LENGTH_SHORT).show();
         }
     }
+
+
+
+    private List<DonHangDTO.SanPham> convertToSanPhamList(List<GioHangDTO> selectedItems) {
+        List<DonHangDTO.SanPham> sanPhamList = new ArrayList<>();
+
+        for (GioHangDTO item : selectedItems) {
+            DonHangDTO.SanPham sanPham = new DonHangDTO.SanPham();
+            DonHangDTO.MauSchema soluong = new DonHangDTO.MauSchema();
+
+
+            sanPham.setId(item.getIdSanPham());
+            soluong.setSoLuong(item.getSoLuong());
+            sanPhamList.add(sanPham);
+        }
+        return sanPhamList;
+    }
+
+    private int calculateTotalQuantity(List<GioHangDTO> items) {
+        int quantity = 0;
+        for (GioHangDTO item : items) {
+            quantity += item.getSoLuong();
+        }
+        return quantity;
+    }
+
+    private void clearCart() {
+        // Tạo Retrofit và ApiService
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.1.8:3000/") // Đảm bảo URL chính xác
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        ApiService apiService = retrofit.create(ApiService.class);
+
+        // Xóa từng mục trong giỏ hàng theo ID
+        List<GioHangDTO> itemsToDelete = new ArrayList<>(selectedItems); // Sử dụng danh sách sao chép để tránh lỗi đồng bộ hóa
+
+        for (GioHangDTO item : itemsToDelete) {
+            String itemId = item.get_id(); // Lấy ID của từng mục trong giỏ hàng
+
+            // Gọi API xóa sản phẩm
+            apiService.deleteItemFromCart(itemId).enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                       // Toast.makeText(Acti_ThanhToan.this, "Xóa sản phẩm thành công", Toast.LENGTH_SHORT).show();
+                        // Xóa mục khỏi danh sách và cập nhật UI
+                        selectedItems.remove(item);
+                        updateUI(selectedItems);
+                    } else {
+                        Toast.makeText(Acti_ThanhToan.this, "Lỗi: " + response.message(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(Acti_ThanhToan.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+    }
+
+
 }

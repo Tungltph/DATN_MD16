@@ -141,6 +141,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
                     SanPhamDTO sanPham = response.body();
                     gioHang.setSanPham(sanPham);
 
+
                     // Lấy giá từ mauSchema
                     String priceText = "Không có thông tin giá";
                     String colorText = "Không có thông tin màu";
@@ -169,64 +170,39 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
         });
     }
 
-
     private void showDeleteConfirmationDialog(GioHangDTO gioHang, int position) {
         new AlertDialog.Builder(context)
                 .setTitle("Xác nhận xóa")
                 .setMessage("Bạn có chắc chắn muốn xóa sản phẩm này khỏi giỏ hàng?")
-                .setPositiveButton("Có", (dialog, which) -> {
-                    // Xóa sản phẩm khỏi giỏ hàng
-                    deleteItemFromCart(gioHang.getIdSanPham(), position);
+                .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        deleteProductFromCart(gioHang.get_id(), position);
+                    }
                 })
-                .setNegativeButton("Hủy", null)
+                .setNegativeButton("Không", null)
                 .show();
     }
 
-    private void deleteItemFromCart(String id, int position) {
-        productService.deleteItemFromCart(id).enqueue(new Callback<Void>() {
+    private void deleteProductFromCart(String productId, int position) {
+        productService.deleteItemFromCart(productId).enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
-                    // Xóa sản phẩm khỏi danh sách và cập nhật RecyclerView
                     gioHangList.remove(position);
                     notifyItemRemoved(position);
                     updateTotalPrice();
-                    Toast.makeText(context, "Sản phẩm đã được xóa", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Xóa sản phẩm thành công", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(context, "Lỗi khi xóa sản phẩm", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "Lỗi: " + response.message(), Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(context, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-    }
-
-
-    @Override
-    public int getItemCount() {
-        return gioHangList.size();
-    }
-
-    public class GioHangViewHolder extends RecyclerView.ViewHolder {
-        private TextView productName, productPrice, tvQuantity, btnDecrease, btnIncrease,mau;
-        private ImageView productImage, xoa;
-        private CheckBox checkBox;
-
-        public GioHangViewHolder(@NonNull View itemView) {
-            super(itemView);
-            productName = itemView.findViewById(R.id.productName);
-            productPrice = itemView.findViewById(R.id.productPrice);
-            tvQuantity = itemView.findViewById(R.id.tvQuantity);
-            productImage = itemView.findViewById(R.id.productImage);
-            btnDecrease = itemView.findViewById(R.id.btnDecrease);
-            btnIncrease = itemView.findViewById(R.id.btnIncrease);
-            checkBox = itemView.findViewById(R.id.checkbox);
-            xoa = itemView.findViewById(R.id.xoagiohang);
-            mau = itemView.findViewById(R.id.productColor);
-        }
     }
 
     private void updateTotalPrice() {
@@ -246,7 +222,34 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
         }
     }
 
+
+    @Override
+    public int getItemCount() {
+        return gioHangList.size();
+    }
+
+    public static class GioHangViewHolder extends RecyclerView.ViewHolder {
+        TextView productName, productPrice, tvQuantity, mau, btnDecrease, btnIncrease;
+        ImageView productImage, xoa;
+        CheckBox checkBox;
+
+        public GioHangViewHolder(View itemView) {
+            super(itemView);
+            productName = itemView.findViewById(R.id.productName);
+            productPrice = itemView.findViewById(R.id.productPrice);
+            tvQuantity = itemView.findViewById(R.id.tvQuantity);
+            mau = itemView.findViewById(R.id.productColor);
+            productImage = itemView.findViewById(R.id.productImage);
+            btnDecrease = itemView.findViewById(R.id.btnDecrease);
+            btnIncrease = itemView.findViewById(R.id.btnIncrease);
+            xoa = itemView.findViewById(R.id.xoagiohang);
+            checkBox = itemView.findViewById(R.id.checkbox);
+        }
+    }
+
     public interface OnTotalPriceChangeListener {
         void onTotalPriceChanged(int totalPrice);
+
+
     }
 }

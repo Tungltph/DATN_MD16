@@ -11,6 +11,7 @@ public class GioHangDTO implements Parcelable {
     private String idMau; // Giữ nguyên là String
     private boolean isChecked; // Thêm trường này
     private SanPhamDTO sanPham; // Thêm trường này để lưu thông tin sản phẩm
+    private String selectedColor; // Thêm trường này để lưu màu sắc được chọn
 
     // Constructor
     public GioHangDTO() {
@@ -74,6 +75,14 @@ public class GioHangDTO implements Parcelable {
         this.sanPham = sanPham;
     }
 
+    public String getSelectedColor() {
+        return selectedColor;
+    }
+
+    public void setSelectedColor(String selectedColor) {
+        this.selectedColor = selectedColor;
+    }
+
     // Parcelable implementation
     protected GioHangDTO(Parcel in) {
         _id = in.readString();
@@ -83,6 +92,7 @@ public class GioHangDTO implements Parcelable {
         idMau = in.readString();
         isChecked = in.readByte() != 0;
         sanPham = in.readParcelable(SanPhamDTO.class.getClassLoader());
+        selectedColor = in.readString(); // Đọc trường selectedColor
     }
 
     @Override
@@ -94,6 +104,7 @@ public class GioHangDTO implements Parcelable {
         dest.writeString(idMau);
         dest.writeByte((byte) (isChecked ? 1 : 0));
         dest.writeParcelable(sanPham, flags);
+        dest.writeString(selectedColor); // Ghi trường selectedColor
     }
 
     @Override
@@ -113,4 +124,3 @@ public class GioHangDTO implements Parcelable {
         }
     };
 }
-

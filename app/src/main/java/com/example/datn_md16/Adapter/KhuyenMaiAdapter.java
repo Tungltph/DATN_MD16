@@ -1,5 +1,6 @@
 package com.example.datn_md16.Adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -7,11 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.datn_md16.Activitys.Acti_TimKiem;
 import com.example.datn_md16.DTO.KhuyenMai;
 import com.example.datn_md16.R;
 
@@ -23,7 +24,7 @@ public class KhuyenMaiAdapter extends RecyclerView.Adapter<KhuyenMaiAdapter.Khuy
     private List<KhuyenMai> khuyenMaiList = new ArrayList<>();
     private Context context;
 
-    public KhuyenMaiAdapter() {
+    public KhuyenMaiAdapter(Context context) {
         this.context = context;
     }
 
@@ -44,12 +45,17 @@ public class KhuyenMaiAdapter extends RecyclerView.Adapter<KhuyenMaiAdapter.Khuy
     public void onBindViewHolder(@NonNull KhuyenMaiViewHolder holder, int position) {
         KhuyenMai khuyenMai = khuyenMaiList.get(position);
         holder.bind(khuyenMai);
-        holder.btnApDung.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(context, Acti_TimKiem.class);
-                context.startActivity(intent);
-            }
+
+        holder.btnapdungngay.setOnClickListener(v -> {
+            Toast.makeText(v.getContext(), "Đã chọn khuyến mãi", Toast.LENGTH_SHORT).show();
+
+            // Tạo Intent và trả kết quả về Activity
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("selectedPromotion", khuyenMai);
+
+            // Trả kết quả về Acti_ThanhToan
+            ((Activity) context).setResult(Activity.RESULT_OK, resultIntent);
+            ((Activity) context).finish();
         });
     }
 
@@ -61,7 +67,7 @@ public class KhuyenMaiAdapter extends RecyclerView.Adapter<KhuyenMaiAdapter.Khuy
     public static class KhuyenMaiViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvTenKhuyenMai, tvNgayBatDau, tvNgayKetThuc, tvSoLuong, tvGiaKhoiDiem, tvSoLanApDung;
-        private Button btnApDung;
+        private Button btnapdungngay;
 
         public KhuyenMaiViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -71,7 +77,7 @@ public class KhuyenMaiAdapter extends RecyclerView.Adapter<KhuyenMaiAdapter.Khuy
             tvSoLuong = itemView.findViewById(R.id.tvSoLuong);
             tvGiaKhoiDiem = itemView.findViewById(R.id.tvGiaKhoiDiem);
             tvSoLanApDung = itemView.findViewById(R.id.tvSoLanApDung);
-            btnApDung = itemView.findViewById(R.id.btnApDung);
+            btnapdungngay = itemView.findViewById(R.id.btnApDungngay);
         }
 
         public void bind(KhuyenMai khuyenMai) {

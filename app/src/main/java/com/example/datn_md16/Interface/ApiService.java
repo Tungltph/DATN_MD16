@@ -1,7 +1,9 @@
 package com.example.datn_md16.Interface;
 
+import com.example.datn_md16.DTO.AccountResponse;
 import com.example.datn_md16.DTO.DiaChiDTO;
-        import com.example.datn_md16.Interface.ApiResponse;
+import com.example.datn_md16.DTO.DonHangDTO;
+import com.example.datn_md16.Interface.ApiResponse;
 
         import retrofit2.Call;
         import retrofit2.http.Body;
@@ -28,4 +30,14 @@ import com.example.datn_md16.DTO.DiaChiDTO;
 
             @PUT("edit/{id}")
             Call<Void> updateDiaChi(@Path("id") String id, @Body DiaChiDTO diaChi);
+
+            @POST("/api/donHang/")
+            Call<DonHangDTO> createOrder(@Body DonHangDTO.DonHang donHang);
+
+
+            @DELETE("/api/gioHang/delete/{id}")
+            Call<Void> deleteItemFromCart(@Path("id") String id);
+
+            @GET("api/account/{id}")
+            Call<AccountResponse> getAccount(@Path("id") String id);
         }

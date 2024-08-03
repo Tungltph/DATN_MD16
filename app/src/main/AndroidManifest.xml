@@ -17,6 +17,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Activitys.Acti_chitietdonhang"
+            android:exported="false" />
+        <activity
             android:name=".Activitys.Acti_Xiaomi"
             android:exported="false" />
         <activity
@@ -31,24 +34,20 @@
         <activity
             android:name=".Activitys.Acty_iphone"
             android:exported="false" />
-
+<!--        <activity-->
+<!--            android:name=".Activitys.MainActivity"-->
+<!--            android:exported="false" /> &lt;!&ndash; Khai báo các Activity khác ở đây &ndash;&gt;-->
         <activity
-            android:name=".Activitys.DangKi"
-            android:exported="true" >
+            android:name=".ManChay"
+            android:exported="true" />
+        <activity
+            android:name=".Activitys.MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-        </activity>
-
-        <activity
-            android:name=".Activitys.MainActivity"
-            android:exported="true" /> <!-- Khai báo các Activity khác ở đây -->
-        <activity
-            android:name=".ManChay"
-            android:exported="true" >
         </activity>
         <activity android:name=".Activitys.Acti_hoSoCuaToi" />
         <activity android:name=".Activitys.Acti_DiaChi" />
@@ -58,7 +57,7 @@
         <activity android:name=".Activitys.Acti_GioHang" />
         <activity android:name=".Activitys.Acti_ChiTietSP" />
         <activity android:name=".Activitys.DangNhap" />
-        <activity android:name=".Activitys.Acti_chitietdonhang"/>
+        <activity android:name=".Activitys.Acti_ThanhToan" />
     </application>
 
 </manifest>

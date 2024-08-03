@@ -11,6 +11,7 @@
     <string name="toolbarKhuyenMai">Khuyến Mại</string>
     <string name="toolbarHoSo">Hồ sơ của tôi</string>
     <string name="toolbarDoiPass">Đổi mật khẩu</string>
+    <string name="toolbarThanhtoan">Thanh toán</string>
 
 
     <string-array name="spinner_items_gia">
