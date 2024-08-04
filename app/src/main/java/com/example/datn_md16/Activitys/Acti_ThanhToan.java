@@ -3,6 +3,8 @@ package com.example.datn_md16.Activitys;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.StrictMode;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -18,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datn_md16.Adapter.GioHangAdapter;
 import com.example.datn_md16.Adapter.Thaanh_Toan_Adapter;
+import com.example.datn_md16.DTO.CreateOrder;
 import com.example.datn_md16.DTO.DiaChiDTO;
 import com.example.datn_md16.DTO.DonHangDTO;
 import com.example.datn_md16.DTO.GioHangDTO;
@@ -29,6 +32,8 @@ import com.example.datn_md16.Interface.ApiService;
 
 import com.example.datn_md16.R;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,12 +42,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import vn.zalopay.sdk.Environment;
+import vn.zalopay.sdk.ZaloPayError;
+import vn.zalopay.sdk.ZaloPaySDK;
+import vn.zalopay.sdk.listeners.PayOrderListener;
 
 public class Acti_ThanhToan extends AppCompatActivity {
     private static final int REQUEST_CODE_SELECT_ADDRESS = 1;
     private static final int REQUEST_CODE_SELECT_PROMOTION = 2;
     private List<GioHangDTO> selectedItems = new ArrayList<>();
-    private TextView textViewAddress;
+    private TextView textViewAddress,textViewAddress2;
     private RecyclerView recyclerViewProducts;
     private TextView tvKM;
     private TextView textViewTotalAmount, tvten, tvsdt, tv_tongtiensanPham, tongtienkhuyenmai, tongtien;
@@ -55,6 +64,13 @@ public class Acti_ThanhToan extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.thanhtoan);
 
+
+        //khoi tạo zalopay
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        // ZaloPay SDK Init
+        ZaloPaySDK.init(2553, Environment.SANDBOX);
         // Khởi tạo các phần tử giao diện
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -62,6 +78,8 @@ public class Acti_ThanhToan extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(v -> onBackPressed());
         setTitle(getString(R.string.toolbarThanhtoan));
 
+
+        textViewAddress2 = findViewById(R.id.textViewAddress2);
         textViewAddress = findViewById(R.id.textViewAddress);
         tvten = findViewById(R.id.tvten);
         tvsdt = findViewById(R.id.tvsdt);
@@ -93,11 +111,11 @@ public class Acti_ThanhToan extends AppCompatActivity {
         if (intent != null) {
             DiaChiDTO diaChi = intent.getParcelableExtra("selectedAddress");
             selectedItems = intent.getParcelableArrayListExtra("selectedItems");
-            if (diaChi != null) {
-                textViewAddress.setText("Địa chỉ nhận hàng: " + diaChi.getDiaChi());
-                tvten.setText("Tên khách hàng: " + diaChi.getTen());
-                tvsdt.setText("Số điện thoại: " + diaChi.getSdt());
-            }
+//            if (diaChi != null) {
+//                textViewAddress.setText("Địa chỉ nhận hàng: ");
+//                tvten.setText("Tên khách hàng: " );
+//                tvsdt.setText("Số điện thoại: " );
+//            }
 
             if (selectedItems != null) {
                 updateUI(selectedItems);
@@ -120,9 +138,9 @@ public class Acti_ThanhToan extends AppCompatActivity {
             if (data != null) {
                 DiaChiDTO selectedAddress = data.getParcelableExtra("selectedAddress");
                 if (selectedAddress != null) {
-                    textViewAddress.setText("Địa chỉ nhận hàng: " + selectedAddress.getDiaChi());
-                    tvten.setText("Tên khách hàng: " + selectedAddress.getTen());
-                    tvsdt.setText("Số điện thoại: " + selectedAddress.getSdt());
+                    textViewAddress2.setText(selectedAddress.getDiaChi());
+                    tvten.setText(  selectedAddress.getTen());
+                    tvsdt.setText( selectedAddress.getSdt());
                 }
             }
             updateUI(selectedItems);
@@ -185,7 +203,7 @@ public class Acti_ThanhToan extends AppCompatActivity {
 
     private void placeOrder() {
         // Kiểm tra xem địa chỉ có được chọn không
-        if (textViewAddress.getText().toString().isEmpty()) {
+        if (textViewAddress2.getText().toString().isEmpty()) {
             Toast.makeText(this, "Vui lòng chọn địa chỉ giao hàng!", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -209,6 +227,8 @@ public class Acti_ThanhToan extends AppCompatActivity {
             // Tạo một đối tượng KhachHang
             DonHangDTO.KhachHang khachHang = new DonHangDTO.KhachHang();
             khachHang.setId(userId);
+
+
             // Nếu cần thiết, bạn có thể thiết lập các thuộc tính khác của KhachHang ở đây
 
             // Tạo một đơn hàng mới
@@ -217,10 +237,15 @@ public class Acti_ThanhToan extends AppCompatActivity {
             donHang.setSoLuong(calculateTotalQuantity(selectedItems));
             donHang.setTongTien(updateTotalAmount());
             donHang.setTrangThaiThanhToan(radioOnl.isChecked()); // Trạng thái thanh toán dựa trên lựa chọn
-            donHang.setDiaChiGiaoHang(textViewAddress.getText().toString());
+            donHang.setDiaChiGiaoHang(textViewAddress2.getText().toString());
+            donHang.setNguoinhanhang(tvten.getText().toString());
+            donHang.setSodienthoainguoinhanhang(tvsdt.getText().toString());
             donHang.setPhuongThucThanhToan(radioOnl.isChecked() ? "Thẻ tín dụng" : "Tiền mặt");
             donHang.setTrangThaiDonHang("Chờ xác nhận");
-            donHang.setKhachHang(khachHang); // Đặt đối tượng KhachHang vào đơn hàng
+            donHang.setKhachHang(khachHang);
+
+
+            // Đặt đối tượng KhachHang vào đơn hàng
 
             // Thực hiện gọi API để đặt hàng
             ApiService apiService = ApiClient.getClient().create(ApiService.class);
@@ -244,8 +269,98 @@ public class Acti_ThanhToan extends AppCompatActivity {
                     Toast.makeText(Acti_ThanhToan.this, "Lỗi kết nối mạng!", Toast.LENGTH_SHORT).show();
                 }
             });
-        }else if (radioOnl.isChecked()){
-            Toast.makeText(Acti_ThanhToan.this,"Thanh toán onl",Toast.LENGTH_SHORT).show();
+        }
+        if (radioOnl.isChecked()){
+
+
+            Zalopay();
+
+
+        }
+    }
+
+    private void Zalopay() {
+        CreateOrder orderApi = new CreateOrder();
+        DonHangDTO.DonHang donHang = new DonHangDTO.DonHang();
+        try {
+            JSONObject data = orderApi.createOrder("1000");
+
+            String code = data.getString("return_code");
+
+            if (code.equals("1")) {
+                String token = data.getString("zp_trans_token");
+
+                ZaloPaySDK.getInstance().payOrder(Acti_ThanhToan.this, token, "demozpdk://app", new PayOrderListener() {
+                    @Override
+                    public void onPaymentSucceeded(String s, String s1, String s2) {
+                        // Xử lý khi thanh toán thành công
+                        Toast.makeText(Acti_ThanhToan.this,"Thanh toán onl",Toast.LENGTH_SHORT).show();
+                        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                        String userId = sharedPreferences.getString("user_id", null);
+
+                        if (userId == null) {
+                            Toast.makeText(Acti_ThanhToan.this, "Lỗi xác thực người dùng!", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+
+                        // Tạo một đối tượng KhachHang
+                        DonHangDTO.KhachHang khachHang = new DonHangDTO.KhachHang();
+                        khachHang.setId(userId);
+                        // Nếu cần thiết, bạn có thể thiết lập các thuộc tính khác của KhachHang ở đây
+
+                        // Tạo một đơn hàng mới
+                        DonHangDTO.DonHang donHang = new DonHangDTO.DonHang();
+                        donHang.setSanPhamList(convertToSanPhamList(selectedItems));
+                        donHang.setSoLuong(calculateTotalQuantity(selectedItems));
+                        donHang.setTongTien(updateTotalAmount());
+                        donHang.setTrangThaiThanhToan(radioOnl.isChecked()); // Trạng thái thanh toán dựa trên lựa chọn
+                        donHang.setDiaChiGiaoHang(textViewAddress2.getText().toString());
+                        donHang.setPhuongThucThanhToan(radioOnl.isChecked() ? "Thẻ tín dụng" : "Tiền mặt");
+                        donHang.setTrangThaiDonHang("Chờ xác nhận");
+                        donHang.setKhachHang(khachHang); // Đặt đối tượng KhachHang vào đơn hàng
+
+                        // Thực hiện gọi API để đặt hàng
+                        ApiService apiService = ApiClient.getClient().create(ApiService.class);
+                        Call<DonHangDTO> call = apiService.createOrder(donHang);
+
+                        call.enqueue(new Callback<DonHangDTO>() {
+                            @Override
+                            public void onResponse(Call<DonHangDTO> call, Response<DonHangDTO> response) {
+                                if (response.isSuccessful()) {
+                                    Toast.makeText(Acti_ThanhToan.this, "Đặt hàng thành công! Mời bạn tiếp tục mua sản phẩm mới", Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(Acti_ThanhToan.this, MainActivity.class);
+                                    startActivity(intent);
+                                    clearCart();
+                                } else {
+                                    Toast.makeText(Acti_ThanhToan.this, "Đặt hàng thất bại!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<DonHangDTO> call, Throwable t) {
+                                Toast.makeText(Acti_ThanhToan.this, "Lỗi kết nối mạng!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        Log.d("ZaloPay", "Payment Succeeded: " + s + ", " + s1 + ", " + s2);
+                    }
+
+                    @Override
+                    public void onPaymentCanceled(String s, String s1) {
+                        // Xử lý khi thanh toán bị hủy
+                        Log.d("ZaloPay", "Payment Canceled: " + s + ", " + s1);
+                    }
+
+                    @Override
+                    public void onPaymentError(ZaloPayError zaloPayError, String s, String s1) {
+                        // Xử lý khi thanh toán gặp lỗi
+                        Log.d("ZaloPay", "Payment Error: " + zaloPayError + ", " + s + ", " + s1);
+                    }
+                });
+
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -309,6 +424,10 @@ public class Acti_ThanhToan extends AppCompatActivity {
             });
         }
     }
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        ZaloPaySDK.getInstance().onResult(intent);
+    }
 
 }

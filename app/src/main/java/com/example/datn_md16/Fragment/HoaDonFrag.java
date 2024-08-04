@@ -69,7 +69,7 @@ public class HoaDonFrag extends Fragment {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.102:3000/api/donHang/")  // Đảm bảo URL gốc không có đường dẫn cụ thể
+                .baseUrl("http://192.168.1.8:3000/api/donHang/")  // Đảm bảo URL gốc không có đường dẫn cụ thể
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

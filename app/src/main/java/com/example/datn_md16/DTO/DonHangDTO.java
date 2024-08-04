@@ -68,6 +68,10 @@ public class DonHangDTO {
 
         @SerializedName("diaChiGiaoHang")
         private String diaChiGiaoHang;
+        @SerializedName("nguoiNhanHang")
+        private String nguoinhanhang;
+        @SerializedName("soDienThoaiNguoiNhanHang")
+        private String sodienthoainguoinhanhang;
 
         @SerializedName("trangThaiDonHang")
         private String trangThaiDonHang;
@@ -75,7 +79,25 @@ public class DonHangDTO {
         @SerializedName("phuongThucThanhToan")
         private String phuongThucThanhToan;
 
+
         // Getters and Setters
+
+        public String getNguoinhanhang() {
+            return nguoinhanhang;
+        }
+
+        public void setNguoinhanhang(String nguoinhanhang) {
+            this.nguoinhanhang = nguoinhanhang;
+        }
+
+        public String getSodienthoainguoinhanhang() {
+            return sodienthoainguoinhanhang;
+        }
+
+        public void setSodienthoainguoinhanhang(String sodienthoainguoinhanhang) {
+            this.sodienthoainguoinhanhang = sodienthoainguoinhanhang;
+        }
+
         public String getId() {
             return id;
         }

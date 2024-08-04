@@ -46,7 +46,7 @@ public class Acti_KhuyenMai extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerViewKhuyenMai);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new KhuyenMaiAdapter();
+        adapter = new KhuyenMaiAdapter(this);
         recyclerView.setAdapter(adapter);
 
         // Khởi tạo Retrofit

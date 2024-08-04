@@ -34,14 +34,14 @@
         <activity
             android:name=".Activitys.Acty_iphone"
             android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".Activitys.MainActivity"-->
-<!--            android:exported="false" /> &lt;!&ndash; Khai báo các Activity khác ở đây &ndash;&gt;-->
+        <activity
+            android:name=".Activitys.MainActivity"
+            android:exported="false" /> <!-- Khai báo các Activity khác ở đây -->
         <activity
             android:name=".ManChay"
             android:exported="true" />
         <activity
-            android:name=".Activitys.MainActivity"
+            android:name=".Activitys.DangNhap"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -56,7 +56,7 @@
         <activity android:name=".Activitys.Acti_TimKiem" />
         <activity android:name=".Activitys.Acti_GioHang" />
         <activity android:name=".Activitys.Acti_ChiTietSP" />
-        <activity android:name=".Activitys.DangNhap" />
+<!--        <activity android:name=".Activitys.DangNhap" />-->
         <activity android:name=".Activitys.Acti_ThanhToan" />
     </application>
 

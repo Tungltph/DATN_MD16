@@ -161,7 +161,7 @@ public class HomeFrag extends Fragment {
 
     private void fetchHotProducts() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.0.102:3000/api/sanPham/hot/")
+                .baseUrl("http://192.168.1.8:3000/api/sanPham/hot/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

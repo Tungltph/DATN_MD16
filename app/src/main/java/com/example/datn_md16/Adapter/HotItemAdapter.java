@@ -67,9 +67,11 @@ public class HotItemAdapter extends RecyclerView.Adapter<HotItemAdapter.ViewHold
         });
     }
 
+
     @Override
     public int getItemCount() {
         return productList.size();
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
