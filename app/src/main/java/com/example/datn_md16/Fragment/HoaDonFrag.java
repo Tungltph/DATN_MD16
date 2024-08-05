@@ -59,6 +59,7 @@ public class HoaDonFrag extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerViewOrders);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new DonHangHomeAdapter(donHangList, getContext());
+        adapter.updateData(donHangList);
         recyclerView.setAdapter(adapter);
 
         // Khởi tạo Retrofit với cấu hình OkHttpClient
@@ -69,7 +70,7 @@ public class HoaDonFrag extends Fragment {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.8:3000/api/donHang/")  // Đảm bảo URL gốc không có đường dẫn cụ thể
+                .baseUrl("http://192.168.9.104:3000/api/donHang/")  // Đảm bảo URL gốc không có đường dẫn cụ thể
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();

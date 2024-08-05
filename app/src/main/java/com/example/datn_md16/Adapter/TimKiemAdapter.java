@@ -17,10 +17,12 @@ import com.example.datn_md16.R;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHolder> {
     private List<TimKiemDTO> dataList;
@@ -99,12 +101,27 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
 
         TimKiemDTO item = dataList.get(position);
 
-        if (item.getMauSchema() != null && !item.getMauSchema().isEmpty()) {
-            holder.giamGiaTextView.setText(item.getMauSchema().get(0).getGiaTien() + " VND");
-        }
+        // Set image using Picasso
+        Picasso.get().load(item.getHinhAnh()).into(holder.hinhAnhImageView);
+
         holder.tenSanPhamTextView.setText(item.getTenSanPham());
 
-        Picasso.get().load(item.getHinhAnh()).into(holder.hinhAnhImageView);
+        if (item.getMauSchema() != null && !item.getMauSchema().isEmpty()) {
+            double giaTien = item.getMauSchema().get(0).getGiaTien();
+
+            // Định dạng giá trị giaTien chỉ hiển thị phần nguyên
+            NumberFormat formatter = NumberFormat.getIntegerInstance(Locale.GERMANY);
+            holder.giamGiaTextView.setText("₫" + formatter.format(giaTien));
+
+            // Tính toán giá gốc
+            double phanTram = Double.parseDouble(item.getGiamGia());
+            double giaGoc = giaTien / (1 - (phanTram / 100));
+
+            // Định dạng giá trị giaGoc chỉ hiển thị phần nguyên
+            holder.giaGocTextView.setText("₫" + formatter.format(giaGoc));
+        }
+
+        holder.phanTramTextView.setText("-" + item.getGiamGia() + "%");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,19 +139,22 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
         });
     }
 
+
     @Override
     public int getItemCount() {
         return dataList != null ? dataList.size() : 0;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView tenSanPhamTextView, giamGiaTextView;
+        TextView tenSanPhamTextView, giamGiaTextView, giaGocTextView, phanTramTextView;
         ImageView hinhAnhImageView;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tenSanPhamTextView = itemView.findViewById(R.id.tv_ten_sanPham_timKiem);
             giamGiaTextView = itemView.findViewById(R.id.tv_giamGia_timKiem);
+            giaGocTextView = itemView.findViewById(R.id.tv_giaGoc_timKiem);
+            phanTramTextView = itemView.findViewById(R.id.tv_phanTram_timKiem);
             hinhAnhImageView = itemView.findViewById(R.id.iv_product_image);
         }
     }

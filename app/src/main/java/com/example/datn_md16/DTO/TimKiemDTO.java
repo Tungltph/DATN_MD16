@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public class TimKiemDTO {
+    private String _id;
     @SerializedName("tenDienThoai")
     private String tenSanPham;
 
@@ -53,17 +54,36 @@ public class TimKiemDTO {
     @SerializedName("moTaThem")
     private String moTaThem;
 
+//    @SerializedName("giamGia")
+//    private String giamGia;
+
 
     @SerializedName("doPhanGiai")
     private String doPhanGiai;
 
 
 
-    public TimKiemDTO(String tenSanPham, String giamGia, String giaGoc, String hinhAnh) {
+//    public TimKiemDTO(String tenSanPham, String giamGia, String giaGoc, String hinhAnh) {
+//        this.tenSanPham = tenSanPham;
+//        this.giamGia = giamGia;
+//        this.giaGoc = giaGoc;
+//        this.hinhAnh = hinhAnh;
+//    }
+
+    public TimKiemDTO(String _id, String tenSanPham, String giamGia, String giaGoc, String hinhAnh) {
+        this._id = _id;
         this.tenSanPham = tenSanPham;
         this.giamGia = giamGia;
         this.giaGoc = giaGoc;
         this.hinhAnh = hinhAnh;
+    }
+
+    public String get_id() {
+        return _id;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
     }
 
     public String getCamera() {

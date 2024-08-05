@@ -35,7 +35,7 @@
             android:name=".Activitys.Acty_iphone"
             android:exported="false" />
         <activity
-            android:name=".Activitys.MainActivity"
+            android:name=".Activitys.DangKi"
             android:exported="false" /> <!-- Khai báo các Activity khác ở đây -->
         <activity
             android:name=".ManChay"
@@ -51,6 +51,7 @@
         </activity>
         <activity android:name=".Activitys.Acti_hoSoCuaToi" />
         <activity android:name=".Activitys.Acti_DiaChi" />
+        <activity android:name=".Activitys.MainActivity" />
         <activity android:name=".Activitys.Acti_KhuyenMai" />
         <activity android:name=".Activitys.Acti_doiPass" />
         <activity android:name=".Activitys.Acti_TimKiem" />

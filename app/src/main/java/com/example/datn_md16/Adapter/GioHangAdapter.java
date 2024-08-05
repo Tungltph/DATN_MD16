@@ -40,7 +40,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
 
         // Khởi tạo Retrofit
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.8:3000/") // Thay đổi địa chỉ của bạn
+                .baseUrl("http://192.168.9.104:3000/") // Thay đổi địa chỉ của bạn
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -238,7 +238,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
             productName = itemView.findViewById(R.id.productName);
             productPrice = itemView.findViewById(R.id.productPrice);
             tvQuantity = itemView.findViewById(R.id.tvQuantity);
-            mau = itemView.findViewById(R.id.productColor);
+            mau = itemView.findViewById(R.id.productColorGioHang);
             productImage = itemView.findViewById(R.id.productImage);
             btnDecrease = itemView.findViewById(R.id.btnDecrease);
             btnIncrease = itemView.findViewById(R.id.btnIncrease);

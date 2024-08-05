@@ -17,8 +17,7 @@
         <ImageView
             android:id="@+id/img_gioHang"
             android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:src="@drawable/img_1"/>
+            android:layout_height="150dp" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -121,9 +120,9 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcv_Mau"
+        tools:listitem="@layout/item_mau"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:listitem="@layout/item_mau"
         android:orientation="horizontal" />
 
 

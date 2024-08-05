@@ -19,7 +19,9 @@ import com.example.datn_md16.R;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class HotItemAdapter extends RecyclerView.Adapter<HotItemAdapter.ViewHolder> {
     private Context context;
@@ -37,32 +39,47 @@ public class HotItemAdapter extends RecyclerView.Adapter<HotItemAdapter.ViewHold
         return new ViewHolder(view);
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ProductHome product = productList.get(position);
-        holder.txtProductName.setText(product.getTenDienThoai());
-        if (product.getMauSchema() != null && !product.getMauSchema().isEmpty()) {
-            holder.txtPrice.setText(product.getMauSchema().get(0).getGiaTien() + " VND");
+        if (productList == null || productList.isEmpty()) return;
+
+        ProductHome item = productList.get(position);
+
+        // Set image using Picasso
+        Picasso.get().load(item.getHinhAnh()).into(holder.imgProduct);
+
+        holder.txtProductName.setText(item.getTenDienThoai());
+
+        if (item.getMauSchema() != null && !item.getMauSchema().isEmpty()) {
+            double giaTien = item.getMauSchema().get(0).getGiaTien();
+
+            // Định dạng giá trị giaTien chỉ hiển thị phần nguyên
+            NumberFormat formatter = NumberFormat.getIntegerInstance(Locale.GERMANY);
+            holder.txtPrice.setText("₫" + formatter.format(giaTien));
+
+            // Tính toán giá gốc
+            double phanTram = Double.parseDouble(item.getGiamGia());
+            double giaGoc = giaTien / (1 - (phanTram / 100));
+
+            // Định dạng giá trị giaGoc chỉ hiển thị phần nguyên
+            holder.tvgiaGocHot.setText("₫" + formatter.format(giaGoc));
         }
-        holder.txtRating.setText(String.valueOf(product.getRating()));
-        holder.ratingBar.setRating(product.getRating());
-        Picasso.get().load(product.getHinhAnh()).into(holder.imgProduct);
+
+        holder.tvPhanTramHot.setText("-" + item.getGiamGia() + "%");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (product != null) {
-
+                if (item != null) {
                     Gson gson = new Gson();
-                    String itemJson = gson.toJson(product);
+                    String itemJson = gson.toJson(item);
 
-                    // Start Acti_ChiTietSP and pass necessary data
                     Intent intent = new Intent(context, Acti_ChiTietSP.class);
-                    intent.putExtra("sanPhamJson", itemJson); // Pass item as JSON
+                    intent.putExtra("sanPhamJson", itemJson);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }
-
             }
         });
     }
@@ -76,7 +93,7 @@ public class HotItemAdapter extends RecyclerView.Adapter<HotItemAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtProductName, txtPrice, txtRating;
+        TextView txtProductName, txtPrice, tvgiaGocHot,tvPhanTramHot;
         ImageView imgProduct;
         RatingBar ratingBar;
 
@@ -84,9 +101,9 @@ public class HotItemAdapter extends RecyclerView.Adapter<HotItemAdapter.ViewHold
             super(itemView);
             txtProductName = itemView.findViewById(R.id.txtProductNameHot);
             txtPrice = itemView.findViewById(R.id.txtPriceHot);
-            txtRating = itemView.findViewById(R.id.txtRatingHot);
             imgProduct = itemView.findViewById(R.id.imgSanPhamHot);
-            ratingBar = itemView.findViewById(R.id.rbSaoHot);
+            tvgiaGocHot = itemView.findViewById(R.id.tv_giaGoc_hot);
+            tvPhanTramHot = itemView.findViewById(R.id.tv_phanTram_hot);
         }
     }
 }

@@ -83,11 +83,20 @@ public class SanPhamDTO implements Parcelable {
 
     // Inner class MauSchemaDTO
     public static class MauSchemaDTO implements Parcelable {
+        private String id;
         private String mau;
         private int giaTien;
 
         // Constructor
         public MauSchemaDTO() {
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
         }
 
         // Getter và Setter
