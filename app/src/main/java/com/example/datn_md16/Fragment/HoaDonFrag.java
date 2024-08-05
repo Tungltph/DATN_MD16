@@ -2,12 +2,15 @@ package com.example.datn_md16.Fragment;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,10 +41,28 @@ public class HoaDonFrag extends Fragment {
     private RecyclerView recyclerView;
     private DonHangHomeAdapter adapter;
     private List<DonHangDTO.DonHang> donHangList = new ArrayList<>();
-    private Button btnChoXacNhan, btnChoGiaoHang, btnDangGiao, btnDaGiao, btnDaHuy;
+    private TextView btnChoXacNhan, btnChoGiaoHang, btnDangGiao, btnDaGiao, btnDaHuy;
     private String userId;
 
-    @Nullable
+    private void updateButtonStyles(TextView selectedButton) {
+        // Danh sách các nút trạng thái
+        TextView[] buttons = {btnChoXacNhan, btnChoGiaoHang, btnDangGiao, btnDaGiao, btnDaHuy};
+
+        // Cập nhật style cho các nút
+        for (TextView button : buttons) {
+            if (button == selectedButton) {
+                // Áp dụng style cho nút được chọn
+                button.setTextColor(getResources().getColor(R.color.red));
+                button.setPaintFlags(button.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            } else {
+                // Áp dụng style cho nút không được chọn
+                button.setTextColor(getResources().getColor(R.color.black));
+                button.setPaintFlags(button.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
+            }
+        }
+    }
+
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.frag_don_hang, container, false);
@@ -59,6 +80,7 @@ public class HoaDonFrag extends Fragment {
         recyclerView = view.findViewById(R.id.recyclerViewOrders);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new DonHangHomeAdapter(donHangList, getContext());
+        adapter.updateData(donHangList);
         recyclerView.setAdapter(adapter);
 
         // Khởi tạo Retrofit với cấu hình OkHttpClient
@@ -69,7 +91,7 @@ public class HoaDonFrag extends Fragment {
                 .build();
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.8:3000/api/donHang/")  // Đảm bảo URL gốc không có đường dẫn cụ thể
+                .baseUrl("http://192.168.9.104:3000/api/donHang/")  // Đảm bảo URL gốc không có đường dẫn cụ thể
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
@@ -84,17 +106,33 @@ public class HoaDonFrag extends Fragment {
         btnDaHuy = view.findViewById(R.id.btnDaHuy);
 
         // Gán sự kiện cho các nút trạng thái
-        btnChoXacNhan.setOnClickListener(v -> filterDonHang("Chờ xác nhận"));
-        btnChoGiaoHang.setOnClickListener(v -> filterDonHang("Đang xử lý"));
-        btnDangGiao.setOnClickListener(v -> filterDonHang("Đang giao hàng"));
-        btnDaGiao.setOnClickListener(v -> filterDonHang("Đã giao hàng"));
-        btnDaHuy.setOnClickListener(v -> filterDonHang("Đã hủy"));
+        btnChoXacNhan.setOnClickListener(v -> {
+            filterDonHang("Chờ xác nhận");
+            updateButtonStyles(btnChoXacNhan);
+        });
+        btnChoGiaoHang.setOnClickListener(v -> {
+            filterDonHang("Đang xử lý");
+            updateButtonStyles(btnChoGiaoHang);
+        });
+        btnDangGiao.setOnClickListener(v -> {
+            filterDonHang("Đang giao hàng");
+            updateButtonStyles(btnDangGiao);
+        });
+        btnDaGiao.setOnClickListener(v -> {
+            filterDonHang("Đã giao hàng");
+            updateButtonStyles(btnDaGiao);
+        });
+        btnDaHuy.setOnClickListener(v -> {
+            filterDonHang("Đã hủy");
+            updateButtonStyles(btnDaHuy);
+        });
 
         // Gọi API để lấy danh sách đơn hàng
         loadDonHang();
 
         return view;
     }
+
 
     @Override
     public void onResume() {

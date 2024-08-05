@@ -419,7 +419,7 @@
             android:textColor="@color/black"/>
 
         <Button
-            android:id="@+id/button_add_to_cart"
+            android:id="@+id/btnThemGioHang"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"

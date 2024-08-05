@@ -64,6 +64,19 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
                 holder.productImage.setImageResource(R.drawable.product_background); // Placeholder image if URL is empty
             }
 
+            // Cập nhật trạng thái nút hủy và đánh giá
+            if (donHang.getTrangThaiDonHang().equals("Chờ xác nhận") || donHang.getTrangThaiDonHang().equals("Đang xử lý")) {
+                holder.btnHuy.setVisibility(View.VISIBLE);
+            } else {
+                holder.btnHuy.setVisibility(View.GONE);
+            }
+
+            if (donHang.getTrangThaiDonHang().equals("Đã giao hàng")) {
+                holder.tvDanhGia.setVisibility(View.VISIBLE);
+            } else {
+                holder.tvDanhGia.setVisibility(View.GONE);
+            }
+
             holder.btnHuy.setOnClickListener(v -> {
                 // Handle "Hủy Đơn" button click
                 // Add your logic to handle cancellation here
@@ -88,6 +101,10 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
         }
     }
 
+    public void updateData(List<DonHangDTO.DonHang> newDonHangList) {
+        this.donHangList = newDonHangList;
+        notifyDataSetChanged(); // Thông báo cho RecyclerView cập nhật dữ liệu
+    }
 
 
     @Override
@@ -96,7 +113,7 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView productName, productColor, productPrice, soLuong, btnHuy, btnXemChiTiet;
+        TextView productName, productColor, productPrice, soLuong, btnHuy, btnXemChiTiet,tvDanhGia;
         ImageView productImage;
 
         public ViewHolder(@NonNull View itemView) {
@@ -108,6 +125,7 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
             productImage = itemView.findViewById(R.id.productImage);
             btnHuy = itemView.findViewById(R.id.btnHuy);
             btnXemChiTiet = itemView.findViewById(R.id.btnXemChiTiet);
+            tvDanhGia = itemView.findViewById(R.id.tvDanhGia);
         }
     }
 }

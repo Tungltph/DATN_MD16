@@ -19,7 +19,9 @@ import com.example.datn_md16.R;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class NewItemAdapter extends RecyclerView.Adapter<NewItemAdapter.ViewHolder> {
 
@@ -40,25 +42,41 @@ public class NewItemAdapter extends RecyclerView.Adapter<NewItemAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        ProductHome product = productList.get(position);
-        holder.txtProductName.setText(product.getTenDienThoai());
-        if (product.getMauSchema() != null && !product.getMauSchema().isEmpty()) {
-            holder.txtPrice.setText(product.getMauSchema().get(0).getGiaTien() + " VND");
+        if (productList == null || productList.isEmpty()) return;
+
+        ProductHome item = productList.get(position);
+
+        // Set image using Picasso
+        Picasso.get().load(item.getHinhAnh()).into(holder.imgProduct);
+
+        holder.txtProductName.setText(item.getTenDienThoai());
+
+        if (item.getMauSchema() != null && !item.getMauSchema().isEmpty()) {
+            double giaTien = item.getMauSchema().get(0).getGiaTien();
+
+            // Định dạng giá trị giaTien chỉ hiển thị phần nguyên
+            NumberFormat formatter = NumberFormat.getIntegerInstance(Locale.GERMANY);
+            holder.txtPrice.setText("₫" + formatter.format(giaTien));
+
+            // Tính toán giá gốc
+            double phanTram = Double.parseDouble(item.getGiamGia());
+            double giaGoc = giaTien / (1 - (phanTram / 100));
+
+            // Định dạng giá trị giaGoc chỉ hiển thị phần nguyên
+            holder.tvgiaGocNew.setText("₫" + formatter.format(giaGoc));
         }
-        holder.txtRating.setText(String.valueOf(product.getRating()));
-        holder.ratingBar.setRating(product.getRating());
-        Picasso.get().load(product.getHinhAnh()).into(holder.imgProduct);
+
+        holder.tvPhanTramNew.setText("-" + item.getGiamGia() + "%");
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (product != null) {
+                if (item != null) {
                     Gson gson = new Gson();
-                    String itemJson = gson.toJson(product);
+                    String itemJson = gson.toJson(item);
 
-                    // Start Acti_ChiTietSP and pass necessary data
                     Intent intent = new Intent(context, Acti_ChiTietSP.class);
-                    intent.putExtra("sanPhamJson", itemJson); // Pass item as JSON
+                    intent.putExtra("sanPhamJson", itemJson);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }
@@ -73,7 +91,7 @@ public class NewItemAdapter extends RecyclerView.Adapter<NewItemAdapter.ViewHold
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView txtProductName, txtPrice, txtRating;
+        TextView txtProductName, txtPrice, tvgiaGocNew, tvPhanTramNew;
         ImageView imgProduct;
         RatingBar ratingBar;
 
@@ -81,9 +99,9 @@ public class NewItemAdapter extends RecyclerView.Adapter<NewItemAdapter.ViewHold
             super(itemView);
             txtProductName = itemView.findViewById(R.id.tvProductNameNew);
             txtPrice = itemView.findViewById(R.id.tvPriceNew);
-            txtRating = itemView.findViewById(R.id.tvRatingNew);
             imgProduct = itemView.findViewById(R.id.imgSanPhamNew);
-            ratingBar = itemView.findViewById(R.id.rbSaoNew);
+            tvgiaGocNew = itemView.findViewById(R.id.tv_giaGoc_new);
+            tvPhanTramNew = itemView.findViewById(R.id.tv_phanTram_hot);
         }
     }
 }

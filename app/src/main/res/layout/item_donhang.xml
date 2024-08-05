@@ -74,7 +74,9 @@
                     android:layout_marginRight="30dp"
                     android:gravity="center"
                     android:text="Hủy Đơn"
-                    android:textColor="#E40B0B" />
+                    android:textColor="#E40B0B"
+                    android:visibility="gone" />
+
 
                 <TextView
                     android:id="@+id/btnXemChiTiet"
@@ -83,6 +85,17 @@
                     android:gravity="center"
                     android:text="Xem chi tiết... "
                     android:textColor="#FFC107" />
+
+                <TextView
+                    android:id="@+id/tvDanhGia"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Đánh giá"
+                    android:background="@drawable/border"
+                    android:padding="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:textColor="#E40B0B"
+                    android:visibility="gone"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

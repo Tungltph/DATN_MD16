@@ -1,12 +1,18 @@
 package com.example.datn_md16.Activitys;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.datn_md16.Adapter.IphoneAdapter;
@@ -27,6 +33,9 @@ public class Acti_Xiaomi extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private IphoneAdapter adapter;
+
+    private TextView btnip, btnss, btnvv, btnxm, btnop;
+
     private static final String HANG_SX_ID = "6675aa1eff75b8dfd1e641ea";
 
     @Override
@@ -36,6 +45,56 @@ public class Acti_Xiaomi extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+
+        // Thiết lập Toolbar và hiển thị nút back
+        Toolbar toolbar = findViewById(R.id.toolbarXiaomi);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Hiển thị nút back
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        // Đặt tiêu đề cho Toolbar từ chuỗi trong strings.xml
+        setTitle(getString(R.string.toolbarXiaomi));
+        btnxm = findViewById(R.id.btnXiaomi);
+        btnip = findViewById(R.id.btnIphone);
+        btnop = findViewById(R.id.btnOppo);
+        btnss = findViewById(R.id.btnss);
+        btnvv = findViewById(R.id.btnVivo);
+
+        btnip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Acty_iphone.class);
+                startActivity(intent);
+            }
+        });
+        btnop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Acti_Oppo.class);
+                startActivity(intent);
+            }
+        });
+        btnss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Acti_Samsung.class);
+                startActivity(intent);
+            }
+        });
+        btnvv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Acti_vivo.class);
+                startActivity(intent);
+            }
+        });
+        btnxm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Acti_Xiaomi.class);
+                startActivity(intent);
+            }
+        });
 
         fetchData();
     }
@@ -88,5 +147,14 @@ public class Acti_Xiaomi extends AppCompatActivity {
             }
         }
         return filteredList;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed(); // Xử lý khi nhấn nút back trên Toolbar
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

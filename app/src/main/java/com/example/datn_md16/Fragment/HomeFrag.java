@@ -57,10 +57,10 @@ public class HomeFrag extends Fragment {
     private Runnable runnable;
     private int currentPage = 0;
 
-    private Button btnip, btnss, btnvv, btnxm, btnop;
     TextView tvSearchHome;
+    private TextView btnip, btnss, btnvv, btnxm, btnop;
 
-    private static final String BASE_URL = "http://192.168.1.8:3000/api/sanPham/"; // Thay thế bằng URL thực tế của bạn
+    private static final String BASE_URL = "http://192.168.9.104:3000/api/sanPham/"; // Thay thế bằng URL thực tế của bạn
 
     @Nullable
     @Override
@@ -161,7 +161,7 @@ public class HomeFrag extends Fragment {
 
     private void fetchHotProducts() {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.8:3000/api/sanPham/hot/")
+                .baseUrl("http://192.168.9.104:3000/api/sanPham/hot/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

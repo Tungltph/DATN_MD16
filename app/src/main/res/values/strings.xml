@@ -13,6 +13,13 @@
     <string name="toolbarDoiPass">Đổi mật khẩu</string>
     <string name="toolbarThanhtoan">Thanh toán</string>
 
+    <string name="toolbarIphone">Iphone</string>
+    <string name="toolbarOppo">Oppo</string>
+    <string name="toolbarVivo">Vivo</string>
+    <string name="toolbarSamsung">Samsung</string>
+    <string name="toolbarXiaomi">Xiaomi</string>
+
+
 
     <string-array name="spinner_items_gia">
         <item>Giá thấp - cao</item>

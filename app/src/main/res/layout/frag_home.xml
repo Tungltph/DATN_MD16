@@ -72,69 +72,85 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:scrollbars="none"
-                    android:padding="8dp"
                     android:background="#FFFFFF">
 
                     <LinearLayout
-                        android:padding="8dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
-                        <Button
+                        <TextView
                             android:id="@+id/btnIphone"
-                            android:padding="8dp"
-                            android:layout_width="wrap_content"
+                            android:layout_width="110dp"
+                            android:gravity="center"
+                            android:padding="10dp"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/category_button_background"
                             android:text="Iphone"
                             app:backgroundTint="@null"
-                            android:textColor="#000000" />
+                            android:textColor="@android:color/black" />
 
-                        <Button
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="40dp"
+                            android:background="#5C000000" />
+
+                        <TextView
                             android:id="@+id/btnOppo"
-                            android:padding="8dp"
-                            android:layout_width="wrap_content"
+                            android:layout_width="110dp"
+                            android:gravity="center"
+                            android:padding="10dp"
                             android:layout_height="wrap_content"
                             android:text="Oppo"
-                            android:background="@drawable/category_button_background"
                             app:backgroundTint="@null"
-                            android:layout_marginLeft="8dp"
-                            android:textColor="#000000" />
+                            android:textColor="@android:color/black" />
 
-                        <Button
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="40dp"
+                            android:background="#5C000000" />
+
+                        <TextView
                             android:id="@+id/btnss"
-                            android:padding="8dp"
-                            android:layout_width="wrap_content"
+                            android:layout_width="110dp"
+                            android:gravity="center"
+                            android:padding="10dp"
                             android:layout_height="wrap_content"
                             android:text="Samsung"
-                            android:background="@drawable/category_button_background"
                             app:backgroundTint="@null"
-                            android:layout_marginLeft="8dp"
-                            android:textColor="#000000" />
+                            android:textColor="@android:color/black" />
 
-                        <Button
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="40dp"
+                            android:background="#5C000000" />
+
+
+
+                        <TextView
                             android:id="@+id/btnVivo"
-                            android:padding="8dp"
-                            android:layout_width="wrap_content"
+                            android:layout_width="110dp"
+                            android:gravity="center"
+                            android:padding="10dp"
                             android:layout_height="wrap_content"
                             android:text="Vivo"
                             app:backgroundTint="@null"
-                            android:background="@drawable/category_button_background"
-                            android:layout_marginLeft="8dp"
-                            android:textColor="#000000" />
+                            android:textColor="@android:color/black" />
 
-                        <Button
+                        <View
+                            android:layout_width="1dp"
+                            android:layout_height="40dp"
+                            android:background="#5C000000" />
+
+                        <TextView
                             android:id="@+id/btnXiaomi"
-                            android:padding="8dp"
-                            android:layout_width="wrap_content"
+                            android:layout_width="110dp"
+                            android:gravity="center"
+                            android:padding="10dp"
                             android:layout_height="wrap_content"
                             android:text="Xiaomi"
                             app:backgroundTint="@null"
-                            android:background="@drawable/category_button_background"
-                            android:layout_marginLeft="8dp"
-                            android:textColor="#000000" />
-                        <!-- Thêm các nút khác nếu cần -->
+                            android:textColor="@android:color/black" />
+
                     </LinearLayout>
                 </HorizontalScrollView>
 

@@ -1,11 +1,19 @@
 package com.example.datn_md16.Activitys;
 
+import android.content.Intent;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.datn_md16.Adapter.IphoneAdapter;
@@ -24,6 +32,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Acti_Samsung extends AppCompatActivity {
 
+    private TextView btnip, btnss, btnvv, btnxm, btnop;
+
+
     private RecyclerView recyclerView;
     private IphoneAdapter iphoneAdapter;
 
@@ -38,8 +49,70 @@ public class Acti_Samsung extends AppCompatActivity {
         // Set LinearLayoutManager with horizontal orientation
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
+        // Thiết lập Toolbar và hiển thị nút back
+        Toolbar toolbar = findViewById(R.id.toolbarSamsung);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Hiển thị nút back
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        // Đặt tiêu đề cho Toolbar từ chuỗi trong strings.xml
+        setTitle(getString(R.string.toolbarSamsung));
+
+        btnxm = findViewById(R.id.btnXiaomi);
+        btnip = findViewById(R.id.btnIphone);
+        btnop = findViewById(R.id.btnOppo);
+        btnss = findViewById(R.id.btnss);
+        btnvv = findViewById(R.id.btnVivo);
+
+        btnip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Acty_iphone.class);
+                startActivity(intent);
+            }
+        });
+        btnop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Acti_Oppo.class);
+                startActivity(intent);
+            }
+        });
+        btnss.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Acti_Samsung.class);
+                startActivity(intent);
+            }
+        });
+        btnvv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Acti_vivo.class);
+                startActivity(intent);
+            }
+        });
+        btnxm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), Acti_Xiaomi.class);
+                startActivity(intent);
+            }
+        });
+
         fetchProducts();
     }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed(); // Xử lý khi nhấn nút back trên Toolbar
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
     private void fetchProducts() {
         Retrofit retrofit = new Retrofit.Builder()

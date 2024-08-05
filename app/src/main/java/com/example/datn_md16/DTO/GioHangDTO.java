@@ -11,10 +11,18 @@ public class GioHangDTO implements Parcelable {
     private String idMau; // Giữ nguyên là String
     private boolean isChecked; // Thêm trường này
     private SanPhamDTO sanPham; // Thêm trường này để lưu thông tin sản phẩm
-    private String selectedColor; // Thêm trường này để lưu màu sắc được chọn
+    private String selectedColorId; // Thêm trường này để lưu màu sắc được chọn
+
+
+    public GioHangDTO() {
+    }
 
     // Constructor
-    public GioHangDTO() {
+    public GioHangDTO(String idSanPham, String idAccount, int soLuong, String idMau) {
+        this.idSanPham = idSanPham;
+        this.idAccount = idAccount;
+        this.soLuong = soLuong;
+        this.idMau = idMau;
     }
 
     // Getter và Setter
@@ -75,12 +83,12 @@ public class GioHangDTO implements Parcelable {
         this.sanPham = sanPham;
     }
 
-    public String getSelectedColor() {
-        return selectedColor;
+    public String getSelectedColorId() {
+        return selectedColorId;
     }
 
-    public void setSelectedColor(String selectedColor) {
-        this.selectedColor = selectedColor;
+    public void setSelectedColorId(String selectedColorId) {
+        this.selectedColorId = selectedColorId;
     }
 
     // Parcelable implementation
@@ -92,8 +100,10 @@ public class GioHangDTO implements Parcelable {
         idMau = in.readString();
         isChecked = in.readByte() != 0;
         sanPham = in.readParcelable(SanPhamDTO.class.getClassLoader());
-        selectedColor = in.readString(); // Đọc trường selectedColor
+        selectedColorId = in.readString(); // Đọc trường selectedColor
     }
+
+
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
@@ -104,7 +114,7 @@ public class GioHangDTO implements Parcelable {
         dest.writeString(idMau);
         dest.writeByte((byte) (isChecked ? 1 : 0));
         dest.writeParcelable(sanPham, flags);
-        dest.writeString(selectedColor); // Ghi trường selectedColor
+        dest.writeString(selectedColorId); // Ghi trường selectedColor
     }
 
     @Override
