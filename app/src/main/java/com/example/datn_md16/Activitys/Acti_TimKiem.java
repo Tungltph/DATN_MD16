@@ -42,7 +42,7 @@ public class Acti_TimKiem extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TimKiemAdapter adapter;
     private Spinner spinnerGia;
-    private Button btnMoiNhat;
+    private TextView btnMoiNhat;
     private EditText edtSearch;
     private TextView noResultsTextView;
 

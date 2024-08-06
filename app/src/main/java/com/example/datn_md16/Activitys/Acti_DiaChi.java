@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.datn_md16.Interface.ApiClient;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -68,11 +69,8 @@ public class Acti_DiaChi extends AppCompatActivity {
                 .addInterceptor(new HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
                 .build();
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ApiService.BASE_URL)
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
+        Retrofit retrofit = ApiClient.getClient();
+
 
         Toolbar toolbar = findViewById(R.id.toolbarDiaChi);
         setSupportActionBar(toolbar);

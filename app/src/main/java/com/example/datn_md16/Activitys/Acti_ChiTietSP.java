@@ -31,7 +31,11 @@ import com.example.datn_md16.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -50,7 +54,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
 
 
     private LinearLayout lnMoRong;
-    private TextView tvMoRong, tvPhanTramChiTiet;
+    private TextView tvMoRong, tvPhanTramChiTiet,tvGiaGoc;
 
     RecyclerView recyclerView;
 
@@ -93,6 +97,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
         tvDoPhanGiai = findViewById(R.id.tvDoPhanGiai);
         buttonBuyNow = findViewById(R.id.button_buy_now);
         btnthemgiohang = findViewById(R.id.btnThemGioHang);
+        tvGiaGoc = findViewById(R.id.tvGiaGoc);
 
         Retrofit retrofit = ApiClient.getClient();
 
@@ -284,7 +289,19 @@ public class Acti_ChiTietSP extends AppCompatActivity {
             // Update TextViews
             txtProductName.setText(sanPham.getTenDienThoai());
             if (sanPham.getMauSchema() != null && !sanPham.getMauSchema().isEmpty()) {
-                txtPrice.setText(sanPham.getMauSchema().get(0).getGiaTien() + " VND");
+                double giaTien = sanPham.getMauSchema().get(0).getGiaTien();
+                // Định dạng giá trị giaTien chỉ hiển thị phần nguyên và cứ 3 số sẽ có 1 dấu chấm
+                NumberFormat formatter = NumberFormat.getIntegerInstance(Locale.GERMANY);
+                txtPrice.setText("₫" + formatter.format(giaTien));
+
+                // Lấy phần trăm giảm giá
+                double phanTramGiamGia = Double.parseDouble(sanPham.getGiamGia());
+
+                // Tính toán giá gốc từ giá hiện tại và phần trăm giảm giá
+                double giaGoc = giaTien / (1 - (phanTramGiamGia / 100));
+
+                // Định dạng giá trị giaGoc chỉ hiển thị phần nguyên
+                tvGiaGoc.setText("₫" + formatter.format(giaGoc));
             }
             tvCamera.setText(sanPham.getCamera());
             tvCameraTruoc.setText(sanPham.getCameraTruoc());
@@ -298,6 +315,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
             tvCongNgheManHinh.setText(sanPham.getCongNgheManHinh());
             tvMoTaThem.setText(sanPham.getMoTaThem());
             tvDoPhanGiai.setText(sanPham.getDoPhanGiai());
+            tvPhanTramChiTiet.setText("-"+sanPham.getGiamGia()+"%");
 
             Picasso.get().load(sanPham.getHinhAnh()).into(imgProduct);
         }
