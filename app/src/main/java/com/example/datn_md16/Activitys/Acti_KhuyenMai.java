@@ -15,6 +15,7 @@ import com.example.datn_md16.Adapter.KhuyenMaiAdapter;
 import com.example.datn_md16.DTO.KhuyenMai;
 import com.example.datn_md16.Interfa.ApiResponseKhuyenMai;
 import com.example.datn_md16.Interfa.ApiService;
+import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
 
 import java.util.List;
@@ -49,11 +50,7 @@ public class Acti_KhuyenMai extends AppCompatActivity {
         adapter = new KhuyenMaiAdapter(this);
         recyclerView.setAdapter(adapter);
 
-        // Khởi tạo Retrofit
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.104:3000/api/KhuyenMai/") // Thay thế địa chỉ IP của server Node.js của bạn
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = ApiClient.getClient();
 
         // Tạo đối tượng dịch vụ API từ Retrofit
         ApiService apiService = retrofit.create(ApiService.class);

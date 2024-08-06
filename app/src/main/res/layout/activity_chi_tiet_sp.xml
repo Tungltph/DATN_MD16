@@ -25,6 +25,20 @@
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
+            <TextView
+                android:id="@+id/tv_phanTram_chiTiet"
+                android:layout_width="50dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:background="@drawable/button_background2"
+                android:padding="7dp"
+                android:text="12"
+                android:textSize="12dp"
+                android:textColor="#E81B1B"
+                android:layout_margin="10dp"
+                android:layout_gravity="end" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

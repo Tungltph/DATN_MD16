@@ -26,6 +26,7 @@ import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.DTO.SanPhamYeuThichDTO;
 import com.example.datn_md16.DTO.TimKiemDTO;
 import com.example.datn_md16.Interfa.ApiService;
+import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.gson.Gson;
@@ -49,7 +50,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
 
 
     private LinearLayout lnMoRong;
-    private TextView tvMoRong;
+    private TextView tvMoRong, tvPhanTramChiTiet;
 
     RecyclerView recyclerView;
 
@@ -88,15 +89,12 @@ public class Acti_ChiTietSP extends AppCompatActivity {
         tvNamSanXuat = findViewById(R.id.tvNamSanXuat);
         tvCongNgheManHinh = findViewById(R.id.tvCongNgheManHinh);
         tvMoTaThem = findViewById(R.id.tvMoTaThem);
+        tvPhanTramChiTiet = findViewById(R.id.tv_phanTram_chiTiet);
         tvDoPhanGiai = findViewById(R.id.tvDoPhanGiai);
         buttonBuyNow = findViewById(R.id.button_buy_now);
         btnthemgiohang = findViewById(R.id.btnThemGioHang);
 
-        // Khởi tạo Retrofit và ApiService
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.104:3000/") // Thay thế bằng URL thực tế của bạn
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = ApiClient.getClient();
 
         apiService = retrofit.create(ApiService.class);
 
@@ -189,10 +187,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
     }
 
     private void addToFavorites(String productId) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.104:3000/") // URL cơ sở của API
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = ApiClient.getClient();
 
         ApiService apiService = retrofit.create(ApiService.class);
 
@@ -229,10 +224,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
 
 
     private void removeFromFavorites(String productId) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.104:3000/") // URL cơ sở của API
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = ApiClient.getClient();
 
         ApiService apiService = retrofit.create(ApiService.class);
 
@@ -262,10 +254,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
 
 
     private void loadAndSortDefaultData() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.104:3000/api/sanPham/") // Thay thế địa chỉ IP của server Node.js của bạn
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = ApiClient.getClient();
 
         ApiService apiService = retrofit.create(ApiService.class);
 

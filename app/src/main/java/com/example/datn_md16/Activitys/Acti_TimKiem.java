@@ -25,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.datn_md16.Adapter.TimKiemAdapter;
 import com.example.datn_md16.DTO.TimKiemDTO;
 import com.example.datn_md16.Interfa.ApiService;
+import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
 
 import java.util.Collections;
@@ -137,10 +138,7 @@ public class Acti_TimKiem extends AppCompatActivity {
         });
 
         // Khởi tạo Retrofit
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.104:3000/api/sanPham/") // Thay thế địa chỉ IP của server Node.js của bạn
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = ApiClient.getClient();
 
         // Tạo đối tượng dịch vụ API từ Retrofit
         ApiService apiService = retrofit.create(ApiService.class);
@@ -169,10 +167,7 @@ public class Acti_TimKiem extends AppCompatActivity {
 
     // Phương thức để load dữ liệu từ API và sắp xếp theo mặc định (trên MongoDB)
     private void loadAndSortDefaultData() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.104:3000/api/sanPham/") // Thay thế địa chỉ IP của server Node.js của bạn
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = ApiClient.getClient();
 
         ApiService apiService = retrofit.create(ApiService.class);
 

@@ -17,6 +17,7 @@ import com.example.datn_md16.Adapter.GioHangAdapter;
 import com.example.datn_md16.DTO.DiaChiDTO;
 import com.example.datn_md16.DTO.GioHangDTO;
 import com.example.datn_md16.Interfa.ApiService;
+import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
 
 import java.util.ArrayList;
@@ -47,11 +48,7 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
         Button btnthanhtoan = findViewById(R.id.btnthanhtoan);
         btnthanhtoan.setOnClickListener(v -> processPayment());
 
-        // Khởi tạo Retrofit
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.104:3000/") // Chỉ cần URL gốc
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = ApiClient.getClient();
 
         ApiService apiService = retrofit.create(ApiService.class);
         // Gọi API và lấy dữ liệu
@@ -91,11 +88,7 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
             return;
         }
 
-        // Khởi tạo Retrofit
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.104:3000/") // Chỉ cần URL gốc
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = ApiClient.getClient();
         // Khởi tạo Intent và truyền dữ liệu
         Intent intent = new Intent(Acti_GioHang.this, Acti_ThanhToan.class);
         intent.putParcelableArrayListExtra("selectedItems", new ArrayList<>(selectedItems));

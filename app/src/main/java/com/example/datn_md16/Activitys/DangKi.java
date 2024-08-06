@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.datn_md16.DTO.AccountRequest;
 import com.example.datn_md16.DTO.AccountResponse;
 import com.example.datn_md16.Interfa.ApiService;
+import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
 
 import retrofit2.Call;
@@ -36,10 +37,7 @@ public class DangKi extends AppCompatActivity {
     // Phương thức khởi tạo Retrofit và ApiService
     private void setupRetrofit() {
         // Khởi tạo Retrofit
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.104:3000/api/account/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = ApiClient.getClient();
 
         // Khởi tạo ApiService từ Retrofit
         apiService = retrofit.create(ApiService.class);

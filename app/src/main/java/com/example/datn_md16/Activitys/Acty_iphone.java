@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.datn_md16.Adapter.IphoneAdapter;
 import com.example.datn_md16.DTO.ProductHome;
+import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
 import com.example.datn_md16.Interfa.ApiService;
 
@@ -110,10 +111,7 @@ public class Acty_iphone extends AppCompatActivity {
     }
 
     private void fetchProducts() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.104:3000/api/sanPham/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = ApiClient.getClient();
 
         ApiService apiService = retrofit.create(ApiService.class);
 

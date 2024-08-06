@@ -18,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.datn_md16.DTO.AccountResponse;
 import com.example.datn_md16.Interfa.ApiService;
+import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
 
 import java.util.List;
@@ -115,12 +116,7 @@ public class DangNhap extends AppCompatActivity {
                 .addInterceptor(logging)
                 .build();
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.104:3000/api/account/")
-                .client(client)
-                .addConverterFactory(GsonConverterFactory.create())
-                .callbackExecutor(Executors.newSingleThreadExecutor())
-                .build();
+        Retrofit retrofit = ApiClient.getClient();
 
         apiService = retrofit.create(ApiService.class);
     }

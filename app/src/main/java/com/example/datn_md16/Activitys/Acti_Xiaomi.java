@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.example.datn_md16.Adapter.IphoneAdapter;
 import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.Interfa.ApiService;
+import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
 
 import java.util.ArrayList;
@@ -100,10 +101,7 @@ public class Acti_Xiaomi extends AppCompatActivity {
     }
 
     private void fetchData() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.104:3000/api/sanPham/") // Thay thế bằng URL API của bạn
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = ApiClient.getClient();
 
         ApiService apiService = retrofit.create(ApiService.class);
         Call<List<ProductHome>> call = apiService.getProducts();

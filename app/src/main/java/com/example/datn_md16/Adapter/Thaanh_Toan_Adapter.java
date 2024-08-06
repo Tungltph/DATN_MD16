@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.example.datn_md16.DTO.GioHangDTO;
 import com.example.datn_md16.DTO.SanPhamDTO;
 import com.example.datn_md16.Interfa.ApiService;
+import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
 
 import java.util.List;
@@ -39,10 +40,7 @@ public class Thaanh_Toan_Adapter extends RecyclerView.Adapter<Thaanh_Toan_Adapte
         this.context = context;
 
         // Khởi tạo Retrofit
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.8:3000/") // Thay đổi địa chỉ của bạn
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = ApiClient.getClient();
 
         productService = retrofit.create(ApiService.class);
     }
