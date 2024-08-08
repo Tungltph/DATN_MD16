@@ -1,5 +1,6 @@
 package com.example.datn_md16.Adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -97,6 +98,15 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
                 intent.putExtra("phuongThucThanhToan", donHang.getPhuongThucThanhToan());
                 intent.putExtra("hinhAnhUrl", sanPham.getHinhAnh());
                 context.startActivity(intent);
+            });
+            holder.tvDanhGia.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Dialog dialog = new Dialog(v.getContext());
+                    dialog.setContentView(R.layout.dialog_danhgia);
+
+                    ImageView imgstar1 = dialog.findViewById(R.id.star1);
+                }
             });
         }
     }

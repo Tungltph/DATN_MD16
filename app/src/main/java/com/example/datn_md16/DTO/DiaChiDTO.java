@@ -17,24 +17,40 @@ public class DiaChiDTO implements Parcelable {
     @SerializedName("diaChi")
     private String diaChi;
 
+    @SerializedName("idAccount")
+    private String idAccount;
+
     private boolean isSelected; // Thêm thuộc tính này
 
-    public DiaChiDTO() {
+    public DiaChiDTO(String name, String phoneNumber, String address, String idAccount) {
+        this.ten = name;
+        this.sdt = phoneNumber;
+        this.diaChi = address;
+        this.idAccount = idAccount;
+
     }
 
     // Constructor với các tham số
-    public DiaChiDTO(String id, String ten, String sdt, String diaChi) {
+
+
+    public DiaChiDTO(String ten, String sdt, String diaChi, String idAccount, boolean isSelected) {
+        this.ten = ten;
+        this.sdt = sdt;
+        this.diaChi = diaChi;
+        this.idAccount = idAccount;
+        this.isSelected = isSelected;
+    }
+
+    public DiaChiDTO(String id, String ten, String sdt, String diaChi, String idAccount, boolean isSelected) {
         this.id = id;
         this.ten = ten;
         this.sdt = sdt;
         this.diaChi = diaChi;
+        this.idAccount = idAccount;
+        this.isSelected = isSelected;
     }
 
-    public DiaChiDTO(String ten, String sdt, String diaChi) {
-        this.ten = ten;
-        this.sdt = sdt;
-        this.diaChi = diaChi;
-    }
+
 
     // Constructor từ Parcel
     protected DiaChiDTO(Parcel in) {
@@ -42,7 +58,20 @@ public class DiaChiDTO implements Parcelable {
         ten = in.readString();
         sdt = in.readString();
         diaChi = in.readString();
+        idAccount = in.readString();
+        isSelected = in.readByte() != 0;
     }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(ten);
+        dest.writeString(sdt);
+        dest.writeString(diaChi);
+        dest.writeString(idAccount);
+        dest.writeByte((byte) (isSelected ? 1 : 0));
+    }
+
 
     // Phương thức CREATOR
     public static final Creator<DiaChiDTO> CREATOR = new Creator<DiaChiDTO>() {
@@ -62,13 +91,7 @@ public class DiaChiDTO implements Parcelable {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(ten);
-        dest.writeString(sdt);
-        dest.writeString(diaChi);
-    }
+
 
     // Getter và Setter
     public String getId() {
@@ -109,6 +132,14 @@ public class DiaChiDTO implements Parcelable {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    public String getIdAccount() {
+        return idAccount;
+    }
+
+    public void setIdAccount(String idAccount) {
+        this.idAccount = idAccount;
     }
 
     @Override

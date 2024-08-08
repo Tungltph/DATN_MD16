@@ -46,7 +46,8 @@ public interface ApiService {
     @GET("api/sanpham/{id}")
     Call<SanPhamDTO> getProductById(@Path("id") String productId);
 
-
+    @GET("api/account/{id}")
+    Call<AccountResponse> getAccount(@Path("id") String id);
 
     @POST("/api/gioHang/add/")
     Call<Void> adddToCart(@Body GioHangDTO gioHangDTO);

@@ -1,11 +1,14 @@
 package com.example.datn_md16.Activitys;
 
+import static com.example.datn_md16.Activitys.DangNhap.PREFS_NAME;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -21,7 +24,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,6 +50,7 @@ public class Acti_DiaChi extends AppCompatActivity {
     private List<GioHangDTO> gioHangList;
     private ApiService apiService;
     private Gson gson;
+    private static final String KEY_USER_ID = "user_id";
 
     private void selectAddress(DiaChiDTO diaChi) {
         Intent resultIntent = new Intent();
@@ -70,7 +73,6 @@ public class Acti_DiaChi extends AppCompatActivity {
                 .build();
 
         Retrofit retrofit = ApiClient.getClient();
-
 
         Toolbar toolbar = findViewById(R.id.toolbarDiaChi);
         setSupportActionBar(toolbar);
@@ -109,12 +111,24 @@ public class Acti_DiaChi extends AppCompatActivity {
         btnCancel.setOnClickListener(v -> dialog.dismiss());
 
         btnConfirm.setOnClickListener(v -> {
+
+            SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+            String userId = sharedPreferences.getString(KEY_USER_ID, null);
+
             String name = etName.getText().toString().trim();
             String phoneNumber = etPhoneNumber.getText().toString().trim();
             String address = etAddress.getText().toString().trim();
+            String idAccount = userId;  // Thay thế bằng giá trị thực tế
 
-            if (validateInput(name, phoneNumber, address)) {
-                DiaChiDTO newDiaChi = new DiaChiDTO(name, phoneNumber, address);
+
+            Log.d("Themdiachi","ten" +name);
+            Log.d("Themdiachi","sdt" +phoneNumber);
+            Log.d("Themdiachi","diachi" +address);
+            Log.d("Themdiachi","idacou" +idAccount);
+
+
+            if (validateInput(name, phoneNumber, address,idAccount)) {
+                DiaChiDTO newDiaChi = new DiaChiDTO(name, phoneNumber, address, idAccount);
                 addAddress(dialog, newDiaChi);
             }
         });
@@ -123,7 +137,7 @@ public class Acti_DiaChi extends AppCompatActivity {
         dialog.show();
     }
 
-    private boolean validateInput(String name, String phoneNumber, String address) {
+    private boolean validateInput(String name, String phoneNumber, String address, String idAccount) {
         if (name.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Tên không được để trống", Toast.LENGTH_SHORT).show();
             return false;
@@ -149,10 +163,12 @@ public class Acti_DiaChi extends AppCompatActivity {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
+                    Log.d("AddAddress", "Response successful: " + response.code());
+                    Toast.makeText(getApplicationContext(), "Thêm địa chỉ thành công", Toast.LENGTH_SHORT).show();
                     diaChiList.add(newDiaChi);
                     diaChiAdapter.notifyDataSetChanged();
-                    Toast.makeText(getApplicationContext(), "Thêm địa chỉ thành công", Toast.LENGTH_SHORT).show();
                 } else {
+                    Log.d("AddAddress", "Response failed: " + response.code() + ", " + response.message());
                     Toast.makeText(getApplicationContext(), "Thêm địa chỉ thất bại", Toast.LENGTH_SHORT).show();
                 }
                 dialog.dismiss();
@@ -160,11 +176,14 @@ public class Acti_DiaChi extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("AddAddress", "Request failed: " + t.getMessage());
                 Toast.makeText(getApplicationContext(), "Thêm địa chỉ thất bại: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 dialog.dismiss();
             }
         });
     }
+
+
 
     private void fetchData() {
         Call<ApiResponse> call = apiService.getAllDiaChi();

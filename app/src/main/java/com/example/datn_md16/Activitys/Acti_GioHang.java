@@ -103,27 +103,10 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
         startActivity(intent);
     }
 
-    // Gửi thông tin giỏ hàng đã chọn tới máy chủ
-//        apiService.createInvoice(selectedItems).enqueue(new Callback<Void>() {
-//            @Override
-//            public void onResponse(Call<Void> call, Response<Void> response) {
-//                if (response.isSuccessful()) {
-//                    Toast.makeText(Acti_GioHang.this, "Thanh toán thành công", Toast.LENGTH_SHORT).show();
-//                    // Xoá các sản phẩm đã thanh toán khỏi giỏ hàng hoặc thực hiện các hành động khác cần thiết
-//                } else {
-//                    Toast.makeText(Acti_GioHang.this, "Thanh toán thất bại", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Void> call, Throwable t) {
-//                Toast.makeText(Acti_GioHang.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-    // Phương thức giả lập để lấy địa chỉ đã chọn (Cần phải thay thế bằng phương thức thực tế)
+
     private DiaChiDTO getSelectedAddress() {
         // Trả về địa chỉ đã chọn, ví dụ như từ một danh sách địa chỉ hoặc một cơ sở dữ liệu
-        return new DiaChiDTO("Tên Địa Chỉ", "Số điện thoại", "Địa chỉ đầy đủ");
+        return new DiaChiDTO("Tên Địa Chỉ", "Số điện thoại", "Địa chỉ đầy đủ","");
     }
 
 

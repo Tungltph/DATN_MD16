@@ -21,8 +21,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.datn_md16.Adapter.MauAdapter;
 import com.example.datn_md16.Adapter.TimKiemAdapter;
+import com.example.datn_md16.DTO.AccountResponse;
+import com.example.datn_md16.DTO.DonHangDTO;
 import com.example.datn_md16.DTO.GioHangDTO;
 import com.example.datn_md16.DTO.ProductHome;
+import com.example.datn_md16.DTO.SanPhamDTO;
 import com.example.datn_md16.DTO.SanPhamYeuThichDTO;
 import com.example.datn_md16.DTO.TimKiemDTO;
 import com.example.datn_md16.Interfa.ApiService;
@@ -64,13 +67,15 @@ public class Acti_ChiTietSP extends AppCompatActivity {
 
     private static final String KEY_USER_ID = "user_id";
 
-
+    private AccountResponse account;
     private ApiService apiService; // Khai báo ApiService
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chi_tiet_sp);
+
+
 
         // Thiết lập Toolbar
         Toolbar toolbar = findViewById(R.id.toolbarChiTietSP);
@@ -333,7 +338,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
 
         if (mauList != null && !mauList.isEmpty()) {
             MauAdapter mauAdapter = new MauAdapter(mauList, mau -> {
-                selectedColor = mau.getMau();
+                selectedColor = mau.get_id();
                 updatePriceAndQuantity(mauList, selectedColor, sheetView.findViewById(R.id.tv_giamGia_gioHang), sheetView.findViewById(R.id.tv_soLuong));
             });
 
@@ -341,7 +346,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
 
             // Set initial selected color to the first item in the list
             ProductHome.MauSchema firstColor = mauList.get(0);
-            selectedColor = firstColor.getMau();
+            selectedColor = firstColor.get_id();
             updatePriceAndQuantity(mauList, selectedColor, sheetView.findViewById(R.id.tv_giamGia_gioHang), sheetView.findViewById(R.id.tv_soLuong));
         }
         bottomSheetDialog.setContentView(sheetView);
@@ -362,14 +367,14 @@ public class Acti_ChiTietSP extends AppCompatActivity {
         TextView btnGiamSoLuong = sheetView.findViewById(R.id.tvGiam);
         TextView btnTangSoLuong = sheetView.findViewById(R.id.tvTang);
         Picasso.get().load(sanPham.getHinhAnh()).placeholder(R.drawable.img_sale).error(R.drawable.img).into(imgGioHang);
-
+        Button btnthemgiohang = sheetView.findViewById(R.id.btn_thanhToan);
         // Set initial quantity
         int initialQuantity = 1;
         tvKQ.setText(String.valueOf(initialQuantity));
 
         if (mauList != null && !mauList.isEmpty()) {
             MauAdapter mauAdapter = new MauAdapter(mauList, mau -> {
-                selectedColor = mau.getMau();
+                selectedColor = mau.get_id();
                 updatePriceAndQuantity(mauList, selectedColor, tvGiamGiaGioHang, tvSoLuong);
             });
 
@@ -381,7 +386,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
             } else {
                 // No need to set default color; use color selected from adapter
                 ProductHome.MauSchema firstColor = mauList.get(0);
-                selectedColor = firstColor.getMau();
+                selectedColor = firstColor.get_id();
                 updatePriceAndQuantity(mauList, selectedColor, tvGiamGiaGioHang, tvSoLuong);
             }
         }
@@ -389,44 +394,58 @@ public class Acti_ChiTietSP extends AppCompatActivity {
         btnGiamSoLuong.setOnClickListener(v -> {
             int currentQuantity = Integer.parseInt(tvKQ.getText().toString());
             if (currentQuantity > 1) {
-                tvKQ.setText(String.valueOf(currentQuantity - 1));
+                currentQuantity--;
+                tvKQ.setText(String.valueOf(currentQuantity));
             }
         });
 
         btnTangSoLuong.setOnClickListener(v -> {
             int currentQuantity = Integer.parseInt(tvKQ.getText().toString());
-            tvKQ.setText(String.valueOf(currentQuantity + 1));
+            currentQuantity++;
+            tvKQ.setText(String.valueOf(currentQuantity));
         });
 
-        Button btnThemGioHang = sheetView.findViewById(R.id.btn_thanhToan);
-        btnThemGioHang.setOnClickListener(v -> {
-            if (sanPham != null && selectedColor != null) {
-                GioHangDTO gioHangDTO = new GioHangDTO();
-                gioHangDTO.setIdSanPham(sanPham.get_id());
-                gioHangDTO.setIdMau(selectedColor); // Đảm bảo màu đã chọn
-                gioHangDTO.setSoLuong(Integer.parseInt(tvKQ.getText().toString()));
-
-                Log.d("GioHangDTO", "ID Sản phẩm: " + gioHangDTO.getIdSanPham() + ", Màu: " + gioHangDTO.getIdMau() + ", Số lượng: " + gioHangDTO.getSoLuong());
-
-                Call<Void> call = apiService.adddToCart(gioHangDTO);
-                call.enqueue(new Callback<Void>() {
-                    @Override
-                    public void onResponse(Call<Void> call, Response<Void> response) {
-                        if (response.isSuccessful()) {
-                            Toast.makeText(Acti_ChiTietSP.this, "Thêm vào giỏ hàng thành công", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(Acti_ChiTietSP.this, "Lỗi khi thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<Void> call, Throwable t) {
-                        Toast.makeText(Acti_ChiTietSP.this, "Lỗi mạng", Toast.LENGTH_SHORT).show();
-                    }
-                });
-            } else {
-                Toast.makeText(Acti_ChiTietSP.this, "Sản phẩm hoặc màu không hợp lệ", Toast.LENGTH_SHORT).show();
+        btnthemgiohang.setOnClickListener(v -> {
+            SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+            String userId = sharedPreferences.getString(KEY_USER_ID, null);
+            if (userId == null) {
+                Toast.makeText(Acti_ChiTietSP.this, "Bạn cần đăng nhập để thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                return;
             }
+
+            SanPhamDTO.MauSchemaDTO dto = new SanPhamDTO.MauSchemaDTO();
+
+
+            GioHangDTO gioHangDTO = new GioHangDTO();
+            gioHangDTO.setIdSanPham(sanPham.get_id());
+            gioHangDTO.setIdMau(selectedColor);
+            gioHangDTO.setSoLuong(Integer.parseInt(tvKQ.getText().toString()));
+            // Comment dòng này lại
+            gioHangDTO.setIdAccount(userId);
+
+            Log.d("ThemGioHang", "ID Sản Phẩm: " + gioHangDTO.getIdSanPham());
+            Log.d("ThemGioHang", "ID Màu: " + gioHangDTO.getIdMau());
+            Log.d("ThemGioHang", "Số Lượng: " + gioHangDTO.getSoLuong());
+            Log.d("ThemGioHang", "Số acou: " + gioHangDTO.getIdAccount());
+
+            Call<Void> call = apiService.adddToCart(gioHangDTO);
+            call.enqueue(new Callback<Void>() {
+                @Override
+                public void onResponse(Call<Void> call, Response<Void> response) {
+                    if (response.isSuccessful()) {
+                        Toast.makeText(Acti_ChiTietSP.this, "Thêm vào giỏ hàng thành công", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(Acti_ChiTietSP.this, "Không thể thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Void> call, Throwable t) {
+                    Toast.makeText(Acti_ChiTietSP.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            bottomSheetDialog.dismiss();
         });
 
         bottomSheetDialog.setContentView(sheetView);
@@ -438,9 +457,10 @@ public class Acti_ChiTietSP extends AppCompatActivity {
 
 
 
+
     private void updatePriceAndQuantity(List<ProductHome.MauSchema> mauList, String selectedColor, TextView tvGiamGiaGioHang, TextView tvSoLuong) {
         for (ProductHome.MauSchema mau : mauList) {
-            if (mau.getMau().equals(selectedColor)) {
+            if (mau.get_id().equals(selectedColor)) {
                 tvGiamGiaGioHang.setText(String.valueOf(mau.getGiaTien()));
                 tvSoLuong.setText(String.valueOf(mau.getSoLuong()));
                 break;
@@ -458,4 +478,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+
 }

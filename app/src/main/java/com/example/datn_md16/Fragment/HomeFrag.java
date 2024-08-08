@@ -31,7 +31,6 @@ import com.example.datn_md16.Adapter.BannerAdapter;
 import com.example.datn_md16.Adapter.HotItemAdapter;
 import com.example.datn_md16.Adapter.NewItemAdapter;
 import com.example.datn_md16.DTO.ProductHome;
-import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
 import com.example.datn_md16.Interfa.ApiService;
 
@@ -61,6 +60,7 @@ public class HomeFrag extends Fragment {
     TextView tvSearchHome;
     private TextView btnip, btnss, btnvv, btnxm, btnop;
 
+    private static final String BASE_URL = "http://192.168.1.8:3000/api/sanPham/"; // Thay thế bằng URL thực tế của bạn
 
     @Nullable
     @Override
@@ -160,7 +160,10 @@ public class HomeFrag extends Fragment {
     }
 
     private void fetchHotProducts() {
-        Retrofit retrofit = ApiClient.getClient();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://192.168.1.8:3000/api/sanPham/hot/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
         ApiService apiService = retrofit.create(ApiService.class);
 
@@ -186,7 +189,10 @@ public class HomeFrag extends Fragment {
     }
 
     private void fetchNewProducts() {
-        Retrofit retrofit = ApiClient.getClient();
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
 
         ApiService apiService = retrofit.create(ApiService.class);
 
