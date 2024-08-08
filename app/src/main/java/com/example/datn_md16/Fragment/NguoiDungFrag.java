@@ -42,6 +42,7 @@ public class NguoiDungFrag extends Fragment {
         TextView btnLogout = view.findViewById(R.id.btnLogout);
 
 
+
         // Lấy tên người dùng từ SharedPreferences
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String userName = sharedPreferences.getString(KEY_USER_NAME, "User");
