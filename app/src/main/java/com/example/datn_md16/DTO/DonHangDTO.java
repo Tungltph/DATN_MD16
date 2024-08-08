@@ -88,6 +88,14 @@ public class DonHangDTO {
             return idDiaChi;
         }
 
+        public String getNgayDatHang() {
+            return ngayDatHang;
+        }
+
+        public String getNgayNhanHang() {
+            return ngayNhanHang;
+        }
+
         public void setIdDiaChi(String idDiaChi) {
             this.idDiaChi = idDiaChi;
         }

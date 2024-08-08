@@ -55,7 +55,7 @@ public class Acti_ThanhToan extends AppCompatActivity {
     private Button buttonPlaceOrder;
     private LinearLayout btnKm;
     private RadioButton radioOnl, radioOff;
-    private String idDiaChi;
+    private String idDiaChi;//thêm
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,7 +134,7 @@ public class Acti_ThanhToan extends AppCompatActivity {
                     tvten.setText(  selectedAddress.getTen());
                     tvsdt.setText( selectedAddress.getSdt());
 
-                    idDiaChi = selectedAddress.getId();
+                    idDiaChi = selectedAddress.getId();//thêm
                 }
             }
             updateUI(selectedItems);
@@ -232,7 +232,7 @@ public class Acti_ThanhToan extends AppCompatActivity {
             donHang.setTongTien(updateTotalAmount());
             donHang.setTrangThaiThanhToan(radioOnl.isChecked()); // Trạng thái thanh toán dựa trên lựa chọn
             donHang.setDiaChiGiaoHang(textViewAddress2.getText().toString());
-            donHang.setIdDiaChi(idDiaChi);
+            donHang.setIdDiaChi(idDiaChi);//them
             donHang.setPhuongThucThanhToan(radioOnl.isChecked() ? "Thẻ tín dụng" : "Tiền mặt");
             donHang.setTrangThaiDonHang("Chờ xác nhận");
             donHang.setKhachHang(khachHang);
