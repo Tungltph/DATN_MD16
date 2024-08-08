@@ -1,91 +1,128 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="200dp"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    card_view:cardCornerRadius="8dp"
+    card_view:cardElevation="4dp">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="8dp"
-        android:background="@drawable/border"
-        android:gravity="center">
-
-        <ImageView
-            android:id="@+id/imgSanPhamHot"
-            android:layout_width="wrap_content"
-            android:layout_height="200dp"
-            android:src="@drawable/img_1"
-            android:layout_marginTop="10dp"
-            android:contentDescription="Hình ảnh sản phẩm"
-            android:layout_gravity="center" />
-
-
-        <TextView
-            android:id="@+id/txtProductNameHot"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="iPhone 15NA"
-            android:textStyle="bold"
-            android:textSize="10dp"
-            android:paddingLeft="20dp" />
-
+        android:background="#FFFFFF"
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:paddingLeft="10dp"
-            android:gravity="center"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:background="@drawable/border"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/imgSanPhamHot"
+                android:layout_width="wrap_content"
+                android:layout_height="200dp"
+                android:src="@drawable/img_1"
+                android:layout_marginTop="10dp"
+                android:contentDescription="Hình ảnh sản phẩm"
+                android:layout_gravity="center" />
 
             <TextView
-                android:id="@+id/txtPriceHot"
+                android:id="@+id/txtProductNameHot"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="10.000.000đ"
-                android:textColor="#D32F2F"
+                android:layout_gravity="center"
+                android:text="iPhone 15NA"
                 android:textStyle="bold"
-                android:textSize="12dp"
-                android:paddingTop="4dp" />
+                android:textSize="15dp" />
 
-            <TextView
-                android:id="@+id/tv_giaGoc_hot"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txtPriceHot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10.000.000đ"
+                    android:textColor="#FF00"
+                    android:textStyle="bold"
+                    android:textSize="12dp"
+                    android:paddingTop="4dp" />
+
+                <TextView
+                    android:id="@+id/tv_giaGoc_hot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10.000.000đ"
+                    android:layout_marginStart="10dp"
+                    android:textSize="8sp"
+                    android:paddingTop="4dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="10.000.000đ"
-                android:layout_marginStart="10dp"
-                android:textSize="8sp"
-                android:paddingTop="4dp" />
+                android:orientation="horizontal"
+                android:paddingLeft="20dp"
+                android:layout_marginTop="10dp">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/star"/>
+
+                <TextView
+                    android:id="@+id/tv_rating_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4.9"
+                    android:layout_gravity="center"
+                    android:textSize="8sp" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="14dp"
+                    android:layout_marginStart="10dp"
+                    android:background="#5FB1C1" />
+
+                <TextView
+                    android:id="@+id/tv_daban_hot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="đã bán: 1"
+                    android:layout_gravity="center"
+                    android:textColor="@color/black"
+                    android:layout_marginStart="10dp"
+                    android:textSize="8sp" />
 
 
+            </LinearLayout>
         </LinearLayout>
 
-
-    </LinearLayout>
-
-
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="2dp">
-
-        <ImageView
-            android:id="@+id/img_sale"
-            android:layout_width="40dp"
-            android:layout_height="30dp"
-            android:src="@drawable/img_7" />
-
-        <TextView
-            android:id="@+id/tv_phanTram_hot"
+        <FrameLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="-12%"
-            android:textColor="@color/white"
-            android:textSize="9dp"
-            android:textStyle="bold" />
-    </FrameLayout>
+            android:layout_margin="5dp"
+            android:layout_height="wrap_content">
 
-</FrameLayout>
+            <ImageView
+                android:id="@+id/img_sale"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@drawable/img_7" />
+
+            <TextView
+                android:id="@+id/tv_phanTram_hot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="-12%"
+                android:textColor="@color/white"
+                android:textSize="9dp"
+                android:textStyle="bold" />
+        </FrameLayout>
+    </FrameLayout>
+</androidx.cardview.widget.CardView>

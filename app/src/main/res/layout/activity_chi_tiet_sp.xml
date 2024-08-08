@@ -2,12 +2,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     xmlns:tools="http://schemas.android.com/tools">
 
     <!-- ScrollView chứa nội dung cuộn -->
     <ScrollView
         android:layout_width="match_parent"
+        android:background="#F0F3F8"
         android:layout_height="match_parent"
         android:layout_above="@+id/button_container">
 
@@ -21,7 +21,7 @@
             android:id="@+id/toolbarChiTietSP"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="#5FB1C1"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
@@ -125,11 +125,11 @@
                     android:textSize="12sp" />
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="5dp"
-                android:background="#5C000000" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:background="#5FB1C1" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -155,12 +155,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
                     android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="- Camera :  "
-                        android:textStyle="bold"
-                        android:textSize="14sp" />
+
 
                     <TextView
                         android:id="@+id/tvCamera"
@@ -175,12 +170,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
                     android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="- Camera trước :  "
-                        android:textStyle="bold"
-                        android:textSize="14sp" />
+
 
                     <TextView
                         android:id="@+id/tvCameraTruoc"
@@ -195,12 +185,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
                     android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="- Kích Thước :  "
-                        android:textStyle="bold"
-                        android:textSize="14sp" />
+
 
                     <TextView
                         android:id="@+id/tvKichThuoc"
@@ -215,12 +200,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
                     android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="- CPU :  "
-                        android:textStyle="bold"
-                        android:textSize="14sp" />
 
                     <TextView
                         android:id="@+id/tvCPU"
@@ -235,12 +214,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
                     android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="- Ram :  "
-                        android:textStyle="bold"
-                        android:textSize="14sp" />
+
 
                     <TextView
                         android:id="@+id/tvRam"
@@ -255,12 +229,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
                     android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="- Sim :  "
-                        android:textStyle="bold"
-                        android:textSize="14sp" />
+
 
                     <TextView
                         android:id="@+id/tvSim"
@@ -275,12 +244,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
                     android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="- Pin :  "
-                        android:textStyle="bold"
-                        android:textSize="14sp" />
+
 
                     <TextView
                         android:id="@+id/tvPin"
@@ -295,12 +259,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
                     android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="- Hệ điều hành :  "
-                        android:textStyle="bold"
-                        android:textSize="14sp" />
+
 
                     <TextView
                         android:id="@+id/tvHeDieuHanh"
@@ -315,12 +274,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
                     android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="- Năm sản xuất :  "
-                        android:textStyle="bold"
-                        android:textSize="14sp" />
+
 
                     <TextView
                         android:id="@+id/tvNamSanXuat"
@@ -335,12 +289,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
                     android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="- Công nghệ màn hình :  "
-                        android:textStyle="bold"
-                        android:textSize="14sp" />
+
 
                     <TextView
                         android:id="@+id/tvCongNgheManHinh"
@@ -355,12 +304,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
                     android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="- Mô tả thêm :  "
-                        android:textStyle="bold"
-                        android:textSize="14sp" />
+
 
                     <TextView
                         android:id="@+id/tvMoTaThem"
@@ -375,13 +319,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="1dp"
                     android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="- Độ phân giải :  "
-                        android:textStyle="bold"
-                        android:textSize="14sp" />
-
                     <TextView
                         android:id="@+id/tvDoPhanGiai"
                         android:layout_width="wrap_content"
@@ -398,7 +335,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#03A9F4"
+                android:textColor="#5FB1C1"
                 android:text="Xem thêm"
                 android:textSize="16sp"
                 android:layout_gravity="center"
@@ -408,13 +345,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="10dp"
-                android:background="#5C000000" />
+                android:background="#5FB1C1" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="60dp"
-                android:background="#5C000000" />
+
 
             <TextView
                 android:layout_marginTop="10dp"
@@ -442,7 +375,7 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:gravity="center"
-        android:background="@color/white"
+        android:background="@drawable/border"
         android:padding="10dp">
 
         <Button

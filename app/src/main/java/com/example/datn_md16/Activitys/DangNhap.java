@@ -20,6 +20,7 @@ import com.example.datn_md16.DTO.AccountResponse;
 import com.example.datn_md16.Interfa.ApiService;
 import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
 import java.util.concurrent.Executors;
@@ -34,8 +35,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DangNhap extends AppCompatActivity {
 
-    private EditText usernameEditText;
-    private EditText passwordEditText;
+    private TextInputEditText usernameEditText;
+    private TextInputEditText passwordEditText;
     private Button loginButton;
     private TextView registerTextView;
     private CheckBox saveAccountCheckBox;
@@ -88,24 +89,6 @@ public class DangNhap extends AppCompatActivity {
             startActivity(intent);
         });
 
-        passwordEditText.setOnTouchListener((v, event) -> {
-            if (event.getAction() == MotionEvent.ACTION_UP) {
-                if (event.getRawX() >= (passwordEditText.getRight() - passwordEditText.getCompoundDrawables()[2].getBounds().width())) {
-                    // Toggle password visibility
-                    if (isPasswordVisible) {
-                        passwordEditText.setInputType(129); // Hide password
-                        passwordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_eye_off, 0);
-                    } else {
-                        passwordEditText.setInputType(145); // Show password
-                        passwordEditText.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_eye_on, 0);
-                    }
-                    passwordEditText.setSelection(passwordEditText.getText().length()); // Move cursor to the end
-                    isPasswordVisible = !isPasswordVisible;
-                    return true;
-                }
-            }
-            return false;
-        });
     }
 
     private void setupRetrofit() {

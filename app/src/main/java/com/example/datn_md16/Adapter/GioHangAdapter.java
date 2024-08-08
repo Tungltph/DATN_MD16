@@ -17,23 +17,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.datn_md16.DTO.GioHangDTO;
 import com.example.datn_md16.DTO.SanPhamDTO;
-import com.example.datn_md16.Interfa.ApiService;
 import com.example.datn_md16.Interface.ApiClient;
+import com.example.datn_md16.Interface.ApiService;
 import com.example.datn_md16.R;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangViewHolder> {
     private List<GioHangDTO> gioHangList;
     private Context context;
     private OnTotalPriceChangeListener onTotalPriceChangeListener;
     private ApiService productService;
+    private String selectedColor;
 
     public GioHangAdapter(List<GioHangDTO> gioHangList, Context context) {
         this.gioHangList = gioHangList;
@@ -92,43 +93,36 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
         });
 
         // Xử lý sự kiện xóa sản phẩm
-        holder.xoa.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Xác nhận và gọi API để xóa sản phẩm
-                new AlertDialog.Builder(context)
-                        .setTitle("Xóa sản phẩm")
-                        .setMessage("Bạn có chắc chắn muốn xóa sản phẩm này?")
-                        .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+        holder.xoa.setOnClickListener(v -> {
+            // Xác nhận và gọi API để xóa sản phẩm
+            new AlertDialog.Builder(context)
+                    .setTitle("Xóa sản phẩm")
+                    .setMessage("Bạn có chắc chắn muốn xóa sản phẩm này?")
+                    .setPositiveButton("Có", (dialog, which) -> {
+                        // Gọi API để xóa sản phẩm
+                        productService.deleteItemFromCart(gioHang.get_id()).enqueue(new Callback<Void>() {
                             @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Gọi API để xóa sản phẩm
-                                productService.deleteItemFromCart(gioHang.get_id()).enqueue(new Callback<Void>() {
-                                    @Override
-                                    public void onResponse(Call<Void> call, Response<Void> response) {
-                                        if (response.isSuccessful()) {
-                                            Toast.makeText(context, "Xóa sản phẩm thành công", Toast.LENGTH_SHORT).show();
-                                            // Cập nhật danh sách giỏ hàng
-                                            gioHangList.remove(holder.getAdapterPosition());
-                                            notifyItemRemoved(holder.getAdapterPosition());
-                                            updateTotalPrice();
-                                        } else {
-                                            Toast.makeText(context, "Lỗi: " + response.message(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<Void> call, Throwable t) {
-                                        Toast.makeText(context, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                                    }
-                                });
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+                                    Toast.makeText(context, "Xóa sản phẩm thành công", Toast.LENGTH_SHORT).show();
+                                    // Cập nhật danh sách giỏ hàng
+                                    gioHangList.remove(holder.getAdapterPosition());
+                                    notifyItemRemoved(holder.getAdapterPosition());
+                                    updateTotalPrice();
+                                } else {
+                                    Toast.makeText(context, "Lỗi: " + response.message(), Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        })
-                        .setNegativeButton("Không", null)
-                        .show();
-            }
-        });
 
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Toast.makeText(context, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    })
+                    .setNegativeButton("Không", null)
+                    .show();
+        });
     }
 
     private void loadProductInfo(GioHangDTO gioHang, GioHangViewHolder holder) {
@@ -139,12 +133,14 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
                     SanPhamDTO sanPham = response.body();
                     gioHang.setSanPham(sanPham);
 
-
                     // Lấy giá từ mauSchema
                     String priceText = "Không có thông tin giá";
                     String colorText = "Không có thông tin màu";
                     if (sanPham.getMauSchema() != null && !sanPham.getMauSchema().isEmpty()) {
-                        priceText = sanPham.getMauSchema().get(0).getGiaTien() + "đ";
+                        int price = sanPham.getMauSchema().get(0).getGiaTien();
+                        // Định dạng giá
+                        DecimalFormat decimalFormat = new DecimalFormat("#,###");
+                        priceText = "₫"+decimalFormat.format(price) ;
                         colorText = "Màu điện thoại : " + sanPham.getMauSchema().get(0).getMau();
                     }
 
@@ -152,6 +148,9 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
                     holder.productPrice.setText(priceText);
                     holder.mau.setText(colorText);
                     Glide.with(context).load(sanPham.getHinhAnh()).into(holder.productImage);
+
+                    // Cập nhật tổng tiền sau khi tải thông tin sản phẩm
+                    updateTotalPrice();
                 } else {
                     holder.productName.setText("Sản phẩm không tìm thấy");
                     holder.productPrice.setText("Không có thông tin giá");
@@ -219,7 +218,6 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
             onTotalPriceChangeListener.onTotalPriceChanged(totalPrice);
         }
     }
-
 
     @Override
     public int getItemCount() {

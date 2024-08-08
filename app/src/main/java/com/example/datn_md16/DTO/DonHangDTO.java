@@ -1,7 +1,12 @@
 package com.example.datn_md16.DTO;
 
 import com.google.gson.annotations.SerializedName;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DonHangDTO {
     @SerializedName("status")
@@ -79,6 +84,30 @@ public class DonHangDTO {
         @SerializedName("phuongThucThanhToan")
         private String phuongThucThanhToan;
 
+        public String getNgayDat() {
+            try {
+                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
+                SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                Date date = inputFormat.parse(ngayDatHang);
+                return outputFormat.format(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return ngayDatHang;  // Trả về chuỗi gốc nếu không thể phân tích
+            }
+        }
+
+        public String getNgayNhan() {
+            try {
+                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
+                SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+                Date date = inputFormat.parse(ngayNhanHang);
+                return outputFormat.format(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+                return ngayNhanHang;  // Trả về chuỗi gốc nếu không thể phân tích
+            }
+        }
+
 
         // Getters and Setters
 
@@ -154,17 +183,11 @@ public class DonHangDTO {
             this.khachHang = khachHang;
         }
 
-        public String getNgayDatHang() {
-            return ngayDatHang;
-        }
 
         public void setNgayDatHang(String ngayDatHang) {
             this.ngayDatHang = ngayDatHang;
         }
 
-        public String getNgayNhanHang() {
-            return ngayNhanHang;
-        }
 
         public void setNgayNhanHang(String ngayNhanHang) {
             this.ngayNhanHang = ngayNhanHang;

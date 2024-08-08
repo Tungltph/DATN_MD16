@@ -2,6 +2,7 @@ package com.example.datn_md16.DTO;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.google.gson.annotations.SerializedName;
 
 public class GioHangDTO implements Parcelable {
     private String _id;
@@ -12,7 +13,16 @@ public class GioHangDTO implements Parcelable {
     private boolean isChecked; // Thêm trường này
     private SanPhamDTO sanPham; // Thêm trường này để lưu thông tin sản phẩm
     private String selectedColorId; // Thêm trường này để lưu màu sắc được chọn
+    private KhachHang khachHang;
 
+    // Getter và Setter cho KhachHang
+    public KhachHang getKhachHang() {
+        return khachHang;
+    }
+
+    public void setKhachHang(KhachHang khachHang) {
+        this.khachHang = khachHang;
+    }
 
     public GioHangDTO() {
     }
@@ -103,8 +113,6 @@ public class GioHangDTO implements Parcelable {
         selectedColorId = in.readString(); // Đọc trường selectedColor
     }
 
-
-
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(_id);
@@ -133,4 +141,63 @@ public class GioHangDTO implements Parcelable {
             return new GioHangDTO[size];
         }
     };
+
+    // Lớp nội bộ KhachHang
+    public static class KhachHang {
+        @SerializedName("_id")
+        private String id;
+
+        @SerializedName("tenQuyen")
+        private String tenQuyen;
+
+        @SerializedName("taiKhoan")
+        private String taiKhoan;
+
+        @SerializedName("hoTen")
+        private String hoTen;
+
+        @SerializedName("sdt")
+        private String sdt;
+
+        // Getters and Setters
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getTenQuyen() {
+            return tenQuyen;
+        }
+
+        public void setTenQuyen(String tenQuyen) {
+            this.tenQuyen = tenQuyen;
+        }
+
+        public String getTaiKhoan() {
+            return taiKhoan;
+        }
+
+        public void setTaiKhoan(String taiKhoan) {
+            this.taiKhoan = taiKhoan;
+        }
+
+        public String getHoTen() {
+            return hoTen;
+        }
+
+        public void setHoTen(String hoTen) {
+            this.hoTen = hoTen;
+        }
+
+        public String getSdt() {
+            return sdt;
+        }
+
+        public void setSdt(String sdt) {
+            this.sdt = sdt;
+        }
+    }
 }

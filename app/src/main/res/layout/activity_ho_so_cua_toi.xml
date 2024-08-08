@@ -4,13 +4,14 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="#F0F3F8">
+    android:background="#F0F3F8"
+    >
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbarHoSo"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="#5FB1C1"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar" />
 
@@ -41,63 +42,52 @@
         android:padding="10dp"
         android:layout_marginTop="32dp">
 
-        <TextView
-            android:id="@+id/btnProfile"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawablePadding="16dp"
-            android:padding="10dp"
-            android:text="Tên người dùng"
-            android:textSize="16sp"
-            android:textAlignment="viewStart"
-            android:layout_marginBottom="1dp" />
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp">
 
-        <EditText
-            android:id="@+id/btnChangePassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border_background"
-            android:drawablePadding="16dp"
-            android:padding="16dp"
-            android:text="User"
-            android:textSize="16sp"
-            android:textAlignment="viewStart"
-            android:layout_marginBottom="16dp" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tvTenNguoiDung"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="User"
+                android:drawableStart="@drawable/tennguoinhan"
+                android:drawablePadding="16dp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <TextView
-            android:id="@+id/btnAddress"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="16dp"
-            android:padding="10dp"
-            android:text="Số điện thoại"
-            android:textSize="16sp"
-            android:textAlignment="viewStart"
-            android:layout_marginBottom="1dp" />
 
-        <EditText
-            android:background="@drawable/border_background"
-            android:id="@+id/btnPromotions"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:drawablePadding="16dp"
-            android:padding="16dp"
-            android:hint="thiết lập số điện thoại"
-            android:textSize="16sp"
-            android:textAlignment="viewStart"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tvSoDienThoai"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="0989742615"
+                android:drawableStart="@drawable/phone"
+                android:drawablePadding="16dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đăng ký"
+            android:layout_marginTop="20dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_background"
+            app:backgroundTint="@null"
+            android:textSize="20dp"
+            android:layout_marginBottom="20dp"
+            android:onClick="register" />
     </LinearLayout>
 
     <!-- Logout Button -->
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/button_background2"
-        app:backgroundTint="@null"
-        android:text="Xác nhận"
-        android:layout_margin="20dp"
-        android:textSize="16sp"
-        android:textColor="@android:color/white" />
+
 </LinearLayout>

@@ -17,6 +17,7 @@ import com.example.datn_md16.Adapter.SanPhamYeuThichAdapter;
 import com.example.datn_md16.DTO.SanPhamYeuThichDTO;
 import com.example.datn_md16.Interfa.ApiService;
 import com.example.datn_md16.Interfa.SanPhamYeuThichResponse;
+import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
 
 import java.util.List;
@@ -39,11 +40,7 @@ public class YeuThichFrag extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.rcv_YT);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2)); // Sử dụng GridLayoutManager với 2 cột
 
-        // Khởi tạo Retrofit
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.104:3000/") // Chỉ cần URL gốc
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = ApiClient.getClient();
 
         // Tạo đối tượng dịch vụ API từ Retrofit
         ApiService apiService = retrofit.create(ApiService.class);

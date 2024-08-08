@@ -2,7 +2,9 @@ package com.example.datn_md16.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -55,7 +57,7 @@ public class HotItemAdapter extends RecyclerView.Adapter<HotItemAdapter.ViewHold
             double giaTien = item.getMauSchema().get(0).getGiaTien();
 
             // Định dạng giá trị giaTien chỉ hiển thị phần nguyên
-            NumberFormat formatter = NumberFormat.getIntegerInstance(Locale.GERMANY);
+            NumberFormat formatter = NumberFormat.getIntegerInstance(Locale.US);
             holder.txtPrice.setText("₫" + formatter.format(giaTien));
 
             // Tính toán giá gốc
@@ -64,6 +66,7 @@ public class HotItemAdapter extends RecyclerView.Adapter<HotItemAdapter.ViewHold
 
             // Định dạng giá trị giaGoc chỉ hiển thị phần nguyên
             holder.tvgiaGocHot.setText("₫" + formatter.format(giaGoc));
+            setStrikeThroughText(holder.tvgiaGocHot);
         }
 
         holder.tvPhanTramHot.setText("-" + item.getGiamGia() + "%");
@@ -82,7 +85,29 @@ public class HotItemAdapter extends RecyclerView.Adapter<HotItemAdapter.ViewHold
                 }
             }
         });
+
+        // Thêm hiệu ứng phóng to khi chạm vào
+        holder.itemView.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        v.animate().scaleX(1.1f).scaleY(1.1f).setDuration(300).start();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                    case MotionEvent.ACTION_CANCEL:
+                        v.animate().scaleX(1f).scaleY(1f).setDuration(300).start();
+                        break;
+                }
+                return false;
+            }
+        });
     }
+
+    public void setStrikeThroughText(TextView textView) {
+        textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+    }
+
 
 
     @Override

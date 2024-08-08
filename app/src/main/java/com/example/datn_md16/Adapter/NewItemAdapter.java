@@ -2,6 +2,7 @@ package com.example.datn_md16.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,7 +56,7 @@ public class NewItemAdapter extends RecyclerView.Adapter<NewItemAdapter.ViewHold
             double giaTien = item.getMauSchema().get(0).getGiaTien();
 
             // Định dạng giá trị giaTien chỉ hiển thị phần nguyên
-            NumberFormat formatter = NumberFormat.getIntegerInstance(Locale.GERMANY);
+            NumberFormat formatter = NumberFormat.getIntegerInstance(Locale.US);
             holder.txtPrice.setText("₫" + formatter.format(giaTien));
 
             // Tính toán giá gốc
@@ -64,6 +65,7 @@ public class NewItemAdapter extends RecyclerView.Adapter<NewItemAdapter.ViewHold
 
             // Định dạng giá trị giaGoc chỉ hiển thị phần nguyên
             holder.tvgiaGocNew.setText("₫" + formatter.format(giaGoc));
+            setStrikeThroughText(holder.tvgiaGocNew);
         }
 
         holder.tvPhanTramNew.setText("-" + item.getGiamGia() + "%");
@@ -82,6 +84,10 @@ public class NewItemAdapter extends RecyclerView.Adapter<NewItemAdapter.ViewHold
                 }
             }
         });
+    }
+
+    public void setStrikeThroughText(TextView textView) {
+        textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
     }
 
     @Override

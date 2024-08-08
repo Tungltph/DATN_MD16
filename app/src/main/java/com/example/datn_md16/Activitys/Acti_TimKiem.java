@@ -1,6 +1,7 @@
 package com.example.datn_md16.Activitys;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -42,9 +43,47 @@ public class Acti_TimKiem extends AppCompatActivity {
     private RecyclerView recyclerView;
     private TimKiemAdapter adapter;
     private Spinner spinnerGia;
-    private TextView btnMoiNhat;
+    private TextView btnMoiNhat,btnBanChay,btnLienQuan;
     private EditText edtSearch;
     private TextView noResultsTextView;
+
+    private void updateButtonStyles(TextView selectedButton) {
+        // Danh sách các nút trạng thái
+        TextView[] buttons = {btnMoiNhat,btnBanChay,btnLienQuan};
+
+        // Cập nhật style cho các nút
+        for (TextView button : buttons) {
+            if (button == selectedButton) {
+                // Áp dụng style cho nút được chọn
+                button.setTextColor(getResources().getColor(R.color.white)); // Thay đổi màu chữ
+                button.setBackgroundColor(getResources().getColor(R.color.red)); // Thay đổi màu nền
+            } else {
+                // Áp dụng style cho nút không được chọn
+                button.setTextColor(getResources().getColor(R.color.black)); // Thay đổi màu chữ
+                button.setBackgroundColor(getResources().getColor(android.R.color.transparent)); // Màu nền mặc định
+                button.setPaintFlags(button.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
+            }
+        }
+    }
+
+    private void updateSpinnerStyle() {
+        // Đổi màu chữ và màu nền của Spinner
+        spinnerGia.setBackgroundColor(getResources().getColor(R.color.red));
+        // Cập nhật màu chữ cho Spinner bằng cách tạo một ArrayAdapter mới
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.spinner_items_gia, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerGia.setAdapter(spinnerAdapter);
+    }
+
+    private void resetSpinnerStyle() {
+        // Đổi màu chữ và màu nền của Spinner về trạng thái ban đầu
+        spinnerGia.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        // Cập nhật màu chữ cho Spinner bằng cách tạo một ArrayAdapter mới
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.spinner_items_gia, android.R.layout.simple_spinner_item);
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerGia.setAdapter(spinnerAdapter);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +111,8 @@ public class Acti_TimKiem extends AppCompatActivity {
         edtSearch = findViewById(R.id.edtSearch);
         spinnerGia = findViewById(R.id.spinner_gia);
         btnMoiNhat = findViewById(R.id.btnMoiNhat);
+        btnBanChay = findViewById(R.id.btnBanChay);
+        btnLienQuan = findViewById(R.id.btnLienQuan);
 
         // Thiết lập Adapter cho Spinner
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.spinner_items_gia, android.R.layout.simple_spinner_item);
@@ -109,6 +150,27 @@ public class Acti_TimKiem extends AppCompatActivity {
             }
         });
 
+        // Lắng nghe sự kiện chạm vào Spinner
+        spinnerGia.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    updateSpinnerStyle();
+                }
+                return false;
+            }
+        });
+
+        spinnerGia.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    resetSpinnerStyle();
+                }
+            }
+        });
+
+
         // Lắng nghe sự kiện chọn của Spinner
         spinnerGia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -134,6 +196,21 @@ public class Acti_TimKiem extends AppCompatActivity {
             public void onClick(View v) {
                 // Load dữ liệu từ API và sắp xếp lại theo mặc định (trên MongoDB)
                 loadAndSortDefaultData();
+                updateButtonStyles(btnMoiNhat);
+            }
+        });
+
+        btnBanChay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateButtonStyles(btnBanChay);
+            }
+        });
+
+        btnLienQuan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateButtonStyles(btnLienQuan);
             }
         });
 

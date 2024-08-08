@@ -1,6 +1,7 @@
 package com.example.datn_md16.Activitys;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,24 @@ public class Acti_Oppo extends AppCompatActivity {
 
     private static final String HANG_SX_ID = "6675aa16ff75b8dfd1e641e8"; // Oppo's manufacturer ID
 
+    private void updateButtonStyles(TextView selectedButton) {
+        // Danh sách các nút trạng thái
+        TextView[] buttons = {btnip, btnss,btnvv,btnxm,btnop};
+
+        // Cập nhật style cho các nút
+        for (TextView button : buttons) {
+            if (button == selectedButton) {
+                // Áp dụng style cho nút được chọn
+                button.setTextColor(getResources().getColor(R.color.red));
+                button.setPaintFlags(button.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            } else {
+                // Áp dụng style cho nút không được chọn
+                button.setTextColor(getResources().getColor(R.color.black));
+                button.setPaintFlags(button.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
+            }
+        }
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +86,7 @@ public class Acti_Oppo extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Acty_iphone.class);
                 startActivity(intent);
+                updateButtonStyles(btnip);
             }
         });
         btnop.setOnClickListener(new View.OnClickListener() {
@@ -74,6 +94,7 @@ public class Acti_Oppo extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Acti_Oppo.class);
                 startActivity(intent);
+                updateButtonStyles(btnop);
             }
         });
         btnss.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +102,7 @@ public class Acti_Oppo extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Acti_Samsung.class);
                 startActivity(intent);
+                updateButtonStyles(btnss);
             }
         });
         btnvv.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +110,7 @@ public class Acti_Oppo extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Acti_vivo.class);
                 startActivity(intent);
+                updateButtonStyles(btnvv);
             }
         });
         btnxm.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +118,7 @@ public class Acti_Oppo extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), Acti_Xiaomi.class);
                 startActivity(intent);
+                updateButtonStyles(btnxm);
             }
         });
 

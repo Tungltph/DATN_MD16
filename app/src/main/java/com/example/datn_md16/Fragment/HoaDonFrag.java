@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.datn_md16.Adapter.DonHangHomeAdapter;
 import com.example.datn_md16.DTO.DonHangDTO;
 import com.example.datn_md16.Interfa.ApiService;
+import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
 
 import java.util.ArrayList;
@@ -83,18 +84,7 @@ public class HoaDonFrag extends Fragment {
         adapter.updateData(donHangList);
         recyclerView.setAdapter(adapter);
 
-        // Khởi tạo Retrofit với cấu hình OkHttpClient
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .connectTimeout(60, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
-                .writeTimeout(60, TimeUnit.SECONDS)
-                .build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.104:3000/api/donHang/")  // Đảm bảo URL gốc không có đường dẫn cụ thể
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = ApiClient.getClient();
 
         apiService = retrofit.create(ApiService.class);
 

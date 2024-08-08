@@ -1,14 +1,20 @@
 package com.example.datn_md16.Activitys;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.datn_md16.R;
 import com.squareup.picasso.Picasso;
+
+import java.text.NumberFormat;
+import java.util.Locale;
 
 public class Acti_chitietdonhang extends AppCompatActivity {
 
@@ -30,9 +36,21 @@ public class Acti_chitietdonhang extends AppCompatActivity {
         tvNgayDatHang = findViewById(R.id.tvNgayDatHang);
         tvNgayNhanHangDuKien = findViewById(R.id.tvNgayNhanHangDuKien);
         tvDiaChi = findViewById(R.id.tvDiaChi);
-        tvTrangThaiDonHang = findViewById(R.id.tvTrangThaiDonHang);
+//        tvTrangThaiDonHang = findViewById(R.id.tvTrangThaiDonHang);
         tvPhuongThucThanhToan = findViewById(R.id.tvPhuongThucThanhToan);
         tvTongtien = findViewById(R.id.tvTongtien);
+        TextView tvTongTienHoaDon = findViewById(R.id.tvTongTienHoaDon);
+        TextView soLuongHoaDon = findViewById(R.id.tvsoLuongHoaDon);
+
+
+
+        Toolbar toolbar = findViewById(R.id.toolbarChiTietDonHang);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Hiển thị nút back
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        // Đặt tiêu đề cho Toolbar từ chuỗi trong strings.xml
+        setTitle(getString(R.string.toolbarChiTietDonHang));
 
         // Nhận dữ liệu từ Intent
         Intent intent = getIntent();
@@ -51,19 +69,36 @@ public class Acti_chitietdonhang extends AppCompatActivity {
 
         // Gán dữ liệu lên các view
         tvTenDienThoai.setText(tenDienThoai);
-        tvMau.setText(mauSchema);
-        tvSoLuong.setText(String.valueOf(soLuong));
-        tvTenKhachHang.setText(hoTen);
-        tvSdt.setText(sdt);
+        tvMau.setText("Màu: "+mauSchema);
+        tvSoLuong.setText(String.valueOf("Số lượng: "+soLuong));
+        tvTenKhachHang.setText("Tên người nhận hàng: "+hoTen);
+        tvSdt.setText("Số điện thoại người nhận: "+sdt);
         tvNgayDatHang.setText(ngayDatHang);
+        soLuongHoaDon.setText(String.valueOf(soLuong));
         tvNgayNhanHangDuKien.setText(ngayNhanHang);
         tvDiaChi.setText(diaChiGiaoHang);
-        tvTrangThaiDonHang.setText(trangThaiDonHang);
+//        tvTrangThaiDonHang.setText(trangThaiDonHang);
         tvPhuongThucThanhToan.setText(phuongThucThanhToan);
-        tvTongtien.setText(String.format("%.0fđ", tongTien));
+        // Format the total price with dots as thousand separators
+        NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault());
+        numberFormat.setGroupingUsed(true);
+        String formattedTongTien = numberFormat.format(tongTien);
+
+        // Set the formatted total price to the TextView
+        tvTongtien.setText("₫"+formattedTongTien);
+        tvTongTienHoaDon.setText("₫"+formattedTongTien); // tạm
+
 
         // Tải hình ảnh bằng Picasso
         Picasso.get().load(hinhAnhUrl).into(ivHinhAnh);
+    }
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            onBackPressed(); // Xử lý khi nhấn nút back trên Toolbar
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
 

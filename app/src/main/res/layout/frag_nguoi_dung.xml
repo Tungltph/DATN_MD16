@@ -1,106 +1,149 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:padding="16dp"
     android:background="#F0F3F8">
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_marginTop="32dp">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
-        <ImageView
-            android:id="@+id/ivAvatar"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/ic_user"
-            android:contentDescription="User Avatar"
-            android:scaleType="centerCrop"
-            android:layout_gravity="center"
-            android:background="@drawable/avatar_background" />
-
-        <TextView
-            android:id="@+id/tvWelcome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Xin chào : User"
-            android:textSize="16sp" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_marginTop="32dp">
-
-        <TextView
-            android:id="@+id/tvHoSo"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/border_background"
-            android:drawableStart="@drawable/ic_profile"
-            android:drawablePadding="16dp"
-            android:padding="16dp"
-            android:text="Hồ sơ của tôi"
-            android:textSize="16sp"
-            android:textAlignment="viewStart"
-            android:layout_marginBottom="8dp" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvDoiPass"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border_background"
-            android:drawableStart="@drawable/ic_password"
-            android:drawablePadding="16dp"
-            android:padding="16dp"
-            android:text="Đổi mật khẩu"
-            android:textSize="16sp"
-            android:textAlignment="viewStart"
-            android:layout_marginBottom="8dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:layout_marginTop="15dp">
 
-        <TextView
-            android:id="@+id/tvDiaChi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border_background"
-            android:drawableStart="@drawable/ic_address"
-            android:drawablePadding="16dp"
-            android:padding="16dp"
-            android:text="Địa chỉ"
-            android:textSize="16sp"
-            android:textAlignment="viewStart"
-            android:layout_marginBottom="8dp" />
+                <ImageView
+                    android:id="@+id/ivAvatar"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/ic_user"
+                    android:contentDescription="User Avatar"
+                    android:scaleType="centerCrop"
+                    android:layout_gravity="center"
+                    android:background="@drawable/avatar_background" />
 
-        <TextView
-            android:id="@+id/tvKhuyenMai"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border_background"
-            android:drawableStart="@drawable/ic_promotions"
-            android:drawablePadding="16dp"
-            android:padding="16dp"
-            android:text="Danh sách khuyến mãi"
-            android:textSize="16sp"
-            android:textAlignment="viewStart"
-            android:layout_marginBottom="8dp" />
-    </LinearLayout>
+                <TextView
+                    android:id="@+id/tvWelcome"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Xin chào : User"
+                    android:textSize="16sp" />
+            </LinearLayout>
 
-    <!-- Logout Button -->
-    <Button
-        android:id="@+id/btnLogout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/button_background2"
-        android:text="Đăng xuất"
-        app:backgroundTint="@null"
-        android:textSize="16sp"
-        android:textColor="@android:color/white" />
-</LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:id="@+id/tvHoSo"
+                        android:layout_width="match_parent"
+                        android:drawableEnd="@drawable/len"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border"
+                        android:padding="15dp"
+                        android:drawableStart="@drawable/ic_profile"
+                        android:drawablePadding="16dp"
+                        android:text="Hồ sơ của tôi"
+                        android:textSize="16sp"
+                        android:textAlignment="viewStart" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:id="@+id/tvDoiPass"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border"
+                        android:padding="15dp"
+                        android:drawableStart="@drawable/pass"
+                        android:drawableEnd="@drawable/len"
+                        android:drawablePadding="16dp"
+                        android:text="Đổi mật khẩu"
+                        android:textSize="16sp"
+                        android:textAlignment="viewStart"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:id="@+id/tvDiaChi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border"
+                        android:padding="15dp"
+                        android:drawableStart="@drawable/ic_address"
+                        android:drawableEnd="@drawable/len"
+                        android:drawablePadding="16dp"
+                        android:text="Địa chỉ"
+                        android:textSize="16sp"
+                        android:textAlignment="viewStart" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:background="@color/white">
+
+                    <TextView
+                        android:id="@+id/tvKhuyenMai"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border"
+                        android:padding="15dp"
+                        android:drawableStart="@drawable/ic_promotions"
+                        android:drawablePadding="16dp"
+                        android:drawableEnd="@drawable/len"
+                        android:text="Danh sách khuyến mãi"
+                        android:textSize="16sp"
+                        android:textAlignment="viewStart" />
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/border_background">
+
+                    <TextView
+                        android:id="@+id/btnLogout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="Đăng xuất"
+                        android:textColor="@color/white"
+                        android:textStyle="bold"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</RelativeLayout>

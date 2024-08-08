@@ -2,6 +2,7 @@ package com.example.datn_md16.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,8 +51,15 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
             @Override
             public int compare(TimKiemDTO o1, TimKiemDTO o2) {
                 try {
-                    int gia1 = Integer.parseInt(o1.getGiamGia().replaceAll("[\\D]", ""));
-                    int gia2 = Integer.parseInt(o2.getGiamGia().replaceAll("[\\D]", ""));
+                    String giamGia1 = o1.getGiamGia();
+                    String giamGia2 = o2.getGiamGia();
+
+                    if (giamGia1 == null) giamGia1 = "0";
+                    if (giamGia2 == null) giamGia2 = "0";
+
+                    int gia1 = Integer.parseInt(giamGia1.replaceAll("[\\D]", ""));
+                    int gia2 = Integer.parseInt(giamGia2.replaceAll("[\\D]", ""));
+
                     return ascending ? Integer.compare(gia1, gia2) : Integer.compare(gia2, gia1);
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
@@ -61,6 +69,7 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
         });
         notifyDataSetChanged();
     }
+
 
     public void filterData(String query) {
         List<TimKiemDTO> filteredList = new ArrayList<>();
@@ -110,7 +119,7 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
             double giaTien = item.getMauSchema().get(0).getGiaTien();
 
             // Định dạng giá trị giaTien chỉ hiển thị phần nguyên
-            NumberFormat formatter = NumberFormat.getIntegerInstance(Locale.GERMANY);
+            NumberFormat formatter = NumberFormat.getIntegerInstance(Locale.US);
             holder.giamGiaTextView.setText("₫" + formatter.format(giaTien));
 
             // Tính toán giá gốc
@@ -119,6 +128,9 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
 
             // Định dạng giá trị giaGoc chỉ hiển thị phần nguyên
             holder.giaGocTextView.setText("₫" + formatter.format(giaGoc));
+
+            // Áp dụng gạch ngang cho giaGocTextView
+            setStrikeThroughText(holder.giaGocTextView);
         }
 
         holder.phanTramTextView.setText("-" + item.getGiamGia() + "%");
@@ -137,6 +149,11 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
                 }
             }
         });
+    }
+
+
+    public void setStrikeThroughText(TextView textView) {
+        textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
     }
 
 

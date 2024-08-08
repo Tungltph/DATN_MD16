@@ -14,6 +14,7 @@ import com.example.datn_md16.DTO.AccountResponse;
 import com.example.datn_md16.Interfa.ApiService;
 import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
+import com.google.android.material.textfield.TextInputEditText;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,10 +46,10 @@ public class DangKi extends AppCompatActivity {
 
     // Phương thức xử lý khi nhấn nút "Đăng ký"
     public void register(View view) {
-        EditText nameEditText = findViewById(R.id.Name);
-        EditText passwordEditText = findViewById(R.id.passwordEditText);
-        EditText fullNameEditText = findViewById(R.id.fullNameEditText);
-        EditText phoneEditText = findViewById(R.id.phoneEditText);
+        TextInputEditText nameEditText = findViewById(R.id.Name);
+        TextInputEditText passwordEditText = findViewById(R.id.passwordEditText);
+        TextInputEditText fullNameEditText = findViewById(R.id.fullNameEditText);
+        TextInputEditText phoneEditText = findViewById(R.id.phoneEditText);
         CheckBox termsCheckBox = findViewById(R.id.termsCheckBox);
 
         String name = nameEditText.getText().toString();

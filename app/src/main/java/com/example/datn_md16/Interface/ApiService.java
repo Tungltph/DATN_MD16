@@ -3,6 +3,7 @@ package com.example.datn_md16.Interface;
 import com.example.datn_md16.DTO.AccountResponse;
 import com.example.datn_md16.DTO.DiaChiDTO;
 import com.example.datn_md16.DTO.DonHangDTO;
+import com.example.datn_md16.DTO.SanPhamDTO;
 import com.example.datn_md16.Interface.ApiResponse;
 
         import retrofit2.Call;
@@ -15,7 +16,7 @@ import com.example.datn_md16.Interface.ApiResponse;
 
         public interface ApiService {
 
-            @POST("add")
+            @POST("api/diaChi/add/")
             Call<Void> addDiaChi(@Body DiaChiDTO diaChi);
 
             @GET("/api/DiaChi/")
@@ -26,6 +27,9 @@ import com.example.datn_md16.Interface.ApiResponse;
 
             @DELETE("delete/{id}")
             Call<Void> deleteDiaChi(@Path("id") String id);
+            @GET("api/sanpham/{id}")
+            Call<SanPhamDTO> getProductById(@Path("id") String productId);
+
 
             @PUT("edit/{id}")
             Call<Void> updateDiaChi(@Path("id") String id, @Body DiaChiDTO diaChi);

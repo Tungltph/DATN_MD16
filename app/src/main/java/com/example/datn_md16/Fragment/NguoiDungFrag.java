@@ -1,5 +1,6 @@
 package com.example.datn_md16.Fragment;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -38,7 +39,8 @@ public class NguoiDungFrag extends Fragment {
         TextView tvDiaChi = view.findViewById(R.id.tvDiaChi);
         TextView tvDsKhuyenMai = view.findViewById(R.id.tvKhuyenMai);
         TextView tvWelcome = view.findViewById(R.id.tvWelcome);
-        Button btnLogout = view.findViewById(R.id.btnLogout);
+        TextView btnLogout = view.findViewById(R.id.btnLogout);
+
 
         // Lấy tên người dùng từ SharedPreferences
         SharedPreferences sharedPreferences = requireContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
@@ -57,20 +59,30 @@ public class NguoiDungFrag extends Fragment {
         tvDoiPass.setOnClickListener(v -> startActivity(new Intent(requireContext(), Acti_doiPass.class)));
 
         btnLogout.setOnClickListener(v -> {
-            // Xóa dữ liệu đăng nhập
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.remove(KEY_USER_ID);  // Xóa ID người dùng
-            editor.remove(KEY_USER_NAME);  // Xóa tên người dùng
-            editor.apply();
+            // Tạo hộp thoại xác nhận đăng xuất
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Xác nhận đăng xuất")
+                    .setMessage("Bạn có chắc chắn muốn đăng xuất?")
+                    .setPositiveButton("Đăng xuất", (dialog, which) -> {
+                        // Xóa dữ liệu đăng nhập
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.remove(KEY_USER_ID);  // Xóa ID người dùng
+                        editor.remove(KEY_USER_NAME);  // Xóa tên người dùng
+                        editor.apply();
 
-            // Hiển thị thông báo cho người dùng
-            Toast.makeText(requireContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
+                        // Hiển thị thông báo cho người dùng
+                        Toast.makeText(getContext(), "Đăng xuất thành công", Toast.LENGTH_SHORT).show();
 
-            // Chuyển hướng về màn hình đăng nhập
-            Intent intent = new Intent(requireContext(), DangNhap.class);
-            startActivity(intent);
-            requireActivity().finish();  // Đóng hoạt động hiện tại
+                        // Chuyển hướng về màn hình đăng nhập
+                        Intent intent = new Intent(getContext(), DangNhap.class);
+                        startActivity(intent);
+                        dialog.dismiss();  // Đóng hoạt động hiện tại
+                    })
+                    .setNegativeButton("Hủy", null)  // Đóng hộp thoại nếu người dùng nhấn Hủy
+                    .show();
         });
+
+
 
         return view;
     }

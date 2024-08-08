@@ -1,7 +1,8 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp">
+    android:layout_margin="5dp"
+    android:background="#FFFFFF">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -31,28 +32,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="iPhone 15 Pro"
-                android:textSize="8dp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
-            <RatingBar
-                android:id="@+id/rbSao"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:numStars="1"
-                android:rating="5"
-                android:stepSize="0.5"
-                android:layout_marginStart="1dp"
-                android:scaleX="0.3"
-                android:scaleY="0.3"
-                android:progressTint="@android:color/holo_orange_light" />
+<!--            <RatingBar-->
+<!--                android:id="@+id/rbSao"-->
+<!--                android:layout_width="40dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:numStars="1"-->
+<!--                android:rating="5"-->
+<!--                android:stepSize="0.5"-->
+<!--                android:layout_marginStart="1dp"-->
+<!--                android:scaleX="0.3"-->
+<!--                android:scaleY="0.3"-->
+<!--                android:progressTint="@android:color/holo_orange_light" />-->
 
-            <TextView
-                android:id="@+id/txtRb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4.9"
-                android:textSize="8sp"
-                />
+<!--            <TextView-->
+<!--                android:id="@+id/txtRb"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="4.9"-->
+<!--                android:textSize="8sp"-->
+<!--                />-->
         </LinearLayout>
     </LinearLayout>
 

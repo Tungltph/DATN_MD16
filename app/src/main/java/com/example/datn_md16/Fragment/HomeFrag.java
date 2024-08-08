@@ -1,6 +1,7 @@
 package com.example.datn_md16.Fragment;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
@@ -60,6 +61,27 @@ public class HomeFrag extends Fragment {
 
     TextView tvSearchHome;
     private TextView btnip, btnss, btnvv, btnxm, btnop;
+    private void updateButtonStyles(TextView selectedButton) {
+        // Danh sách các nút trạng thái
+        TextView[] buttons = {btnip, btnss, btnvv, btnxm, btnop};
+
+        // Cập nhật style cho các nút
+        for (TextView button : buttons) {
+            if (button == selectedButton) {
+                // Áp dụng style cho nút được chọn
+                button.setTextColor(getResources().getColor(R.color.white)); // Thay đổi màu chữ
+                button.setBackgroundColor(getResources().getColor(R.color.red)); // Thay đổi màu nền
+            } else {
+                // Áp dụng style cho nút không được chọn
+                button.setTextColor(getResources().getColor(R.color.black)); // Thay đổi màu chữ
+                button.setBackgroundColor(getResources().getColor(android.R.color.transparent)); // Màu nền mặc định
+                button.setPaintFlags(button.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
+            }
+        }
+    }
+
+
+
 
 
     @Nullable
@@ -77,8 +99,8 @@ public class HomeFrag extends Fragment {
         btnvv = view.findViewById(R.id.btnVivo);
         bannerUrls = new ArrayList<>();
         bannerUrls.add("https://cdn2.cellphones.com.vn/insecure/rs:fill:0:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone_15_pro_max_256gb_-_2_1_2.png");
-        bannerUrls.add("https://i.pinimg.com/736x/23/34/1f/23341f65daa921a20072874cdd1dc360.jpg");
-        bannerUrls.add("https://img.global.news.samsung.com/in/wp-content/uploads/2019/02/295-A-Series-KV-Banner-36x24inch-e1551339667384.jpg");
+        bannerUrls.add("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHAl5IVkr-viQsGd4EtN6fVXfKY24u25Fc_w&s");
+        bannerUrls.add("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREeIeaKYAgVyTZWDs7Y6Dauu_QHLUDMjBPXA&s");
 
         BannerAdapter bannerAdapter = new BannerAdapter(getContext(), bannerUrls);
         bannerViewPager.setAdapter(bannerAdapter);
@@ -98,6 +120,8 @@ public class HomeFrag extends Fragment {
         handler.postDelayed(runnable, 3000);
 
 
+
+
         idGioHangHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,6 +134,7 @@ public class HomeFrag extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), Acty_iphone.class);
                 startActivity(intent);
+                updateButtonStyles(btnip);
             }
         });
         btnop.setOnClickListener(new View.OnClickListener() {
@@ -117,6 +142,7 @@ public class HomeFrag extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), Acti_Oppo.class);
                 startActivity(intent);
+                updateButtonStyles(btnop);
             }
         });
         btnss.setOnClickListener(new View.OnClickListener() {
@@ -124,6 +150,7 @@ public class HomeFrag extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), Acti_Samsung.class);
                 startActivity(intent);
+                updateButtonStyles(btnss);
             }
         });
         btnvv.setOnClickListener(new View.OnClickListener() {
@@ -131,6 +158,7 @@ public class HomeFrag extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), Acti_vivo.class);
                 startActivity(intent);
+                updateButtonStyles(btnvv);
             }
         });
         btnxm.setOnClickListener(new View.OnClickListener() {
@@ -138,6 +166,7 @@ public class HomeFrag extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), Acti_Xiaomi.class);
                 startActivity(intent);
+                updateButtonStyles(btnxm);
             }
         });
 

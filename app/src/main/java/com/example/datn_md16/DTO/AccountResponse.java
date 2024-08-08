@@ -34,7 +34,65 @@ public class AccountResponse {
 
         @SerializedName("__v")
         public int v;
+
+        public String get_id() {
+            return _id;
+        }
+
+        public void set_id(String _id) {
+            this._id = _id;
+        }
+
+        public String getTaiKhoan() {
+            return taiKhoan;
+        }
+
+        public void setTaiKhoan(String taiKhoan) {
+            this.taiKhoan = taiKhoan;
+        }
+
+        public String getHoTen() {
+            return hoTen;
+        }
+
+        public void setHoTen(String hoTen) {
+            this.hoTen = hoTen;
+        }
+
+        public String getMatKhau() {
+            return matKhau;
+        }
+
+        public void setMatKhau(String matKhau) {
+            this.matKhau = matKhau;
+        }
+
+        public String getSdt() {
+            return sdt;
+        }
+
+        public void setSdt(String sdt) {
+            this.sdt = sdt;
+        }
+
+        public String getTenQuyen() {
+            return tenQuyen;
+        }
+
+        public void setTenQuyen(String tenQuyen) {
+            this.tenQuyen = tenQuyen;
+        }
+
+        public int getV() {
+            return v;
+        }
+
+        public void setV(int v) {
+            this.v = v;
+        }
     }
+
+
 
 
 

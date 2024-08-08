@@ -1,5 +1,6 @@
 package com.example.datn_md16.Adapter;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -16,7 +17,10 @@ import com.example.datn_md16.DTO.DonHangDTO;
 import com.example.datn_md16.R;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Locale;
 
 public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.ViewHolder> {
 
@@ -34,7 +38,6 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_donhang, parent, false);
         return new ViewHolder(view);
     }
-
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
@@ -54,7 +57,7 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
             double totalAmount = donHang.getTongTien(); // Tổng tiền từ đơn hàng
 
             holder.soLuong.setText("Số lượng: " + quantity);
-            holder.productPrice.setText(String.format("%.0fđ", totalAmount)); // Hiển thị tổng tiền
+            holder.productPrice.setText(formatPrice(totalAmount)); // Hiển thị tổng tiền với định dạng
 
             // Load image using Picasso
             String imageUrl = sanPham.getHinhAnh();
@@ -90,15 +93,32 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
                 intent.putExtra("tongTien", donHang.getTongTien());
                 intent.putExtra("hoTen", donHang.getKhachHang().getHoTen());
                 intent.putExtra("sdt", donHang.getKhachHang().getSdt()); // đảm bảo bạn có trường này trong model
-                intent.putExtra("ngayDatHang", donHang.getNgayDatHang());
-                intent.putExtra("ngayNhanHang", donHang.getNgayNhanHang());
+                intent.putExtra("ngayDatHang", donHang.getNgayDat());
+                intent.putExtra("ngayNhanHang", donHang.getNgayNhan());
                 intent.putExtra("diaChiGiaoHang", donHang.getDiaChiGiaoHang());
                 intent.putExtra("trangThaiDonHang", donHang.getTrangThaiDonHang());
                 intent.putExtra("phuongThucThanhToan", donHang.getPhuongThucThanhToan());
                 intent.putExtra("hinhAnhUrl", sanPham.getHinhAnh());
                 context.startActivity(intent);
             });
+            holder.tvDanhGia.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Dialog dialog = new Dialog(v.getContext());
+                    dialog.setContentView(R.layout.dialog_danhgia);
+
+                    ImageView imgstar1 = dialog.findViewById(R.id.star1);
+                }
+            });
         }
+    }
+
+    // Utility method to format price with thousand separators
+    private String formatPrice(double price) {
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
+        symbols.setGroupingSeparator('.');
+        DecimalFormat decimalFormat = new DecimalFormat("#,###", symbols);
+        return "₫"+decimalFormat.format(price);
     }
 
     public void updateData(List<DonHangDTO.DonHang> newDonHangList) {
@@ -106,14 +126,13 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
         notifyDataSetChanged(); // Thông báo cho RecyclerView cập nhật dữ liệu
     }
 
-
     @Override
     public int getItemCount() {
         return donHangList != null ? donHangList.size() : 0;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView productName, productColor, productPrice, soLuong, btnHuy, btnXemChiTiet,tvDanhGia;
+        TextView productName, productColor, productPrice, soLuong, btnHuy, btnXemChiTiet, tvDanhGia;
         ImageView productImage;
 
         public ViewHolder(@NonNull View itemView) {
