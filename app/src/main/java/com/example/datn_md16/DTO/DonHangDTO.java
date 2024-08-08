@@ -83,34 +83,7 @@ public class DonHangDTO {
         @SerializedName("idDiaChi")
         private String idDiaChi;
 
-        public String getNgayDat() {
-            try {
-                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
-                SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                Date date = inputFormat.parse(ngayDatHang);
-                return outputFormat.format(date);
-            } catch (ParseException e) {
-                e.printStackTrace();
-                return ngayDatHang;  // Trả về chuỗi gốc nếu không thể phân tích
-            }
-        }
-
-        public String getNgayNhan() {
-            try {
-                SimpleDateFormat inputFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
-                SimpleDateFormat outputFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-                Date date = inputFormat.parse(ngayNhanHang);
-                return outputFormat.format(date);
-            } catch (ParseException e) {
-                e.printStackTrace();
-                return ngayNhanHang;  // Trả về chuỗi gốc nếu không thể phân tích
-            }
-        }
-
-
         // Getters and Setters
-
-
         public String getIdDiaChi() {
             return idDiaChi;
         }
