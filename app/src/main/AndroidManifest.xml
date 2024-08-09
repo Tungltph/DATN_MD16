@@ -36,7 +36,7 @@
             android:exported="false" />
         <activity
             android:name=".Activitys.DangKi"
-            android:exported="false" /> <!-- Khai báo các Activity khác ở đây -->
+            android:exported="false" />
         <activity
             android:name=".ManChay"
             android:exported="true" />
@@ -58,7 +58,20 @@
         <activity android:name=".Activitys.Acti_GioHang" />
         <activity android:name=".Activitys.Acti_ChiTietSP" />
 <!--        <activity android:name=".Activitys.DangNhap" />-->
-        <activity android:name=".Activitys.Acti_ThanhToan" />
+        <activity android:name=".Activitys.Acti_ThanhToan"
+            android:exported="true"
+            android:launchMode="singleTask"
+            >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="demozpdk"
+                    android:host="app" />
+            </intent-filter>
+
+
+        </activity>
     </application>
 
 </manifest>

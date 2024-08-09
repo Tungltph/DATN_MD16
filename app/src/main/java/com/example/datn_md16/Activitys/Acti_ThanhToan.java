@@ -42,6 +42,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import vn.zalopay.sdk.Environment;
+import vn.zalopay.sdk.ZaloPayError;
+import vn.zalopay.sdk.ZaloPaySDK;
+import vn.zalopay.sdk.listeners.PayOrderListener;
 
 
 public class Acti_ThanhToan extends AppCompatActivity {
@@ -63,6 +67,11 @@ public class Acti_ThanhToan extends AppCompatActivity {
         setContentView(R.layout.thanhtoan);
 
 
+        StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+        StrictMode.setThreadPolicy(policy);
+
+        // ZaloPay SDK Init
+        ZaloPaySDK.init(2553, Environment.SANDBOX);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -265,59 +274,98 @@ public class Acti_ThanhToan extends AppCompatActivity {
             });
         }
         if (radioOnl.isChecked()){
+            Zalopay();
+        }
+    }
 
-            Toast.makeText(Acti_ThanhToan.this,"Thanh toán onl",Toast.LENGTH_SHORT).show();
-            SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
-            String userId = sharedPreferences.getString("user_id", null);
 
-            if (userId == null) {
-                Toast.makeText(Acti_ThanhToan.this, "Lỗi xác thực người dùng!", Toast.LENGTH_SHORT).show();
-                return;
-            }
 
-            // Tạo một đối tượng KhachHang
-            DonHangDTO.KhachHang khachHang = new DonHangDTO.KhachHang();
-            khachHang.setId(userId);
-            // Nếu cần thiết, bạn có thể thiết lập các thuộc tính khác của KhachHang ở đây
+private void Zalopay() {
+    CreateOrder orderApi = new CreateOrder();
+    DonHangDTO.DonHang donHang = new DonHangDTO.DonHang();
+    String totalAmountString = textViewTotalAmount.getText().toString().replaceAll("[^\\d]", "");
+    try {
+        JSONObject data = orderApi.createOrder(totalAmountString);
 
-            // Tạo một đơn hàng mới
-            DonHangDTO.DonHang donHang = new DonHangDTO.DonHang();
-            donHang.setSanPhamList(convertToSanPhamList(selectedItems));
-            donHang.setSoLuong(calculateTotalQuantity(selectedItems));
-            donHang.setTongTien(updateTotalAmount());
-            donHang.setTrangThaiThanhToan(radioOnl.isChecked()); // Trạng thái thanh toán dựa trên lựa chọn
-            donHang.setDiaChiGiaoHang(textViewAddress2.getText().toString());
-            donHang.setPhuongThucThanhToan(radioOnl.isChecked() ? "Thẻ tín dụng" : "Tiền mặt");
-            donHang.setTrangThaiDonHang("Chờ xác nhận");
-            donHang.setKhachHang(khachHang); // Đặt đối tượng KhachHang vào đơn hàng
+        String code = data.getString("return_code");
 
-            // Thực hiện gọi API để đặt hàng
-            ApiService apiService = ApiClient.getClient().create(ApiService.class);
-            Call<DonHangDTO> call = apiService.createOrder(donHang);
+        if (code.equals("1")) {
+            String token = data.getString("zp_trans_token");
 
-            call.enqueue(new Callback<DonHangDTO>() {
+            ZaloPaySDK.getInstance().payOrder(Acti_ThanhToan.this, token, "demozpdk://app", new PayOrderListener() {
                 @Override
-                public void onResponse(Call<DonHangDTO> call, Response<DonHangDTO> response) {
-                    if (response.isSuccessful()) {
-                        Toast.makeText(Acti_ThanhToan.this, "Đặt hàng thành công! Mời bạn tiếp tục mua sản phẩm mới", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(Acti_ThanhToan.this, MainActivity.class);
-                        startActivity(intent);
-                        clearCart();
-                    } else {
-                        Toast.makeText(Acti_ThanhToan.this, "Đặt hàng thất bại!", Toast.LENGTH_SHORT).show();
+                public void onPaymentSucceeded(String s, String s1, String s2) {
+                    // Xử lý khi thanh toán thành công
+                    Toast.makeText(Acti_ThanhToan.this, "Thanh toán onl", Toast.LENGTH_SHORT).show();
+                    SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+                    String userId = sharedPreferences.getString("user_id", null);
+
+                    if (userId == null) {
+                        Toast.makeText(Acti_ThanhToan.this, "Lỗi xác thực người dùng!", Toast.LENGTH_SHORT).show();
+                        return;
                     }
+
+                    // Tạo một đối tượng KhachHang
+                    DonHangDTO.KhachHang khachHang = new DonHangDTO.KhachHang();
+                    khachHang.setId(userId);
+                    // Nếu cần thiết, bạn có thể thiết lập các thuộc tính khác của KhachHang ở đây
+
+                    // Tạo một đơn hàng mới
+                    DonHangDTO.DonHang donHang = new DonHangDTO.DonHang();
+                    donHang.setSanPhamList(convertToSanPhamList(selectedItems));
+                    donHang.setSoLuong(calculateTotalQuantity(selectedItems));
+                    donHang.setTongTien(updateTotalAmount());
+                    donHang.setTrangThaiThanhToan(radioOnl.isChecked()); // Trạng thái thanh toán dựa trên lựa chọn
+                    donHang.setDiaChiGiaoHang(textViewAddress2.getText().toString());
+                    donHang.setPhuongThucThanhToan(radioOnl.isChecked() ? "Thẻ tín dụng" : "Tiền mặt");
+                    donHang.setTrangThaiDonHang("Chờ xác nhận");
+                    donHang.setKhachHang(khachHang); // Đặt đối tượng KhachHang vào đơn hàng
+
+                    // Thực hiện gọi API để đặt hàng
+                    ApiService apiService = ApiClient.getClient().create(ApiService.class);
+                    Call<DonHangDTO> call = apiService.createOrder(donHang);
+
+                    call.enqueue(new Callback<DonHangDTO>() {
+                        @Override
+                        public void onResponse(Call<DonHangDTO> call, Response<DonHangDTO> response) {
+                            if (response.isSuccessful()) {
+                                Toast.makeText(Acti_ThanhToan.this, "Đặt hàng thành công! Mời bạn tiếp tục mua sản phẩm mới", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(Acti_ThanhToan.this, MainActivity.class);
+                                startActivity(intent);
+                                clearCart();
+                            } else {
+                                Toast.makeText(Acti_ThanhToan.this, "Đặt hàng thất bại!", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<DonHangDTO> call, Throwable t) {
+                            Toast.makeText(Acti_ThanhToan.this, "Lỗi kết nối mạng!", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    Log.d("ZaloPay", "Payment Succeeded: " + s + ", " + s1 + ", " + s2);
                 }
 
                 @Override
-                public void onFailure(Call<DonHangDTO> call, Throwable t) {
-                    Toast.makeText(Acti_ThanhToan.this, "Lỗi kết nối mạng!", Toast.LENGTH_SHORT).show();
+                public void onPaymentCanceled(String s, String s1) {
+                    // Xử lý khi thanh toán bị hủy
+                    Log.d("ZaloPay", "Payment Canceled: " + s + ", " + s1);
+                }
+
+                @Override
+                public void onPaymentError(ZaloPayError zaloPayError, String s, String s1) {
+                    // Xử lý khi thanh toán gặp lỗi
+                    Log.d("ZaloPay", "Payment Error: " + zaloPayError + ", " + s + ", " + s1);
                 }
             });
 
-
-
         }
+
+    } catch (Exception e) {
+        e.printStackTrace();
     }
+}
+
 
 
     private List<DonHangDTO.SanPham> convertToSanPhamList(List<GioHangDTO> selectedItems) {
@@ -377,6 +425,11 @@ public class Acti_ThanhToan extends AppCompatActivity {
                 }
             });
         }
+    }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        ZaloPaySDK.getInstance().onResult(intent);
     }
 
 
