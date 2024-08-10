@@ -144,6 +144,7 @@ public class Acti_ThanhToan extends AppCompatActivity {
                     tvsdt.setText( selectedAddress.getSdt());
 
                     idDiaChi = selectedAddress.getId();//thêm
+
                 }
             }
             updateUI(selectedItems);
@@ -233,6 +234,8 @@ public class Acti_ThanhToan extends AppCompatActivity {
 
 
             // Nếu cần thiết, bạn có thể thiết lập các thuộc tính khác của KhachHang ở đây
+            DiaChiDTO diaChi = new DiaChiDTO();
+            diaChi.setId(idDiaChi);
 
             // Tạo một đơn hàng mới
             DonHangDTO.DonHang donHang = new DonHangDTO.DonHang();
@@ -241,7 +244,7 @@ public class Acti_ThanhToan extends AppCompatActivity {
             donHang.setTongTien(updateTotalAmount());
             donHang.setTrangThaiThanhToan(radioOnl.isChecked()); // Trạng thái thanh toán dựa trên lựa chọn
             donHang.setDiaChiGiaoHang(textViewAddress2.getText().toString());
-            donHang.setIdDiaChi(idDiaChi);//them
+            donHang.setIdDiaChi(diaChi);//them
             donHang.setPhuongThucThanhToan(radioOnl.isChecked() ? "Thẻ tín dụng" : "Tiền mặt");
             donHang.setTrangThaiDonHang("Chờ xác nhận");
             donHang.setKhachHang(khachHang);
@@ -309,7 +312,8 @@ private void Zalopay() {
                     DonHangDTO.KhachHang khachHang = new DonHangDTO.KhachHang();
                     khachHang.setId(userId);
                     // Nếu cần thiết, bạn có thể thiết lập các thuộc tính khác của KhachHang ở đây
-
+                    DiaChiDTO diaChi = new DiaChiDTO();
+                    diaChi.setId(idDiaChi);
                     // Tạo một đơn hàng mới
                     DonHangDTO.DonHang donHang = new DonHangDTO.DonHang();
                     donHang.setSanPhamList(convertToSanPhamList(selectedItems));
@@ -317,6 +321,7 @@ private void Zalopay() {
                     donHang.setTongTien(updateTotalAmount());
                     donHang.setTrangThaiThanhToan(radioOnl.isChecked()); // Trạng thái thanh toán dựa trên lựa chọn
                     donHang.setDiaChiGiaoHang(textViewAddress2.getText().toString());
+                    donHang.setIdDiaChi(diaChi);
                     donHang.setPhuongThucThanhToan(radioOnl.isChecked() ? "Thẻ tín dụng" : "Tiền mặt");
                     donHang.setTrangThaiDonHang("Chờ xác nhận");
                     donHang.setKhachHang(khachHang); // Đặt đối tượng KhachHang vào đơn hàng
@@ -376,7 +381,7 @@ private void Zalopay() {
             DonHangDTO.MauSchema soluong = new DonHangDTO.MauSchema();
 
 
-            sanPham.setId(item.getIdSanPham());
+          //  sanPham.setId(item.getIdSanPham());
             soluong.setSoLuong(item.getSoLuong());
             sanPhamList.add(sanPham);
         }

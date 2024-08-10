@@ -81,10 +81,12 @@ public class DonHangDTO {
         @SerializedName("phuongThucThanhToan")
         private String phuongThucThanhToan;
         @SerializedName("idDiaChi")
-        private String idDiaChi;
+        private DiaChiDTO idDiaChi;
 
         // Getters and Setters
-        public String getIdDiaChi() {
+
+
+        public DiaChiDTO getIdDiaChi() {
             return idDiaChi;
         }
 
@@ -96,7 +98,7 @@ public class DonHangDTO {
             return ngayNhanHang;
         }
 
-        public void setIdDiaChi(String idDiaChi) {
+        public void setIdDiaChi(DiaChiDTO idDiaChi) {
             this.idDiaChi = idDiaChi;
         }
 

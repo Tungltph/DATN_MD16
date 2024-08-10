@@ -22,6 +22,9 @@ public class DiaChiDTO implements Parcelable {
 
     private boolean isSelected; // Thêm thuộc tính này
 
+    public DiaChiDTO() {
+    }
+
     public DiaChiDTO(String name, String phoneNumber, String address, String idAccount) {
         this.ten = name;
         this.sdt = phoneNumber;

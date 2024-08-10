@@ -178,6 +178,7 @@ public class HoaDonFrag extends Fragment {
             @Override
             public void onFailure(@NonNull Call<DonHangDTO> call, @NonNull Throwable t) {
                 Toast.makeText(getContext(), "Lỗi khi tải dữ liệu: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+
             }
         });
     }

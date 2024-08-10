@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datn_md16.Activitys.Acti_chitietdonhang;
+import com.example.datn_md16.DTO.DiaChiDTO;
 import com.example.datn_md16.DTO.DonHangDTO;
 import com.example.datn_md16.R;
 import com.squareup.picasso.Picasso;
@@ -86,19 +87,22 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
             });
 
             holder.btnXemChiTiet.setOnClickListener(v -> {
+                DiaChiDTO diaChiDTO = new DiaChiDTO();
+
                 Intent intent = new Intent(context, Acti_chitietdonhang.class);
                 intent.putExtra("tenDienThoai", sanPham.getTenDienThoai());
                 intent.putExtra("mauSchema", sanPham.getMauSchema() != null && !sanPham.getMauSchema().isEmpty() ? sanPham.getMauSchema().get(0).getMau() : "N/A");
                 intent.putExtra("soLuong", donHang.getSoLuong());
                 intent.putExtra("tongTien", donHang.getTongTien());
-                intent.putExtra("hoTen", donHang.getKhachHang().getHoTen());
-                intent.putExtra("sdt", donHang.getKhachHang().getSdt()); // đảm bảo bạn có trường này trong model
+                intent.putExtra("hoTen", donHang.getIdDiaChi().getTen());
+                intent.putExtra("sdt", donHang.getIdDiaChi().getSdt()); // đảm bảo bạn có trường này trong model
                 intent.putExtra("ngayDatHang", donHang.getNgayDatHang());
                 intent.putExtra("ngayNhanHang", donHang.getNgayNhanHang());
                 intent.putExtra("diaChiGiaoHang", donHang.getDiaChiGiaoHang());
                 intent.putExtra("trangThaiDonHang", donHang.getTrangThaiDonHang());
                 intent.putExtra("phuongThucThanhToan", donHang.getPhuongThucThanhToan());
                 intent.putExtra("hinhAnhUrl", sanPham.getHinhAnh());
+               
                 context.startActivity(intent);
             });
             holder.tvDanhGia.setOnClickListener(new View.OnClickListener() {

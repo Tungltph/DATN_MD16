@@ -27,6 +27,7 @@ import com.example.datn_md16.Interface.ApiResponse;
 
             @DELETE("delete/{id}")
             Call<Void> deleteDiaChi(@Path("id") String id);
+
             @GET("api/sanpham/{id}")
             Call<SanPhamDTO> getProductById(@Path("id") String productId);
 
