@@ -44,13 +44,15 @@ public interface ApiService {
     Call<SanPhamYeuThichResponse> getSanPhamYeuThich();
 
     @GET("api/sanpham/{id}")
-    Call<SanPhamDTO> getProductById(@Path("id") String productId);
+    Call<ProductHome> getProductById(@Path("id") String productId);
 
     @GET("api/account/{id}")
     Call<AccountResponse> getAccount(@Path("id") String id);
 
     @POST("/api/gioHang/add/")
     Call<Void> adddToCart(@Body GioHangDTO gioHangDTO);
+
+
 
 
 
@@ -75,8 +77,12 @@ public interface ApiService {
     @DELETE("/api/sanPhamYT/{id}")
     Call<Void> removeFavorite(@Path("id") String id);
 
-    @GET("/api/donHang/")
-    Call<DonHangDTO> getDonHangByUser(@Query("_id") String userId);
+//    @GET("/api/donHang/")
+//    Call<DonHangDTO> getDonHangByUser(@Query("_id") String userId);
+
+    @GET("/api/donHang/{idKH}")
+    Call<DonHangDTO> getDonHangByUser(@Path("idKH") String userId);
+
 
     @POST("/api/sanPhamYT/")
     Call<Void> addYeuThich(@Body SanPhamYeuThichDTO sanPhamYeuThichDTO);

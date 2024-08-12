@@ -381,7 +381,7 @@ private void Zalopay() {
             DonHangDTO.MauSchema soluong = new DonHangDTO.MauSchema();
 
 
-          //  sanPham.setId(item.getIdSanPham());
+            sanPham.setId(item.getIdSanPham());
             soluong.setSoLuong(item.getSoLuong());
             sanPhamList.add(sanPham);
         }
@@ -399,7 +399,7 @@ private void Zalopay() {
     private void clearCart() {
         // Tạo Retrofit và ApiService
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.8:3000/") // Đảm bảo URL chính xác
+                .baseUrl("http://192.168.1.11:3000/") // Đảm bảo URL chính xác
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiService apiService = retrofit.create(ApiService.class);

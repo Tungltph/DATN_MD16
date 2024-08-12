@@ -1,9 +1,11 @@
 package com.example.datn_md16.DTO;
 
-import java.io.Serializable;
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.List;
 
-public class ProductHome implements Serializable {
+public class ProductHome implements Parcelable {
     private String _id;
     private String tenDienThoai; // Product name
     private String camera;
@@ -26,7 +28,6 @@ public class ProductHome implements Serializable {
     private String idHangSX;
     private int __v;
     private float rating; // Rating
-
 
     // Constructor, getters, and setters
 
@@ -58,6 +59,75 @@ public class ProductHome implements Serializable {
         this.rating = rating;
     }
 
+    protected ProductHome(Parcel in) {
+        _id = in.readString();
+        tenDienThoai = in.readString();
+        camera = in.readString();
+        cameraTruoc = in.readString();
+        kichThuoc = in.readString();
+        cPU = in.readString();
+        ram = in.readString();
+        sim = in.readString();
+        pin = in.readString();
+        heDieuHanh = in.readString();
+        namSanXuat = in.readString();
+        congNgheManHinh = in.readString();
+        moTaThem = in.readString();
+        hinhAnh = in.readString();
+        doPhanGiai = in.readString();
+        giaGoc = in.readString();
+        giamGia = in.readString();
+        trangThai = in.readByte() != 0;
+        mauSchema = in.createTypedArrayList(MauSchema.CREATOR);
+        idHangSX = in.readString();
+        __v = in.readInt();
+        rating = in.readFloat();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(_id);
+        dest.writeString(tenDienThoai);
+        dest.writeString(camera);
+        dest.writeString(cameraTruoc);
+        dest.writeString(kichThuoc);
+        dest.writeString(cPU);
+        dest.writeString(ram);
+        dest.writeString(sim);
+        dest.writeString(pin);
+        dest.writeString(heDieuHanh);
+        dest.writeString(namSanXuat);
+        dest.writeString(congNgheManHinh);
+        dest.writeString(moTaThem);
+        dest.writeString(hinhAnh);
+        dest.writeString(doPhanGiai);
+        dest.writeString(giaGoc);
+        dest.writeString(giamGia);
+        dest.writeByte((byte) (trangThai ? 1 : 0));
+        dest.writeTypedList(mauSchema);
+        dest.writeString(idHangSX);
+        dest.writeInt(__v);
+        dest.writeFloat(rating);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<ProductHome> CREATOR = new Creator<ProductHome>() {
+        @Override
+        public ProductHome createFromParcel(Parcel in) {
+            return new ProductHome(in);
+        }
+
+        @Override
+        public ProductHome[] newArray(int size) {
+            return new ProductHome[size];
+        }
+    };
+
+    // Getters and Setters
     public String get_id() {
         return _id;
     }
@@ -234,7 +304,8 @@ public class ProductHome implements Serializable {
         this.rating = rating;
     }
 
-    public static class MauSchema implements Serializable {
+    // MauSchema class implementing Parcelable
+    public static class MauSchema implements Parcelable {
         private String mau;
         private int soLuong;
         private int giaTien;
@@ -247,6 +318,39 @@ public class ProductHome implements Serializable {
             this._id = _id;
         }
 
+        protected MauSchema(Parcel in) {
+            mau = in.readString();
+            soLuong = in.readInt();
+            giaTien = in.readInt();
+            _id = in.readString();
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(mau);
+            dest.writeInt(soLuong);
+            dest.writeInt(giaTien);
+            dest.writeString(_id);
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        public static final Creator<MauSchema> CREATOR = new Creator<MauSchema>() {
+            @Override
+            public MauSchema createFromParcel(Parcel in) {
+                return new MauSchema(in);
+            }
+
+            @Override
+            public MauSchema[] newArray(int size) {
+                return new MauSchema[size];
+            }
+        };
+
+        // Getters and Setters
         public String getMau() {
             return mau;
         }
@@ -277,9 +381,6 @@ public class ProductHome implements Serializable {
 
         public void set_id(String _id) {
             this._id = _id;
-        }
-
-        public void setSelectedColor(String mau) {
         }
     }
 }

@@ -98,7 +98,7 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
                 intent.putExtra("sdt", donHang.getIdDiaChi().getSdt()); // đảm bảo bạn có trường này trong model
                 intent.putExtra("ngayDatHang", donHang.getNgayDatHang());
                 intent.putExtra("ngayNhanHang", donHang.getNgayNhanHang());
-                intent.putExtra("diaChiGiaoHang", donHang.getDiaChiGiaoHang());
+                intent.putExtra("diaChiGiaoHang", donHang.getIdDiaChi().getDiaChi());
                 intent.putExtra("trangThaiDonHang", donHang.getTrangThaiDonHang());
                 intent.putExtra("phuongThucThanhToan", donHang.getPhuongThucThanhToan());
                 intent.putExtra("hinhAnhUrl", sanPham.getHinhAnh());

@@ -16,11 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.datn_md16.DTO.GioHangDTO;
+import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.DTO.SanPhamDTO;
 import com.example.datn_md16.Interfa.ApiService;
 import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 import retrofit2.Call;
@@ -65,54 +67,40 @@ public class Thaanh_Toan_Adapter extends RecyclerView.Adapter<Thaanh_Toan_Adapte
 
         holder.tvQuantity.setText(String.valueOf(gioHang.getSoLuong()));
 
-        // Xử lý sự kiện xóa sản phẩm
-//        holder.xoa.setOnClickListener(v -> new AlertDialog.Builder(context)
-//                .setTitle("Xóa sản phẩm")
-//                .setMessage("Bạn có chắc chắn muốn xóa sản phẩm này?")
-//                .setPositiveButton("Có", (dialog, which) -> {
-//                    productService.deleteItemFromCart(gioHang.get_id()).enqueue(new Callback<Void>() {
-//                        @Override
-//                        public void onResponse(Call<Void> call, Response<Void> response) {
-//                            if (response.isSuccessful()) {
-//                                Toast.makeText(context, "Xóa sản phẩm thành công", Toast.LENGTH_SHORT).show();
-//                                // Cập nhật danh sách giỏ hàng
-//                                gioHangList.remove(holder.getAdapterPosition());
-//                                notifyItemRemoved(holder.getAdapterPosition());
-//                                updateTotalPrice();
-//                            } else {
-//                                Toast.makeText(context, "Lỗi: " + response.message(), Toast.LENGTH_SHORT).show();
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onFailure(Call<Void> call, Throwable t) {
-//                            Toast.makeText(context, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//                        }
-//                    });
-//                })
-//                .setNegativeButton("Không", null)
-//                .show());
+
     }
 
     private void loadProductInfo(GioHangDTO gioHang, GioHangViewHolder holder) {
-        productService.getProductById(gioHang.getIdSanPham()).enqueue(new Callback<SanPhamDTO>() {
+        // Giả sử productService có phương thức để lấy thông tin sản phẩm theo ID
+        productService.getProductById(gioHang.getIdSanPham()).enqueue(new Callback<ProductHome>() {
             @Override
-            public void onResponse(Call<SanPhamDTO> call, Response<SanPhamDTO> response) {
+            public void onResponse(Call<ProductHome> call, Response<ProductHome> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    SanPhamDTO sanPham = response.body();
-                    gioHang.setSanPham(sanPham);
+                    ProductHome product = response.body();
+                    gioHang.setSanPham(product);
 
+                    // Khởi tạo các biến để lưu giá và màu sắc
                     String priceText = "Không có thông tin giá";
                     String colorText = "Không có thông tin màu";
-                    if (sanPham.getMauSchema() != null && !sanPham.getMauSchema().isEmpty()) {
-                        priceText = sanPham.getMauSchema().get(0).getGiaTien() + "đ";
-                        colorText = "Màu điện thoại: " + sanPham.getMauSchema().get(0).getMau();
+
+                    if (product.getMauSchema() != null && !product.getMauSchema().isEmpty()) {
+                        for (ProductHome.MauSchema mauSchema : product.getMauSchema()) {
+                            if (mauSchema.get_id() != null && mauSchema.get_id().equals(gioHang.getIdMau())) {
+                                // Nếu màu sắc phù hợp với idMau của gioHang
+                                priceText = "₫" + new DecimalFormat("#,###").format(mauSchema.getGiaTien());
+                                colorText = "Màu: " + mauSchema.getMau();
+                                break;
+                            }
+                        }
                     }
 
-                    holder.productName.setText(sanPham.getTenSanPham());
+                    holder.productName.setText(product.getTenDienThoai());
                     holder.productPrice.setText(priceText);
                     holder.mau.setText(colorText);
-                    Glide.with(context).load(sanPham.getHinhAnh()).into(holder.productImage);
+                    Glide.with(context).load(product.getHinhAnh()).into(holder.productImage);
+
+                    // Cập nhật tổng tiền sau khi tải thông tin sản phẩm
+                    updateTotalPrice();
                 } else {
                     holder.productName.setText("Sản phẩm không tìm thấy");
                     holder.productPrice.setText("Không có thông tin giá");
@@ -121,7 +109,7 @@ public class Thaanh_Toan_Adapter extends RecyclerView.Adapter<Thaanh_Toan_Adapte
             }
 
             @Override
-            public void onFailure(Call<SanPhamDTO> call, Throwable t) {
+            public void onFailure(Call<ProductHome> call, Throwable t) {
                 holder.productName.setText("Sản phẩm không tìm thấy");
                 holder.productPrice.setText("Không có thông tin giá");
                 holder.mau.setText("Không có thông tin màu");

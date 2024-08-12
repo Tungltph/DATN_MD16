@@ -6,7 +6,7 @@ public class SanPhamYeuThichDTO {
     private String _id;
     private String id_sanPham; // Giữ nguyên là String
     private String id_user; // Giữ nguyên là String
-    private SanPhamDTO sanPham; // Thêm trường này để lưu thông tin sản phẩm
+    private ProductHome sanPham; // Thêm trường này để lưu thông tin sản phẩm
 
     public SanPhamYeuThichDTO(String id_sanPham, String id_user) {
         this.id_sanPham = id_sanPham;
@@ -37,11 +37,11 @@ public class SanPhamYeuThichDTO {
         this.id_user = id_user;
     }
 
-    public SanPhamDTO getSanPham() {
+    public ProductHome getSanPham() {
         return sanPham;
     }
 
-    public void setSanPham(SanPhamDTO sanPham) {
+    public void setSanPham(ProductHome sanPham) {
         this.sanPham = sanPham;
     }
 }

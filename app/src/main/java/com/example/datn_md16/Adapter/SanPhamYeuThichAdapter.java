@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.datn_md16.Activitys.Acti_ChiTietSP;
+import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.DTO.SanPhamDTO;
 import com.example.datn_md16.DTO.SanPhamYeuThichDTO;
 import com.example.datn_md16.DTO.TimKiemDTO;
@@ -101,11 +102,11 @@ public class SanPhamYeuThichAdapter extends RecyclerView.Adapter<SanPhamYeuThich
     }
 
     private void loadProductInfo(SanPhamYeuThichDTO sanPhamYeuThichDTO, ViewHolder holder) {
-        productService.getProductById(sanPhamYeuThichDTO.getId_sanPham()).enqueue(new Callback<SanPhamDTO>() {
+        productService.getProductById(sanPhamYeuThichDTO.getId_sanPham()).enqueue(new Callback<ProductHome>() {
             @Override
-            public void onResponse(Call<SanPhamDTO> call, Response<SanPhamDTO> response) {
+            public void onResponse(Call<ProductHome> call, Response<ProductHome> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    SanPhamDTO sanPham = response.body();
+                    ProductHome sanPham = response.body();
                     sanPhamYeuThichDTO.setSanPham(sanPham);
 
                     // Lấy giá từ mauSchema
@@ -115,7 +116,7 @@ public class SanPhamYeuThichAdapter extends RecyclerView.Adapter<SanPhamYeuThich
                         priceText = sanPham.getMauSchema().get(0).getGiaTien() + "đ";
                         colorText = "Màu điện thoại : " + sanPham.getMauSchema().get(0).getMau();
                     }
-                    holder.tvTenYT.setText(sanPham.getTenSanPham());
+                    holder.tvTenYT.setText(sanPham.getTenDienThoai());
                     Glide.with(context).load(sanPham.getHinhAnh()).into(holder.imgSanPhamYT);
                 } else {
                     holder.tvTenYT.setText("Sản phẩm không tìm thấy");
@@ -124,7 +125,7 @@ public class SanPhamYeuThichAdapter extends RecyclerView.Adapter<SanPhamYeuThich
             }
 
             @Override
-            public void onFailure(Call<SanPhamDTO> call, Throwable t) {
+            public void onFailure(Call<ProductHome> call, Throwable t) {
                 holder.tvTenYT.setText("Sản phẩm không tìm thấy");
                 Log.e("SanPhamYeuThichAdapter", "Error: " + t.getMessage());
             }

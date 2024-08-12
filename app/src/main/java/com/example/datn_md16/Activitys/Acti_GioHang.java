@@ -78,6 +78,7 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
             Toast.makeText(this, "Giỏ hàng trống", Toast.LENGTH_SHORT).show();
             return;
         }
+
         // Lọc các sản phẩm đã được chọn
         List<GioHangDTO> selectedItems = new ArrayList<>();
         for (GioHangDTO item : gioHangList) {
@@ -85,25 +86,30 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
                 selectedItems.add(item);
             }
         }
+
         if (selectedItems.isEmpty()) {
             Toast.makeText(this, "Chưa chọn sản phẩm nào để thanh toán", Toast.LENGTH_SHORT).show();
             return;
         }
 
+        // Khởi tạo Retrofit và ApiService
         Retrofit retrofit = ApiClient.getClient();
+        ApiService apiService = retrofit.create(ApiService.class);
+
+        // Lấy địa chỉ đã chọn (nếu cần)
+        DiaChiDTO diaChi = getSelectedAddress();
+
         // Khởi tạo Intent và truyền dữ liệu
         Intent intent = new Intent(Acti_GioHang.this, Acti_ThanhToan.class);
         intent.putParcelableArrayListExtra("selectedItems", new ArrayList<>(selectedItems));
 
-        ApiService apiService = retrofit.create(ApiService.class);
-        // Giả sử bạn có phương thức này để lấy địa chỉ đã chọn
-        DiaChiDTO diaChi = getSelectedAddress();
         if (diaChi != null) {
             intent.putExtra("selectedAddress", diaChi);
         }
 
         startActivity(intent);
     }
+
 
 
     private DiaChiDTO getSelectedAddress() {

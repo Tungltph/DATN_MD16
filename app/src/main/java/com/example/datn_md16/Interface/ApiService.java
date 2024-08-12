@@ -3,6 +3,7 @@ package com.example.datn_md16.Interface;
 import com.example.datn_md16.DTO.AccountResponse;
 import com.example.datn_md16.DTO.DiaChiDTO;
 import com.example.datn_md16.DTO.DonHangDTO;
+import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.DTO.SanPhamDTO;
 import com.example.datn_md16.Interface.ApiResponse;
 
@@ -29,7 +30,7 @@ import com.example.datn_md16.Interface.ApiResponse;
             Call<Void> deleteDiaChi(@Path("id") String id);
 
             @GET("api/sanpham/{id}")
-            Call<SanPhamDTO> getProductById(@Path("id") String productId);
+            Call<ProductHome> getProductById(@Path("id") String productId);
 
 
             @PUT("edit/{id}")

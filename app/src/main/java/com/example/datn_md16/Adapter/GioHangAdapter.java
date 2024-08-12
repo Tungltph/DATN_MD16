@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.datn_md16.DTO.GioHangDTO;
+import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.DTO.SanPhamDTO;
 import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.Interface.ApiService;
@@ -126,28 +127,33 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
     }
 
     private void loadProductInfo(GioHangDTO gioHang, GioHangViewHolder holder) {
-        productService.getProductById(gioHang.getIdSanPham()).enqueue(new Callback<SanPhamDTO>() {
+        // Giả sử productService có phương thức để lấy thông tin sản phẩm theo ID
+        productService.getProductById(gioHang.getIdSanPham()).enqueue(new Callback<ProductHome>() {
             @Override
-            public void onResponse(Call<SanPhamDTO> call, Response<SanPhamDTO> response) {
+            public void onResponse(Call<ProductHome> call, Response<ProductHome> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    SanPhamDTO sanPham = response.body();
-                    gioHang.setSanPham(sanPham);
+                    ProductHome product = response.body();
+                    gioHang.setSanPham(product);
 
-                    // Lấy giá từ mauSchema
+                    // Khởi tạo các biến để lưu giá và màu sắc
                     String priceText = "Không có thông tin giá";
                     String colorText = "Không có thông tin màu";
-                    if (sanPham.getMauSchema() != null && !sanPham.getMauSchema().isEmpty()) {
-                        int price = sanPham.getMauSchema().get(0).getGiaTien();
-                        // Định dạng giá
-                        DecimalFormat decimalFormat = new DecimalFormat("#,###");
-                        priceText = "₫"+decimalFormat.format(price) ;
-                        colorText = "Màu điện thoại : " + sanPham.getMauSchema().get(0).getMau();
+
+                    if (product.getMauSchema() != null && !product.getMauSchema().isEmpty()) {
+                        for (ProductHome.MauSchema mauSchema : product.getMauSchema()) {
+                            if (mauSchema.get_id() != null && mauSchema.get_id().equals(gioHang.getIdMau())) {
+                                // Nếu màu sắc phù hợp với idMau của gioHang
+                                priceText = "₫" + new DecimalFormat("#,###").format(mauSchema.getGiaTien());
+                                colorText = "Màu: " + mauSchema.getMau();
+                                break;
+                            }
+                        }
                     }
 
-                    holder.productName.setText(sanPham.getTenSanPham());
+                    holder.productName.setText(product.getTenDienThoai());
                     holder.productPrice.setText(priceText);
                     holder.mau.setText(colorText);
-                    Glide.with(context).load(sanPham.getHinhAnh()).into(holder.productImage);
+                    Glide.with(context).load(product.getHinhAnh()).into(holder.productImage);
 
                     // Cập nhật tổng tiền sau khi tải thông tin sản phẩm
                     updateTotalPrice();
@@ -159,13 +165,16 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
             }
 
             @Override
-            public void onFailure(Call<SanPhamDTO> call, Throwable t) {
+            public void onFailure(Call<ProductHome> call, Throwable t) {
                 holder.productName.setText("Sản phẩm không tìm thấy");
                 holder.productPrice.setText("Không có thông tin giá");
                 holder.mau.setText("Không có thông tin màu");
             }
         });
     }
+
+
+
 
     private void showDeleteConfirmationDialog(GioHangDTO gioHang, int position) {
         new AlertDialog.Builder(context)
@@ -206,7 +215,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
         int totalPrice = 0;
         for (GioHangDTO gioHang : gioHangList) {
             if (gioHang.isChecked() && gioHang.getSanPham() != null) { // Chỉ tính tổng cho các sản phẩm đã được chọn
-                SanPhamDTO sanPham = gioHang.getSanPham();
+                ProductHome sanPham = gioHang.getSanPham();
                 int price = 0;
                 if (sanPham.getMauSchema() != null && !sanPham.getMauSchema().isEmpty()) {
                     price = sanPham.getMauSchema().get(0).getGiaTien(); // Lấy giá từ mauSchema

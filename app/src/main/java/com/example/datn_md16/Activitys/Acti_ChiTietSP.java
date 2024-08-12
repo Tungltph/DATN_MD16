@@ -381,6 +381,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
         if (mauList != null && !mauList.isEmpty()) {
             MauAdapter mauAdapter = new MauAdapter(mauList, mau -> {
                 selectedColor = mau.get_id();
+
                 updatePriceAndQuantity(mauList, selectedColor, tvGiamGiaGioHang, tvSoLuong);
             });
 
