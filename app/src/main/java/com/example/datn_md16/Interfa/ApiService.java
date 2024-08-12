@@ -33,6 +33,9 @@ public interface ApiService {
     @GET("/api/sanPham")
     Call<List<TimKiemDTO>> getTimKiem();
 
+    @GET("/api/sanPham/topBanChay")
+    Call<List<TimKiemDTO>> getBanChay();
+
     @GET("/api/account")
     Call<AccountResponse> getAccounts();
 
@@ -65,6 +68,7 @@ public interface ApiService {
 
     @GET("/api/sanPham")
     Call<List<ProductHome>> getProducts();
+
 
     @GET("/api/thongBao/{id}")
     Call<ThongBaoResponse> getThongBaoById(@Path("id") String id);

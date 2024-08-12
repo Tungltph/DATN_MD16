@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datn_md16.Activitys.Acti_ChiTietSP;
+import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.DTO.TimKiemDTO;
 import com.example.datn_md16.R;
 import com.google.gson.Gson;
@@ -29,6 +30,8 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
     private List<TimKiemDTO> dataList;
     private List<TimKiemDTO> originalDataList;
     private Context context;
+
+    private List<ProductHome> productHomeList;
     private TextView noResultsTextView;
 
     public TimKiemAdapter(Context context, TextView noResultsTextView) {
@@ -37,6 +40,21 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
         this.originalDataList = new ArrayList<>();
         this.noResultsTextView = noResultsTextView;
     }
+
+    public void setDataFromProductHome(List<TimKiemDTO> dataList) {
+        if (this.dataList == null) {
+            this.dataList = new ArrayList<>();
+        }
+        if (this.originalDataList == null) {
+            this.originalDataList = new ArrayList<>();
+        }
+        this.dataList.clear();
+        this.dataList.addAll(dataList);
+        this.originalDataList.clear();
+        this.originalDataList.addAll(dataList);
+        notifyDataSetChanged();
+    }
+
 
     public void setData(List<TimKiemDTO> dataList) {
         this.dataList.clear();

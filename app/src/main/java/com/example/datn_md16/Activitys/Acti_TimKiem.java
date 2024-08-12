@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datn_md16.Adapter.TimKiemAdapter;
+import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.DTO.TimKiemDTO;
 import com.example.datn_md16.Interfa.ApiService;
 import com.example.datn_md16.Interface.ApiClient;
@@ -200,19 +201,22 @@ public class Acti_TimKiem extends AppCompatActivity {
             }
         });
 
-        btnBanChay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateButtonStyles(btnBanChay);
-            }
-        });
-
         btnLienQuan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 updateButtonStyles(btnLienQuan);
             }
         });
+
+        btnBanChay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Load dữ liệu từ API và sắp xếp lại theo mặc định (trên MongoDB)
+                TopBanChay();
+                updateButtonStyles(btnBanChay);
+            }
+        });
+
 
         // Khởi tạo Retrofit
         Retrofit retrofit = ApiClient.getClient();
@@ -229,6 +233,34 @@ public class Acti_TimKiem extends AppCompatActivity {
                     List<TimKiemDTO> timKiemDTOList = response.body();
                     adapter.setData(timKiemDTOList); // Đặt dữ liệu vào adapter để hiển thị trên RecyclerView
                     adapter.sortDataList(true); // Sắp xếp theo giá từ thấp đến cao ngay sau khi nhận dữ liệu
+                } else {
+                    Toast.makeText(Acti_TimKiem.this, "Không thể lấy dữ liệu từ server", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<TimKiemDTO>> call, Throwable t) {
+                Toast.makeText(Acti_TimKiem.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
+                Log.e("Acti_TimKiem", "Error: " + t.getMessage());
+            }
+        });
+    }
+
+    private void TopBanChay() {
+        Retrofit retrofit = ApiClient.getClient();
+
+        ApiService apiService = retrofit.create(ApiService.class);
+
+        Call<List<TimKiemDTO>> call = apiService.getBanChay();
+        call.enqueue(new Callback<List<TimKiemDTO>>() {
+            @Override
+            public void onResponse(Call<List<TimKiemDTO>> call, Response<List<TimKiemDTO>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<TimKiemDTO> timKiemDTOList = response.body();
+                    // Thực hiện sắp xếp theo mặc định (trên MongoDB)
+                    // Ví dụ: Collections.sort(timKiemDTOList, new YourDefaultComparator());
+                    // Sau khi sắp xếp, cập nhật dữ liệu vào adapter:
+                    adapter.setData(timKiemDTOList);
                 } else {
                     Toast.makeText(Acti_TimKiem.this, "Không thể lấy dữ liệu từ server", Toast.LENGTH_SHORT).show();
                 }
