@@ -54,9 +54,6 @@ public class TimKiemDTO {
     @SerializedName("moTaThem")
     private String moTaThem;
 
-//    @SerializedName("giamGia")
-//    private String giamGia;
-
 
     @SerializedName("doPhanGiai")
     private String doPhanGiai;

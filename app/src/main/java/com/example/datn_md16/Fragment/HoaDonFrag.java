@@ -50,15 +50,15 @@ public class HoaDonFrag extends Fragment {
         // Danh sách các nút trạng thái
         TextView[] buttons = {btnChoXacNhan, btnChoGiaoHang, btnDangGiao, btnDaGiao, btnDaHuy};
 
-        // Cập nhật style cho các nút
         for (TextView button : buttons) {
             if (button == selectedButton) {
                 // Áp dụng style cho nút được chọn
-                button.setTextColor(getResources().getColor(R.color.red));
-                button.setPaintFlags(button.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                button.setTextColor(getResources().getColor(R.color.white)); // Thay đổi màu chữ
+                button.setBackgroundColor(getResources().getColor(R.color.red)); // Thay đổi màu nền
             } else {
                 // Áp dụng style cho nút không được chọn
-                button.setTextColor(getResources().getColor(R.color.black));
+                button.setTextColor(getResources().getColor(R.color.black)); // Thay đổi màu chữ
+                button.setBackgroundColor(getResources().getColor(android.R.color.transparent)); // Màu nền mặc định
                 button.setPaintFlags(button.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
             }
         }
@@ -116,7 +116,10 @@ public class HoaDonFrag extends Fragment {
             updateButtonStyles(btnDaHuy);
         });
 
-        // Gọi API để lấy danh sách đơn hàng cho user hiện tại
+        // Mặc định hiển thị trạng thái "Chờ xác nhận"
+        updateButtonStyles(btnChoXacNhan);
+        filterDonHang("Chờ xác nhận");
+
         loadDonHang();
 
         return view;
@@ -166,7 +169,6 @@ public class HoaDonFrag extends Fragment {
                     donHangList.clear();
                     donHangList.addAll(filteredList);
                     adapter.notifyDataSetChanged();
-                    Toast.makeText(getContext(), "Đơn hàng trạng thái: " + status, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), "Không có dữ liệu với trạng thái: " + status, Toast.LENGTH_SHORT).show();
                 }

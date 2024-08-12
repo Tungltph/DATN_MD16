@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datn_md16.Activitys.Acti_ChiTietSP;
+import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.DTO.TimKiemDTO;
 import com.example.datn_md16.R;
 import com.google.gson.Gson;
@@ -29,6 +30,8 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
     private List<TimKiemDTO> dataList;
     private List<TimKiemDTO> originalDataList;
     private Context context;
+
+    private List<ProductHome> productHomeList;
     private TextView noResultsTextView;
 
     public TimKiemAdapter(Context context, TextView noResultsTextView) {
@@ -38,6 +41,21 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
         this.noResultsTextView = noResultsTextView;
     }
 
+    public void setDataFromProductHome(List<TimKiemDTO> dataList) {
+        if (this.dataList == null) {
+            this.dataList = new ArrayList<>();
+        }
+        if (this.originalDataList == null) {
+            this.originalDataList = new ArrayList<>();
+        }
+        this.dataList.clear();
+        this.dataList.addAll(dataList);
+        this.originalDataList.clear();
+        this.originalDataList.addAll(dataList);
+        notifyDataSetChanged();
+    }
+
+
     public void setData(List<TimKiemDTO> dataList) {
         this.dataList.clear();
         this.dataList.addAll(dataList);
@@ -46,29 +64,57 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
         notifyDataSetChanged();
     }
 
-    public void sortDataList(final boolean ascending) {
+    public void sortDataList(boolean ascending) {
         Collections.sort(dataList, new Comparator<TimKiemDTO>() {
             @Override
             public int compare(TimKiemDTO o1, TimKiemDTO o2) {
+                double giaDaGiam1 = 0;
+                double giaDaGiam2 = 0;
+
                 try {
-                    String giamGia1 = o1.getGiamGia();
-                    String giamGia2 = o2.getGiamGia();
+                    // Lấy giá gốc và phần trăm giảm giá từ o1
+                    double giaGoc1 = 0;
+                    double phanTram1 = Double.parseDouble(o1.getGiamGia().replaceAll("[^\\d.]", ""));
+                    double minPrice1 = Double.MAX_VALUE;
+                    for (TimKiemDTO.MauSchema mau : o1.getMauSchema()) {
+                        if (mau.getGiaTien() < minPrice1) {
+                            minPrice1 = mau.getGiaTien();
+                        }
+                    }
+                    giaGoc1 = minPrice1 / (1 - (phanTram1 / 100));
+                    giaDaGiam1 = giaGoc1 * (1 - (phanTram1 / 100));
 
-                    if (giamGia1 == null) giamGia1 = "0";
-                    if (giamGia2 == null) giamGia2 = "0";
+                    // Lấy giá gốc và phần trăm giảm giá từ o2
+                    double giaGoc2 = 0;
+                    double phanTram2 = Double.parseDouble(o2.getGiamGia().replaceAll("[^\\d.]", ""));
+                    double minPrice2 = Double.MAX_VALUE;
+                    for (TimKiemDTO.MauSchema mau : o2.getMauSchema()) {
+                        if (mau.getGiaTien() < minPrice2) {
+                            minPrice2 = mau.getGiaTien();
+                        }
+                    }
+                    giaGoc2 = minPrice2 / (1 - (phanTram2 / 100));
+                    giaDaGiam2 = giaGoc2 * (1 - (phanTram2 / 100));
 
-                    int gia1 = Integer.parseInt(giamGia1.replaceAll("[\\D]", ""));
-                    int gia2 = Integer.parseInt(giamGia2.replaceAll("[\\D]", ""));
-
-                    return ascending ? Integer.compare(gia1, gia2) : Integer.compare(gia2, gia1);
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
-                    return 0;
+                }
+
+                if (ascending) {
+                    return Double.compare(giaDaGiam1, giaDaGiam2);
+                } else {
+                    return Double.compare(giaDaGiam2, giaDaGiam1);
                 }
             }
         });
         notifyDataSetChanged();
     }
+
+
+
+
+
+
 
 
     public void filterData(String query) {
@@ -116,15 +162,21 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
         holder.tenSanPhamTextView.setText(item.getTenSanPham());
 
         if (item.getMauSchema() != null && !item.getMauSchema().isEmpty()) {
-            double giaTien = item.getMauSchema().get(0).getGiaTien();
+            // Tìm giá thấp nhất từ danh sách MauSchema
+            double minPrice = Double.MAX_VALUE;
+            for (TimKiemDTO.MauSchema mau : item.getMauSchema()) {
+                if (mau.getGiaTien() < minPrice) {
+                    minPrice = mau.getGiaTien();
+                }
+            }
 
             // Định dạng giá trị giaTien chỉ hiển thị phần nguyên
             NumberFormat formatter = NumberFormat.getIntegerInstance(Locale.US);
-            holder.giamGiaTextView.setText("₫" + formatter.format(giaTien));
+            holder.giamGiaTextView.setText("₫" + formatter.format(minPrice));
 
-            // Tính toán giá gốc
+            // Tính toán giá gốc dựa trên giá thấp nhất
             double phanTram = Double.parseDouble(item.getGiamGia());
-            double giaGoc = giaTien / (1 - (phanTram / 100));
+            double giaGoc = minPrice / (1 - (phanTram / 100));
 
             // Định dạng giá trị giaGoc chỉ hiển thị phần nguyên
             holder.giaGocTextView.setText("₫" + formatter.format(giaGoc));
@@ -150,6 +202,7 @@ public class TimKiemAdapter extends RecyclerView.Adapter<TimKiemAdapter.ViewHold
             }
         });
     }
+
 
 
     public void setStrikeThroughText(TextView textView) {

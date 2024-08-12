@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.datn_md16.DTO.AccountRequest;
 import com.example.datn_md16.DTO.AccountResponse;
 import com.example.datn_md16.Interfa.ApiService;
 import com.example.datn_md16.Interface.ApiClient;
@@ -139,7 +140,7 @@ public class DangNhap extends AppCompatActivity {
                     } else {
                         clearSavedCredentials();
                     }
-
+                    Log.d("DangNhap", "User Info: hoTen=" + user.hoTen + ", sdt=" + user.sdt);
                     return true;
                 } else {
                     Toast.makeText(DangNhap.this, "Tài khoản của bạn chưa được kích hoạt.", Toast.LENGTH_SHORT).show();
@@ -149,6 +150,7 @@ public class DangNhap extends AppCompatActivity {
         }
         return false;
     }
+
 
 
     public void saveUserId(String userId) {
@@ -177,6 +179,15 @@ public class DangNhap extends AppCompatActivity {
         Log.d("DangNhap", "Credentials saved");
     }
 
+    public void saveUserInfo(AccountRequest accountResponse) {
+        SharedPreferences sharedPreferences = getSharedPreferences("UserPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("hoTen", accountResponse.getHoTen());
+        editor.putString("sdt", accountResponse.getSdt());
+        editor.apply();
+    }
+
+
     private void loadSavedCredentials() {
         SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         boolean isSaveAccount = sharedPreferences.getBoolean(KEY_SAVE_ACCOUNT, false);
@@ -189,6 +200,7 @@ public class DangNhap extends AppCompatActivity {
             Log.d("DangNhap", "Loaded saved credentials: " + savedUsername);
         }
     }
+
 
     private void clearSavedCredentials() {
         SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);

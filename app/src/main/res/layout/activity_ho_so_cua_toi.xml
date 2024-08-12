@@ -52,7 +52,6 @@
                 android:id="@+id/tvTenNguoiDung"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
                 android:hint="User"
                 android:drawableStart="@drawable/tennguoinhan"
                 android:drawablePadding="16dp" />
@@ -69,21 +68,20 @@
                 android:id="@+id/tvSoDienThoai"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPassword"
                 android:hint="0989742615"
                 android:drawableStart="@drawable/phone"
                 android:drawablePadding="16dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
+            android:id="@+id/btnThayDoiTT"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Đăng ký"
+            android:text="Thay đổi"
             android:layout_marginTop="20dp"
             android:textColor="@android:color/white"
             android:background="@drawable/button_background"
             app:backgroundTint="@null"
-            android:textSize="20dp"
             android:layout_marginBottom="20dp"
             android:onClick="register" />
     </LinearLayout>

@@ -2,22 +2,24 @@ package com.example.datn_md16.Interfa;
 
 import com.example.datn_md16.DTO.AccountRequest;
 import com.example.datn_md16.DTO.AccountResponse;
+import com.example.datn_md16.DTO.DoiPassDTO;
 import com.example.datn_md16.DTO.DonHangDTO;
 import com.example.datn_md16.DTO.GioHangDTO;
 import com.example.datn_md16.DTO.ProductHome;
-import com.example.datn_md16.DTO.SanPhamDTO;
 import com.example.datn_md16.DTO.SanPhamYeuThichDTO;
 import com.example.datn_md16.DTO.TimKiemDTO;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface ApiService {
     @GET("/api/khuyenMai")
@@ -32,6 +34,9 @@ public interface ApiService {
 
     @GET("/api/sanPham")
     Call<List<TimKiemDTO>> getTimKiem();
+
+    @GET("/api/sanPham/topBanChay")
+    Call<List<TimKiemDTO>> getBanChay();
 
     @GET("/api/account")
     Call<AccountResponse> getAccounts();
@@ -66,6 +71,7 @@ public interface ApiService {
     @GET("/api/sanPham")
     Call<List<ProductHome>> getProducts();
 
+
     @GET("/api/thongBao/{id}")
     Call<ThongBaoResponse> getThongBaoById(@Path("id") String id);
 
@@ -87,6 +93,10 @@ public interface ApiService {
     @GET("/api/sanPhamYT/{id}")
     Call<SanPhamYeuThichResponse> getSanPhamYeuThichByUserId(@Path("id") String userId);
 
-
+    @GET("/api/account/{id}")
+    Call<AccountRequest> getAccountById(@Path("id") String id);
+    @Headers("Content-Type: application/json")
+    @PUT("/api/account/edit-pass/{id}")
+    Call<ResponseBody> changePassword(@Path("id") String id, @Body DoiPassDTO passwordDTO);
 
 }

@@ -1,5 +1,6 @@
 package com.example.datn_md16.Activitys;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -24,6 +26,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datn_md16.Adapter.TimKiemAdapter;
+import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.DTO.TimKiemDTO;
 import com.example.datn_md16.Interfa.ApiService;
 import com.example.datn_md16.Interface.ApiClient;
@@ -42,10 +45,12 @@ public class Acti_TimKiem extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private TimKiemAdapter adapter;
-    private Spinner spinnerGia;
+    private TextView btnGia;
     private TextView btnMoiNhat,btnBanChay,btnLienQuan;
     private EditText edtSearch;
     private TextView noResultsTextView;
+
+    private boolean isPriceAscending = true;
 
     private void updateButtonStyles(TextView selectedButton) {
         // Danh sách các nút trạng thái
@@ -66,23 +71,6 @@ public class Acti_TimKiem extends AppCompatActivity {
         }
     }
 
-    private void updateSpinnerStyle() {
-        // Đổi màu chữ và màu nền của Spinner
-        spinnerGia.setBackgroundColor(getResources().getColor(R.color.red));
-        // Cập nhật màu chữ cho Spinner bằng cách tạo một ArrayAdapter mới
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.spinner_items_gia, android.R.layout.simple_spinner_item);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerGia.setAdapter(spinnerAdapter);
-    }
-
-    private void resetSpinnerStyle() {
-        // Đổi màu chữ và màu nền của Spinner về trạng thái ban đầu
-        spinnerGia.setBackgroundColor(getResources().getColor(android.R.color.transparent));
-        // Cập nhật màu chữ cho Spinner bằng cách tạo một ArrayAdapter mới
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.spinner_items_gia, android.R.layout.simple_spinner_item);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerGia.setAdapter(spinnerAdapter);
-    }
 
 
     @Override
@@ -107,17 +95,22 @@ public class Acti_TimKiem extends AppCompatActivity {
 
         adapter = new TimKiemAdapter(getApplicationContext(), noResultsTextView);
         recyclerView.setAdapter(adapter);
-
+        
         edtSearch = findViewById(R.id.edtSearch);
-        spinnerGia = findViewById(R.id.spinner_gia);
+        btnGia = findViewById(R.id.btnGia);
         btnMoiNhat = findViewById(R.id.btnMoiNhat);
         btnBanChay = findViewById(R.id.btnBanChay);
         btnLienQuan = findViewById(R.id.btnLienQuan);
 
-        // Thiết lập Adapter cho Spinner
-        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.spinner_items_gia, android.R.layout.simple_spinner_item);
-        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerGia.setAdapter(spinnerAdapter);
+        btnGia.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleArrowVisibility();
+                sortDataByPrice(isPriceAscending); // Thực hiện sắp xếp khi nhấn nút
+            }
+        });
+
+
 
         // Lắng nghe sự thay đổi của EditText để tìm kiếm
         edtSearch.addTextChangedListener(new TextWatcher() {
@@ -151,44 +144,35 @@ public class Acti_TimKiem extends AppCompatActivity {
         });
 
         // Lắng nghe sự kiện chạm vào Spinner
-        spinnerGia.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    updateSpinnerStyle();
-                }
-                return false;
-            }
-        });
 
-        spinnerGia.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    resetSpinnerStyle();
-                }
-            }
-        });
 
 
         // Lắng nghe sự kiện chọn của Spinner
-        spinnerGia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        // Lắng nghe sự thay đổi của EditText để tìm kiếm
+        edtSearch.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    // Giá từ thấp đến cao
-                    adapter.sortDataList(true);
-                } else if (position == 1) {
-                    // Giá từ cao đến thấp
-                    adapter.sortDataList(false);
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.filterData(s.toString()); // Gọi filterData với chuỗi tìm kiếm hiện tại
+
+                // Cập nhật màu sắc của btnLienQuan
+                if (s.toString().trim().isEmpty()) {
+                    // Nếu không có văn bản, đặt lại màu cho btnLienQuan
+                    btnLienQuan.setTextColor(getResources().getColor(R.color.black));
+                    btnLienQuan.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+                } else {
+                    // Nếu có văn bản, đổi màu cho btnLienQuan
+                    btnLienQuan.setTextColor(getResources().getColor(R.color.white));
+                    btnLienQuan.setBackgroundColor(getResources().getColor(R.color.red));
                 }
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Không làm gì khi không chọn gì
-            }
+            public void afterTextChanged(Editable s) { }
         });
+
 
         // Lắng nghe sự kiện click của Button "Mới nhất"
         btnMoiNhat.setOnClickListener(new View.OnClickListener() {
@@ -200,19 +184,27 @@ public class Acti_TimKiem extends AppCompatActivity {
             }
         });
 
+        btnLienQuan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cập nhật màu cho btnLienQuan
+                updateButtonStyles(btnLienQuan);
+
+                // Lọc dữ liệu theo giá trị tìm kiếm hiện tại
+                adapter.filterData(edtSearch.getText().toString());
+            }
+        });
+
+
         btnBanChay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Load dữ liệu từ API và sắp xếp lại theo mặc định (trên MongoDB)
+                TopBanChay();
                 updateButtonStyles(btnBanChay);
             }
         });
 
-        btnLienQuan.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateButtonStyles(btnLienQuan);
-            }
-        });
 
         // Khởi tạo Retrofit
         Retrofit retrofit = ApiClient.getClient();
@@ -242,13 +234,29 @@ public class Acti_TimKiem extends AppCompatActivity {
         });
     }
 
-    // Phương thức để load dữ liệu từ API và sắp xếp theo mặc định (trên MongoDB)
-    private void loadAndSortDefaultData() {
+    private void toggleArrowVisibility() {
+        String currentText = btnGia.getText().toString();
+        if (currentText.contains("\u25B2")) { // Nếu hiện tại là mũi tên lên
+            btnGia.setText("Giá \u25BC"); // Thay đổi thành mũi tên xuống
+            isPriceAscending = false; // Sắp xếp từ cao đến thấp
+        } else {
+            btnGia.setText("Giá \u25B2"); // Thay đổi thành mũi tên lên
+            isPriceAscending = true; // Sắp xếp từ thấp đến cao
+        }
+    }
+
+    private void sortDataByPrice(boolean ascending) {
+        adapter.sortDataList(ascending);
+    }
+
+
+
+    private void TopBanChay() {
         Retrofit retrofit = ApiClient.getClient();
 
         ApiService apiService = retrofit.create(ApiService.class);
 
-        Call<List<TimKiemDTO>> call = apiService.getTimKiem();
+        Call<List<TimKiemDTO>> call = apiService.getBanChay();
         call.enqueue(new Callback<List<TimKiemDTO>>() {
             @Override
             public void onResponse(Call<List<TimKiemDTO>> call, Response<List<TimKiemDTO>> response) {
@@ -270,6 +278,32 @@ public class Acti_TimKiem extends AppCompatActivity {
             }
         });
     }
+
+    // Phương thức để load dữ liệu từ API và sắp xếp theo mặc định (trên MongoDB)
+    private void loadAndSortDefaultData() {
+        Retrofit retrofit = ApiClient.getClient();
+        ApiService apiService = retrofit.create(ApiService.class);
+        Call<List<TimKiemDTO>> call = apiService.getTimKiem();
+        call.enqueue(new Callback<List<TimKiemDTO>>() {
+            @Override
+            public void onResponse(Call<List<TimKiemDTO>> call, Response<List<TimKiemDTO>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<TimKiemDTO> timKiemDTOList = response.body();
+                    adapter.setData(timKiemDTOList);
+                    adapter.sortDataList(isPriceAscending);
+                } else {
+                    Toast.makeText(Acti_TimKiem.this, "Không thể lấy dữ liệu từ server", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<TimKiemDTO>> call, Throwable t) {
+                Toast.makeText(Acti_TimKiem.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
+                Log.e("Acti_TimKiem", "Error: " + t.getMessage());
+            }
+        });
+    }
+
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

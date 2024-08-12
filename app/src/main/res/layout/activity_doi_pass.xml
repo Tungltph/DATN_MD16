@@ -43,7 +43,7 @@
             android:layout_marginBottom="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/btnProfile"
+                android:id="@+id/tvMatKhauCu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
@@ -59,7 +59,7 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/passwordEditText"
+                android:id="@+id/tvMatKhauMoi"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/pass"
@@ -69,25 +69,7 @@
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            app:endIconMode="password_toggle"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/btnAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Nhập lại mật khẩu mới *"
-                android:inputType="textPassword"
-                android:drawableStart="@drawable/pass"
-                android:drawablePadding="16dp" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-
-        <!-- Logout Button -->
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -95,12 +77,12 @@
             android:layout_height="wrap_content"
             android:background="@drawable/border_background">
 
-            <TextView
-                android:id="@+id/btnLogout"
+            <Button
+                android:id="@+id/btnChangePassword"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Đăng xuất"
+                android:text="Đổi mật khẩu"
                 android:textColor="@color/white"
                 android:textStyle="bold"
                 android:textSize="16sp" />

@@ -3,6 +3,7 @@ package com.example.datn_md16.Activitys;
 import static com.example.datn_md16.Activitys.DangNhap.PREFS_NAME;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -336,25 +338,61 @@ public class Acti_ChiTietSP extends AppCompatActivity {
         bottomSheetDialog = new BottomSheetDialog(Acti_ChiTietSP.this);
         View sheetView = getLayoutInflater().inflate(R.layout.sheet_dialog_giohang, null);
         RecyclerView rcvMau = sheetView.findViewById(R.id.rcv_Mau);
-        ImageView imgGioHang = sheetView.findViewById(R.id.img_gioHang);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 3); // 3 cột
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
         rcvMau.setLayoutManager(layoutManager);
-        Picasso.get().load(sanPham.getHinhAnh()).placeholder(R.drawable.img_sale).error(R.drawable.img).into(imgGioHang);
 
+        ImageView imgGioHang = sheetView.findViewById(R.id.img_gioHang);
+        TextView tvGiamGiaGioHang = sheetView.findViewById(R.id.tv_giamGia_gioHang);
+        TextView tvSoLuong = sheetView.findViewById(R.id.tv_soLuong);
+        TextView tvKQ = sheetView.findViewById(R.id.tvKQ);
+        TextView btnGiamSoLuong = sheetView.findViewById(R.id.tvGiam);
+        TextView btnTangSoLuong = sheetView.findViewById(R.id.tvTang);
+        Picasso.get().load(sanPham.getHinhAnh()).placeholder(R.drawable.img_sale).error(R.drawable.img).into(imgGioHang);
+        Button btnthemgiohang = sheetView.findViewById(R.id.btn_thanhToan);
+        // Set initial quantity
+        int initialQuantity = 1;
+        tvKQ.setText(String.valueOf(initialQuantity));
 
         if (mauList != null && !mauList.isEmpty()) {
             MauAdapter mauAdapter = new MauAdapter(mauList, mau -> {
                 selectedColor = mau.get_id();
-                updatePriceAndQuantity(mauList, selectedColor, sheetView.findViewById(R.id.tv_giamGia_gioHang), sheetView.findViewById(R.id.tv_soLuong));
+
+                updatePriceAndQuantity(mauList, selectedColor, tvGiamGiaGioHang, tvSoLuong);
             });
 
             rcvMau.setAdapter(mauAdapter);
 
-            // Set initial selected color to the first item in the list
-            ProductHome.MauSchema firstColor = mauList.get(0);
-            selectedColor = firstColor.get_id();
-            updatePriceAndQuantity(mauList, selectedColor, sheetView.findViewById(R.id.tv_giamGia_gioHang), sheetView.findViewById(R.id.tv_soLuong));
+            // Ensure the correct initial selection
+            if (selectedColor != null) {
+                updatePriceAndQuantity(mauList, selectedColor, tvGiamGiaGioHang, tvSoLuong);
+            } else {
+                // No need to set default color; use color selected from adapter
+                ProductHome.MauSchema firstColor = mauList.get(0);
+                selectedColor = firstColor.get_id();
+                updatePriceAndQuantity(mauList, selectedColor, tvGiamGiaGioHang, tvSoLuong);
+            }
         }
+
+        btnGiamSoLuong.setOnClickListener(v -> {
+            int currentQuantity = Integer.parseInt(tvKQ.getText().toString());
+            if (currentQuantity > 1) {
+                currentQuantity--;
+                tvKQ.setText(String.valueOf(currentQuantity));
+            }
+        });
+
+        btnTangSoLuong.setOnClickListener(v -> {
+            int currentQuantity = Integer.parseInt(tvKQ.getText().toString());
+            currentQuantity++;
+            tvKQ.setText(String.valueOf(currentQuantity));
+        });
+
+
+        btnthemgiohang.setOnClickListener(v -> {
+
+        });
+
+
         bottomSheetDialog.setContentView(sheetView);
         bottomSheetDialog.show();
     }
