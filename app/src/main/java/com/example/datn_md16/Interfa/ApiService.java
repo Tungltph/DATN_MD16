@@ -23,10 +23,10 @@ public interface ApiService {
     @GET("/api/khuyenMai")
     Call<ApiResponseKhuyenMai> getKhuyenMai();
 
-    @GET("/api/sanPham")
+    @GET("/api/sanPham/hot")
     Call<List<ProductHome>> getHotProducts();
 
-    @GET("/api/sanPham")
+    @GET("/api/sanPham/new")
     Call<List<ProductHome>> getNewProducts();
 
 
@@ -55,8 +55,6 @@ public interface ApiService {
 
 
 
-
-
     @DELETE("/api/gioHang/delete/{id}")
     Call<Void> deleteItemFromCart(@Path("id") String id);
 
@@ -68,8 +66,8 @@ public interface ApiService {
     @GET("/api/sanPham")
     Call<List<ProductHome>> getProducts();
 
-    @GET("/api/thongBao/")
-    Call<ThongBaoResponse> getThongBao();
+    @GET("/api/thongBao/{id}")
+    Call<ThongBaoResponse> getThongBaoById(@Path("id") String id);
 
     @DELETE("/api/thongbao/{id}")
     Call<Void> deleteThongBao(@Path("id") String id);
@@ -77,15 +75,18 @@ public interface ApiService {
     @DELETE("/api/sanPhamYT/{id}")
     Call<Void> removeFavorite(@Path("id") String id);
 
-//    @GET("/api/donHang/")
-//    Call<DonHangDTO> getDonHangByUser(@Query("_id") String userId);
+
 
     @GET("/api/donHang/{idKH}")
     Call<DonHangDTO> getDonHangByUser(@Path("idKH") String userId);
 
-
     @POST("/api/sanPhamYT/")
     Call<Void> addYeuThich(@Body SanPhamYeuThichDTO sanPhamYeuThichDTO);
+
+
+    @GET("/api/sanPhamYT/{id}")
+    Call<SanPhamYeuThichResponse> getSanPhamYeuThichByUserId(@Path("id") String userId);
+
 
 
 }

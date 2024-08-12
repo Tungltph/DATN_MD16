@@ -102,7 +102,7 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
                 intent.putExtra("trangThaiDonHang", donHang.getTrangThaiDonHang());
                 intent.putExtra("phuongThucThanhToan", donHang.getPhuongThucThanhToan());
                 intent.putExtra("hinhAnhUrl", sanPham.getHinhAnh());
-               
+
                 context.startActivity(intent);
             });
             holder.tvDanhGia.setOnClickListener(new View.OnClickListener() {
@@ -116,6 +116,8 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
             });
         }
     }
+
+
 
     // Utility method to format price with thousand separators
     private String formatPrice(double price) {

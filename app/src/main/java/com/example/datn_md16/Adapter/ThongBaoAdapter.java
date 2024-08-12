@@ -43,6 +43,7 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.ViewHo
         holder.txtTieuDe.setText(thongBao.getTieuDe());
         holder.txtNoiDung.setText(thongBao.getNoiDung());
         holder.txtThoiGian.setText(thongBao.getFormattedThoiGian());
+        holder.txtAcc.setText(thongBao.getIdAccount());
     }
 
     @Override
@@ -84,12 +85,14 @@ public class ThongBaoAdapter extends RecyclerView.Adapter<ThongBaoAdapter.ViewHo
         public TextView txtTieuDe;
         public TextView txtNoiDung;
         public TextView txtThoiGian;
+        public TextView txtAcc;
 
         public ViewHolder(View view) {
             super(view);
             txtTieuDe = view.findViewById(R.id.txtTieuDe);
             txtNoiDung = view.findViewById(R.id.txtNoiDung);
             txtThoiGian = view.findViewById(R.id.txtThoiGian);
+            txtAcc = view.findViewById(R.id.txtAcc);
         }
     }
 }

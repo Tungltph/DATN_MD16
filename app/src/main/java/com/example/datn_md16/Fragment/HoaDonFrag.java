@@ -25,6 +25,7 @@ import com.example.datn_md16.Interfa.ApiService;
 import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -75,17 +76,15 @@ public class HoaDonFrag extends Fragment {
         Log.d("HoaDonFrag", "User ID retrieved: " + userId);
         if (userId == null) {
             Toast.makeText(getContext(), "Không có thông tin người dùng", Toast.LENGTH_SHORT).show();
-            return view;
+            return view; // Không tiếp tục nếu không có ID người dùng
         }
 
         recyclerView = view.findViewById(R.id.recyclerViewOrders);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new DonHangHomeAdapter(donHangList, getContext());
-        adapter.updateData(donHangList);
         recyclerView.setAdapter(adapter);
 
         Retrofit retrofit = ApiClient.getClient();
-
         apiService = retrofit.create(ApiService.class);
 
         // Khởi tạo các nút trạng thái
@@ -117,41 +116,39 @@ public class HoaDonFrag extends Fragment {
             updateButtonStyles(btnDaHuy);
         });
 
-        // Gọi API để lấy danh sách đơn hàng
+        // Gọi API để lấy danh sách đơn hàng cho user hiện tại
         loadDonHang();
 
         return view;
     }
 
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        // Gọi phương thức để tải lại dữ liệu khi fragment được hiển thị lại
-        loadDonHang();
-    }
-
     private void loadDonHang() {
-        Log.d("HoaDonFrag", "Loading orders for user ID: " + userId); // Log ID người dùng
+        Log.d("HoaDonFrag", "Loading orders for user ID: " + userId);
         apiService.getDonHangByUser(userId).enqueue(new Callback<DonHangDTO>() {
             @Override
             public void onResponse(@NonNull Call<DonHangDTO> call, @NonNull Response<DonHangDTO> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    Log.d("HoaDonFrag", "Orders loaded: " + response.body().getData().size()); // Log số lượng đơn hàng tải được
+                    List<DonHangDTO.DonHang> donHangList = response.body().getData();
+                    // Đặt dữ liệu vào adapter và cập nhật giao diện
                     donHangList.clear();
-                    donHangList.addAll(response.body().getData());
+                    donHangList.addAll(donHangList);
                     adapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(getContext(), "Không có dữ liệu", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Lỗi khi lấy dữ liệu", Toast.LENGTH_SHORT).show();
                 }
             }
 
+
+
+
             @Override
             public void onFailure(@NonNull Call<DonHangDTO> call, @NonNull Throwable t) {
-                Toast.makeText(getContext(), "Lỗi khi tải dữ liệu: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("HoaDonFrag", "Error loading orders: " + t.getMessage(), t);
+                Toast.makeText(getContext(), "Có lỗi xảy ra: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }
+
 
     private void filterDonHang(String status) {
         apiService.getDonHangByUser(userId).enqueue(new Callback<DonHangDTO>() {
@@ -178,8 +175,10 @@ public class HoaDonFrag extends Fragment {
             @Override
             public void onFailure(@NonNull Call<DonHangDTO> call, @NonNull Throwable t) {
                 Toast.makeText(getContext(), "Lỗi khi tải dữ liệu: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("HoaDonFrag", "Lỗi khi tải dữ liệu " + t.getMessage(), t);
 
             }
         });
     }
+
 }

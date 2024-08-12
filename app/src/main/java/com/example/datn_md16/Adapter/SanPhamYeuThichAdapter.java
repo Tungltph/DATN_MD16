@@ -134,8 +134,9 @@ public class SanPhamYeuThichAdapter extends RecyclerView.Adapter<SanPhamYeuThich
 
     @Override
     public int getItemCount() {
-        return sanPhamYeuThichDTOS.size();
+        return sanPhamYeuThichDTOS != null ? sanPhamYeuThichDTOS.size() : 0;
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgSanPhamYT;

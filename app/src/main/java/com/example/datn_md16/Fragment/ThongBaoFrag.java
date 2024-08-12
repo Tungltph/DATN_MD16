@@ -1,5 +1,7 @@
 package com.example.datn_md16.Fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +16,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.datn_md16.Activitys.DangNhap;
 import com.example.datn_md16.Adapter.ThongBaoAdapter;
 import com.example.datn_md16.DTO.ThongBaoDTO;
 import com.example.datn_md16.Interfa.ApiService;
@@ -27,12 +30,14 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 public class ThongBaoFrag extends Fragment {
 
     private RecyclerView recyclerView;
     private ThongBaoAdapter adapter;
     private List<ThongBaoDTO> thongBaoList = new ArrayList<>();
+    ApiService apiService;
 
     @Nullable
     @Override
@@ -45,9 +50,15 @@ public class ThongBaoFrag extends Fragment {
         adapter = new ThongBaoAdapter(thongBaoList, getContext());
         recyclerView.setAdapter(adapter);
 
+
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences(DangNhap.PREFS_NAME, Context.MODE_PRIVATE);
+        String userId = sharedPreferences.getString(DangNhap.KEY_USER_ID, null);
+        Log.d("YeuThichFrag", "UserId: " + userId);
+
         // Gọi API để lấy dữ liệu
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
-        Call<ThongBaoResponse> call = apiService.getThongBao();
+        Retrofit retrofit = ApiClient.getClient();
+        apiService = retrofit.create(ApiService.class);
+        Call<ThongBaoResponse> call = apiService.getThongBaoById(userId);
         call.enqueue(new Callback<ThongBaoResponse>() {
             @Override
             public void onResponse(Call<ThongBaoResponse> call, Response<ThongBaoResponse> response) {

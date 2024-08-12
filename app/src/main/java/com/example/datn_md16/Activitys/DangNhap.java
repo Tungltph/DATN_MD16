@@ -45,7 +45,7 @@ public class DangNhap extends AppCompatActivity {
     private List<AccountResponse.Account> userList;
 
     public static final String PREFS_NAME = "user_prefs";
-    private static final String KEY_USER_ID = "user_id";
+    public static final String KEY_USER_ID = "user_id";
     private static final String KEY_USER_NAME = "user_name";
     private static final String KEY_SAVE_ACCOUNT = "save_account";
     private static final String KEY_SAVED_USERNAME = "saved_username";
@@ -80,7 +80,7 @@ public class DangNhap extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             } else {
-                Toast.makeText(DangNhap.this, "Thông tin đăng nhập không chính xác", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(DangNhap.this, "Thông tin đăng nhập không chính xác", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -91,7 +91,7 @@ public class DangNhap extends AppCompatActivity {
 
     }
 
-    private void setupRetrofit() {
+    public void setupRetrofit() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -129,23 +129,29 @@ public class DangNhap extends AppCompatActivity {
 
         for (AccountResponse.Account user : userList) {
             if (user.taiKhoan.equals(username) && user.matKhau.equals(password) && user.tenQuyen.equals("User")) {
-                // Lưu _id của người dùng vào SharedPreferences
-                saveUserId(user._id);
-                saveUserName(user.taiKhoan);
+                if (user.isActive) {
+                    // Lưu _id của người dùng vào SharedPreferences
+                    saveUserId(user._id);
+                    saveUserName(user.taiKhoan);
 
-                if (saveAccountCheckBox.isChecked()) {
-                    saveCredentials(username, password);
+                    if (saveAccountCheckBox.isChecked()) {
+                        saveCredentials(username, password);
+                    } else {
+                        clearSavedCredentials();
+                    }
+
+                    return true;
                 } else {
-                    clearSavedCredentials();
+                    Toast.makeText(DangNhap.this, "Tài khoản của bạn chưa được kích hoạt.", Toast.LENGTH_SHORT).show();
+                    return false;
                 }
-
-                return true;
             }
         }
         return false;
     }
 
-    private void saveUserId(String userId) {
+
+    public void saveUserId(String userId) {
         SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString(KEY_USER_ID, userId);

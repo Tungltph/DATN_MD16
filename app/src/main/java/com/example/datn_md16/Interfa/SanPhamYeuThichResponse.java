@@ -6,7 +6,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class SanPhamYeuThichResponse {
-    @SerializedName("data")
     private List<SanPhamYeuThichDTO> data;
 
     public List<SanPhamYeuThichDTO> getData() {
@@ -17,3 +16,5 @@ public class SanPhamYeuThichResponse {
         this.data = data;
     }
 }
+
+

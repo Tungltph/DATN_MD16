@@ -107,7 +107,7 @@ public class NewItemAdapter extends RecyclerView.Adapter<NewItemAdapter.ViewHold
             txtPrice = itemView.findViewById(R.id.tvPriceNew);
             imgProduct = itemView.findViewById(R.id.imgSanPhamNew);
             tvgiaGocNew = itemView.findViewById(R.id.tv_giaGoc_new);
-            tvPhanTramNew = itemView.findViewById(R.id.tv_phanTram_hot);
+            tvPhanTramNew = itemView.findViewById(R.id.tv_phanTram_new);
         }
     }
 }
