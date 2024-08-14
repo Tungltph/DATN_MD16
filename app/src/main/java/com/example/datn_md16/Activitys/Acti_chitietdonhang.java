@@ -54,12 +54,12 @@ public class Acti_chitietdonhang extends AppCompatActivity {
 
         // Nhận dữ liệu từ Intent
         Intent intent = getIntent();
+        String hoTen = intent.getStringExtra("hoTen");
+        String sdt = intent.getStringExtra("sdt");
         String tenDienThoai = intent.getStringExtra("tenDienThoai");
         String mauSchema = intent.getStringExtra("mauSchema");
         int soLuong = intent.getIntExtra("soLuong", 0);
         double tongTien = intent.getDoubleExtra("tongTien", 0.0);
-        String hoTen = intent.getStringExtra("hoTen");
-        String sdt = intent.getStringExtra("sdt");
         String ngayDatHang = intent.getStringExtra("ngayDatHang");
         String ngayNhanHang = intent.getStringExtra("ngayNhanHang");
         String diaChiGiaoHang = intent.getStringExtra("diaChiGiaoHang");
@@ -101,4 +101,3 @@ public class Acti_chitietdonhang extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
-

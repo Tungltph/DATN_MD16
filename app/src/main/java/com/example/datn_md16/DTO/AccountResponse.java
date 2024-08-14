@@ -35,6 +35,17 @@ public class AccountResponse {
         @SerializedName("__v")
         public int v;
 
+        @SerializedName("trangThai")
+        public boolean isActive;
+
+        public boolean isActive() {
+            return isActive;
+        }
+
+        public void setActive(boolean active) {
+            isActive = active;
+        }
+
         public String get_id() {
             return _id;
         }
