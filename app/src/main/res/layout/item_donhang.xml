@@ -4,7 +4,9 @@
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     card_view:cardCornerRadius="8dp"
-    card_view:cardElevation="4dp">
+    card_view:cardElevation="4dp"
+    android:id="@+id/productcontainer"
+    >
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -67,19 +69,22 @@
                 android:textColor="@android:color/black"
                 android:layout_marginTop="10px"
                 android:textSize="14sp" />
-
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginBottom="20dp"
+                android:layout_gravity="right"
                 android:gravity="center">
 
 
                 <TextView
                     android:id="@+id/btnHuy"
-                    android:layout_width="75dp"
-                    android:layout_height="90px"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginRight="30dp"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
                     android:gravity="center"
                     android:text="Hủy Đơn"
                     android:textColor="#E40B0B"
@@ -91,6 +96,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="20dp"
                     android:text="Xem chi tiết"
                     android:textColor="#FFC107" />
 
@@ -103,6 +110,8 @@
                     android:textColor="#E40B0B"
                     />
             </LinearLayout>
+
+
         </LinearLayout>
     </LinearLayout>
     </FrameLayout>

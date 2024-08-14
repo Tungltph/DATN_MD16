@@ -1,6 +1,7 @@
 package com.example.datn_md16.Interface;
 
 import com.example.datn_md16.DTO.AccountResponse;
+import com.example.datn_md16.DTO.DanhGiaDTO;
 import com.example.datn_md16.DTO.DiaChiDTO;
 import com.example.datn_md16.DTO.DonHangDTO;
 import com.example.datn_md16.DTO.ProductHome;
@@ -45,4 +46,7 @@ import com.example.datn_md16.Interface.ApiResponse;
 
             @GET("api/account/{id}")
             Call<AccountResponse> getAccount(@Path("id") String id);
+
+            @POST("/api/danhGia/")
+            Call<DanhGiaDTO> adddanhgia(@Body DanhGiaDTO danhgia);
         }

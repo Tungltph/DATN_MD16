@@ -2,11 +2,7 @@ package com.example.datn_md16.DTO;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class DonHangDTO {
     @SerializedName("status")
@@ -47,14 +43,17 @@ public class DonHangDTO {
         @SerializedName("_id")
         private String id;
 
-        @SerializedName("idSP")
-        private List<SanPham> sanPhamList;
+        @SerializedName("sp")
+        private List<SanPhamTrongDonHang> sanPhamTrongDonHang;
+
+        @SerializedName("idKM")
+        private String idKM;
 
         @SerializedName("soLuong")
         private int soLuong;
 
         @SerializedName("tongTien")
-        private double tongTien;  // Changed to double
+        private double tongTien;
 
         @SerializedName("trangThaiThanhToan")
         private boolean trangThaiThanhToan;
@@ -63,7 +62,7 @@ public class DonHangDTO {
         private String ghiChu;
 
         @SerializedName("idKH")
-        private KhachHang khachHang;
+        private KhachHang idKH;
 
         @SerializedName("ngayDatHang")
         private String ngayDatHang;
@@ -74,34 +73,16 @@ public class DonHangDTO {
         @SerializedName("diaChiGiaoHang")
         private String diaChiGiaoHang;
 
-
         @SerializedName("trangThaiDonHang")
         private String trangThaiDonHang;
 
         @SerializedName("phuongThucThanhToan")
         private String phuongThucThanhToan;
+
         @SerializedName("idDiaChi")
         private DiaChiDTO idDiaChi;
 
         // Getters and Setters
-
-
-        public DiaChiDTO getIdDiaChi() {
-            return idDiaChi;
-        }
-
-        public String getNgayDatHang() {
-            return ngayDatHang;
-        }
-
-        public String getNgayNhanHang() {
-            return ngayNhanHang;
-        }
-
-        public void setIdDiaChi(DiaChiDTO idDiaChi) {
-            this.idDiaChi = idDiaChi;
-        }
-
         public String getId() {
             return id;
         }
@@ -110,12 +91,20 @@ public class DonHangDTO {
             this.id = id;
         }
 
-        public List<SanPham> getSanPhamList() {
-            return sanPhamList;
+        public List<SanPhamTrongDonHang> getSanPhamTrongDonHang() {
+            return sanPhamTrongDonHang;
         }
 
-        public void setSanPhamList(List<SanPham> sanPhamList) {
-            this.sanPhamList = sanPhamList;
+        public void setSanPhamTrongDonHang(List<SanPhamTrongDonHang> sanPhamTrongDonHang) {
+            this.sanPhamTrongDonHang = sanPhamTrongDonHang;
+        }
+
+        public String getIdKM() {
+            return idKM;
+        }
+
+        public void setIdKM(String idKM) {
+            this.idKM = idKM;
         }
 
         public int getSoLuong() {
@@ -150,19 +139,25 @@ public class DonHangDTO {
             this.ghiChu = ghiChu;
         }
 
-        public KhachHang getKhachHang() {
-            return khachHang;
+        public KhachHang getIdKH() {
+            return idKH;
         }
 
-        public void setKhachHang(KhachHang khachHang) {
-            this.khachHang = khachHang;
+        public void setIdKH(KhachHang idKH) {
+            this.idKH = idKH;
         }
 
+        public String getNgayDatHang() {
+            return ngayDatHang;
+        }
 
         public void setNgayDatHang(String ngayDatHang) {
             this.ngayDatHang = ngayDatHang;
         }
 
+        public String getNgayNhanHang() {
+            return ngayNhanHang;
+        }
 
         public void setNgayNhanHang(String ngayNhanHang) {
             this.ngayNhanHang = ngayNhanHang;
@@ -190,6 +185,39 @@ public class DonHangDTO {
 
         public void setPhuongThucThanhToan(String phuongThucThanhToan) {
             this.phuongThucThanhToan = phuongThucThanhToan;
+        }
+
+        public DiaChiDTO getIdDiaChi() {
+            return idDiaChi;
+        }
+
+        public void setIdDiaChi(DiaChiDTO idDiaChi) {
+            this.idDiaChi = idDiaChi;
+        }
+    }
+
+    public static class SanPhamTrongDonHang {
+        @SerializedName("idSP")
+        private SanPham sanPham;
+
+        @SerializedName("soLuong")
+        private int soLuong;
+
+        // Getters and Setters
+        public SanPham getSanPham() {
+            return sanPham;
+        }
+
+        public void setSanPham(SanPham sanPham) {
+            this.sanPham = sanPham;
+        }
+
+        public int getSoLuong() {
+            return soLuong;
+        }
+
+        public void setSoLuong(int soLuong) {
+            this.soLuong = soLuong;
         }
     }
 
@@ -248,7 +276,7 @@ public class DonHangDTO {
         private int soLuong;
 
         @SerializedName("giaTien")
-        private double giaTien;  // Changed to double
+        private double giaTien;
 
         // Getters and Setters
         public String getMau() {

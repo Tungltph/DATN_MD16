@@ -31,6 +31,10 @@ public class ProductHome implements Parcelable {
 
     // Constructor, getters, and setters
 
+
+    public ProductHome() {
+    }
+
     public ProductHome(String _id, String tenDienThoai, String camera, String cameraTruoc, String kichThuoc,
                        String cPU, String ram, String sim, String pin, String heDieuHanh, String namSanXuat,
                        String congNgheManHinh, String moTaThem, String hinhAnh, String doPhanGiai, String giaGoc,
