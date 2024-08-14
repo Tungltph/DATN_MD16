@@ -11,7 +11,7 @@ public class AccountResponse {
     public String msg;
 
     @SerializedName("data")
-    public List<com.example.datn_md16.DTO.AccountResponse.Account> data;
+    public List<AccountResponse.Account> data;
 
     public static class Account {
         @SerializedName("_id")

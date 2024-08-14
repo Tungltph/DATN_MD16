@@ -2,6 +2,8 @@ package com.example.datn_md16.Interfa;
 
 import com.example.datn_md16.DTO.AccountRequest;
 import com.example.datn_md16.DTO.AccountResponse;
+import com.example.datn_md16.DTO.DanhGiaDTO;
+import com.example.datn_md16.DTO.DoiPassDTO;
 import com.example.datn_md16.DTO.DonHangDTO;
 import com.example.datn_md16.DTO.GioHangDTO;
 import com.example.datn_md16.DTO.ProductHome;
@@ -95,6 +97,14 @@ public interface ApiService {
 
     @GET("/api/account/{id}")
     Call<AccountRequest> getAccountById(@Path("id") String id);
+
+    @POST("/api/danhGia")
+    Call<Void> themDanhGia(@Body DanhGiaDTO danhGiaDTO);
+
+    @GET("/api/danhGia")
+    Call<DanhGiaDTO> getDanhGia();
+
+
     @Headers("Content-Type: application/json")
     @PUT("/api/account/edit-pass/{id}")
     Call<ResponseBody> changePassword(@Path("id") String id, @Body DoiPassDTO passwordDTO);

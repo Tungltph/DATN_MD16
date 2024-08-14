@@ -49,10 +49,9 @@
             android:layout_marginBottom="10dp">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tvTenNguoiDung"
+                android:id="@+id/tvTenNguoiDungHoso"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="User"
                 android:drawableStart="@drawable/tennguoinhan"
                 android:drawablePadding="16dp" />
         </com.google.android.material.textfield.TextInputLayout>
@@ -68,7 +67,6 @@
                 android:id="@+id/tvSoDienThoai"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="0989742615"
                 android:drawableStart="@drawable/phone"
                 android:drawablePadding="16dp" />
         </com.google.android.material.textfield.TextInputLayout>

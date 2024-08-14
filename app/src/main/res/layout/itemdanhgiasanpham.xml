@@ -17,20 +17,35 @@
         android:textColor="@android:color/black" />
 
     <!-- Số sao đánh giá -->
-    <RatingBar
-        android:id="@+id/ratingBarDanhGia"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:numStars="5"
-        android:stepSize="0.5"
-        android:rating="4"
-        android:isIndicator="true"
-        android:scaleX="0.4"
-        android:scaleY="0.4"
-        android:layout_marginBottom="8dp" />
+
+<!--    <LinearLayout-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:orientation="horizontal">-->
+
+<!--        <RatingBar-->
+<!--            android:id="@+id/rbSaoDanhGia"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:numStars="5"-->
+<!--            android:rating="5"-->
+<!--            android:stepSize="1"-->
+<!--            android:scaleX="0.4"-->
+<!--            android:scaleY="0.4"-->
+<!--            android:progressTint="@android:color/holo_orange_light" />-->
+<!--    </LinearLayout>-->
+
 
 
     <!-- Tên sản phẩm -->
+    <TextView
+        android:id="@+id/rbSaoDanhGia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="số sao"
+        android:textSize="14sp"
+        android:textColor="@android:color/black" />
     <TextView
         android:id="@+id/tvTenSanPham"
         android:layout_width="wrap_content"
@@ -39,6 +54,13 @@
         android:text="Tên sản phẩm"
         android:textSize="14sp"
         android:textColor="@android:color/black" />
+
+    <TextView
+        android:id="@+id/tvThoiGian"
+        android:text="thời gina"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"/>
 
     <!-- Nội dung đánh giá -->
     <TextView

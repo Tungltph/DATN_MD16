@@ -21,17 +21,21 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datn_md16.Activitys.Acti_chitietdonhang;
+import com.example.datn_md16.DTO.AccountResponse;
 import com.example.datn_md16.DTO.DanhGiaDTO;
 import com.example.datn_md16.DTO.DiaChiDTO;
 import com.example.datn_md16.DTO.DonHangDTO;
+import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.Interface.ApiClient;
-import com.example.datn_md16.Interface.ApiService;
+import com.example.datn_md16.Interfa.ApiService;
 import com.example.datn_md16.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -49,6 +53,7 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
 
     public DonHangHomeAdapter(List<DonHangDTO.DonHang> donHangList, Context context) {
         this.donHangList = donHangList;
+        apiService = ApiClient.getClient().create(ApiService.class);
         this.context = context;
     }
 
@@ -82,6 +87,57 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
                 TextView btnHuy = productView.findViewById(R.id.btnHuy);
                 TextView btnXemChiTiet = productView.findViewById(R.id.btnXemChiTiet);
                 TextView tvDanhGia = productView.findViewById(R.id.tvDanhGia);
+
+                tvDanhGia.setOnClickListener(v -> {
+                    Dialog dialog = new Dialog(context);
+                    dialog.setContentView(R.layout.dialog_danhgia);
+
+                    RatingBar ratingBar = dialog.findViewById(R.id.rbSao);
+                    TextInputEditText edtComment = dialog.findViewById(R.id.etNoidungdanhgia);
+                    Button btnSubmitRating = dialog.findViewById(R.id.btndanhgia);
+
+                    btnSubmitRating.setOnClickListener(v1 -> {
+                        String noiDung = edtComment.getText().toString();
+                        int diemDanhGia = (int) ratingBar.getRating();
+                        String thoiGian = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+
+                        // Lấy thông tin người dùng từ SharedPreferences
+                        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                        String userId = sharedPreferences.getString("user_id", null);
+                        String userName = sharedPreferences.getString("user_name", null);
+
+                        // Tạo đối tượng AccountResponse.Account từ thông tin đã lưu
+                        AccountResponse.Account currentUser = new AccountResponse.Account();
+                        currentUser._id = userId;
+                        currentUser.taiKhoan = userName;
+
+                        // Tạo đối tượng DanhGiaDTO
+                        DanhGiaDTO danhGiaDTO = new DanhGiaDTO(noiDung, thoiGian, diemDanhGia, userId, sanPham.getId()
+                        );
+
+                        // Gửi dữ liệu đánh giá lên server qua Retrofit
+                        Call<Void> call = apiService.themDanhGia(danhGiaDTO);
+                        call.enqueue(new Callback<Void>() {
+                            @Override
+                            public void onResponse(Call<Void> call, Response<Void> response) {
+                                if (response.isSuccessful()) {
+                                    Toast.makeText(context, "Đánh giá đã được gửi thành công!", Toast.LENGTH_SHORT).show();
+                                    dialog.dismiss();
+                                } else {
+                                    Toast.makeText(context, "Gửi đánh giá thất bại!", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onFailure(Call<Void> call, Throwable t) {
+                                Toast.makeText(context, "Lỗi kết nối!", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    });
+
+                    dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    dialog.show();
+                });
 
 
                 // Update product information
@@ -144,80 +200,6 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
                         context.startActivity(intent);
 
                 });
-
-//                tvDanhGia.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        final Dialog dialog = new Dialog(context, androidx.appcompat.R.style.Theme_AppCompat_DayNight_Dialog_Alert);
-//                        dialog.setContentView(R.layout.dialog_danhgia);
-//
-//                        RatingBar start = dialog.findViewById(R.id.rbSao);
-//                        TextInputEditText ednoidung = dialog.findViewById(R.id.etNoidungdanhgia);
-//                        Button btndanhgia = dialog.findViewById(R.id.btndanhgia);
-//
-//                        if (start == null || ednoidung == null || btndanhgia == null) {
-//                            Toast.makeText(context, "Có lỗi khi khởi tạo giao diện", Toast.LENGTH_SHORT).show();
-//                            return;
-//                        }
-
-
-//                btndanhgia.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        Retrofit retrofit = ApiClient.getClient();
-//                        apiService = retrofit.create(ApiService.class);
-//
-//                        SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-//                        String userId = sharedPreferences.getString(KEY_USER_ID, null);
-//                        if (userId == null) {
-//                            Toast.makeText(context, "Bạn cần đăng nhập để đánh giá", Toast.LENGTH_SHORT).show();
-//                            return;
-//                        }
-//
-//                        // Kiểm tra nếu danh sách không rỗng
-//                        if (sanPhamTrongDonHangList.isEmpty()) {
-//                            Toast.makeText(context, "Không có sản phẩm để đánh giá", Toast.LENGTH_SHORT).show();
-//                            dialog.dismiss();
-//                            return;
-//                        }
-//
-//                        DonHangDTO.SanPham sanPham = sanPhamTrongDonHangList.get(0).getSanPham();
-//                        DanhGiaDTO danhGiaDTO = new DanhGiaDTO();
-//                        danhGiaDTO.setNoiDung(ednoidung.getText().toString());
-//                        danhGiaDTO.setThoiGian(donHang.getNgayDatHang());
-//                        danhGiaDTO.setDiemanhgia((int) start.getRating());
-//                        danhGiaDTO.setIdKh(userId);
-//                        danhGiaDTO.setIdsp(sanPham.getId()); // Truyền đúng ID sản phẩm vào đây
-//
-//                        Call<DanhGiaDTO> call = apiService.adddanhgia(danhGiaDTO);
-//
-//                        Log.d("DanhGia", "idKH: " + userId);
-//                        Log.d("DanhGia", "idSP: " + sanPham.getId());
-//                        Log.d("DanhGia", "diemDanhGia: " + (int) start.getRating());
-//
-//                        call.enqueue(new Callback<DanhGiaDTO>() {
-//                            @Override
-//                            public void onResponse(Call<DanhGiaDTO> call, Response<DanhGiaDTO> response) {
-//                                if (response.isSuccessful()) {
-//                                    Toast.makeText(context, "Đánh giá thành công", Toast.LENGTH_SHORT).show();
-//                                } else {
-//                                    Toast.makeText(context, "Không thể đánh giá", Toast.LENGTH_SHORT).show();
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onFailure(Call<DanhGiaDTO> call, Throwable t) {
-//                                Toast.makeText(context, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-//                            }
-//                        });
-//
-//                        dialog.dismiss();
-//                    }
-//                });
-
-//                        dialog.show();
-//                    }
-//                });
             }
         }
 
