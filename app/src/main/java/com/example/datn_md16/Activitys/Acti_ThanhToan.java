@@ -239,15 +239,17 @@ public class Acti_ThanhToan extends AppCompatActivity {
 
             // Tạo một đơn hàng mới
             DonHangDTO.DonHang donHang = new DonHangDTO.DonHang();
-            donHang.setSanPhamList(convertToSanPhamList(selectedItems));
+
+
+            donHang.setSanPhamTrongDonHang(convertToSanPhamList(selectedItems));
             donHang.setSoLuong(calculateTotalQuantity(selectedItems));
             donHang.setTongTien(updateTotalAmount());
-            donHang.setTrangThaiThanhToan(radioOnl.isChecked()); // Trạng thái thanh toán dựa trên lựa chọn
+            donHang.setTrangThaiThanhToan(radioOnl.isChecked());
             donHang.setDiaChiGiaoHang(textViewAddress2.getText().toString());
             donHang.setIdDiaChi(diaChi);//them
             donHang.setPhuongThucThanhToan(radioOnl.isChecked() ? "Thẻ tín dụng" : "Tiền mặt");
             donHang.setTrangThaiDonHang("Chờ xác nhận");
-            donHang.setKhachHang(khachHang);
+            donHang.setIdKH(khachHang);
 
 
 
@@ -316,7 +318,7 @@ private void Zalopay() {
                     diaChi.setId(idDiaChi);
                     // Tạo một đơn hàng mới
                     DonHangDTO.DonHang donHang = new DonHangDTO.DonHang();
-                    donHang.setSanPhamList(convertToSanPhamList(selectedItems));
+                    donHang.setSanPhamTrongDonHang(convertToSanPhamList(selectedItems));
                     donHang.setSoLuong(calculateTotalQuantity(selectedItems));
                     donHang.setTongTien(updateTotalAmount());
                     donHang.setTrangThaiThanhToan(radioOnl.isChecked()); // Trạng thái thanh toán dựa trên lựa chọn
@@ -324,7 +326,7 @@ private void Zalopay() {
                     donHang.setIdDiaChi(diaChi);
                     donHang.setPhuongThucThanhToan(radioOnl.isChecked() ? "Thẻ tín dụng" : "Tiền mặt");
                     donHang.setTrangThaiDonHang("Chờ xác nhận");
-                    donHang.setKhachHang(khachHang); // Đặt đối tượng KhachHang vào đơn hàng
+                    donHang.setIdKH(khachHang); // Đặt đối tượng KhachHang vào đơn hàng
 
                     // Thực hiện gọi API để đặt hàng
                     ApiService apiService = ApiClient.getClient().create(ApiService.class);
@@ -372,21 +374,49 @@ private void Zalopay() {
 }
 
 
-
-    private List<DonHangDTO.SanPham> convertToSanPhamList(List<GioHangDTO> selectedItems) {
-        List<DonHangDTO.SanPham> sanPhamList = new ArrayList<>();
+    private List<DonHangDTO.SanPhamTrongDonHang> convertToSanPhamList(List<GioHangDTO> selectedItems) {
+        List<DonHangDTO.SanPhamTrongDonHang> sanPhamList = new ArrayList<>();
 
         for (GioHangDTO item : selectedItems) {
+            DonHangDTO.SanPhamTrongDonHang sanPhamTrongDonHang = new DonHangDTO.SanPhamTrongDonHang();
             DonHangDTO.SanPham sanPham = new DonHangDTO.SanPham();
-            DonHangDTO.MauSchema soluong = new DonHangDTO.MauSchema();
 
-
+            // Set thông tin sản phẩm
             sanPham.setId(item.getIdSanPham());
-            soluong.setSoLuong(item.getSoLuong());
-            sanPhamList.add(sanPham);
+            sanPham.setTenDienThoai(item.getSanPham().getTenDienThoai()); // Giả sử bạn có tên sản phẩm từ GioHangDTO
+            sanPham.setHinhAnh(item.getSanPham().getHinhAnh()); // Giả sử bạn có hình ảnh sản phẩm từ GioHangDTO
+
+            // Set thông tin màu sắc và số lượng
+            List<DonHangDTO.MauSchema> mauSchemaList = new ArrayList<>();
+            DonHangDTO.MauSchema mauSchema = new DonHangDTO.MauSchema();
+            mauSchema.setMau(item.getIdMau()); // Giả sử bạn sử dụng idMau làm tên màu
+            mauSchema.setSoLuong(item.getSoLuong());
+           // mauSchema.setGiaTien(item.getSanPham()); // Giả sử bạn có giá bán từ GioHangDTO
+            mauSchemaList.add(mauSchema);
+
+            sanPham.setMauSchema(mauSchemaList);
+            sanPhamTrongDonHang.setSanPham(sanPham);
+            sanPhamTrongDonHang.setSoLuong(item.getSoLuong());
+
+            sanPhamList.add(sanPhamTrongDonHang);
         }
         return sanPhamList;
     }
+
+//    private List<DonHangDTO.SanPham> convertToSanPhamList(List<GioHangDTO> selectedItems) {
+//        List<DonHangDTO.SanPham> sanPhamList = new ArrayList<>();
+//
+//        for (GioHangDTO item : selectedItems) {
+//            DonHangDTO.SanPham sanPham = new DonHangDTO.SanPham();
+//            DonHangDTO.MauSchema soluong = new DonHangDTO.MauSchema();
+//
+//
+//            sanPham.setId(item.getIdSanPham());
+//            soluong.setSoLuong(item.getSoLuong());
+//            sanPhamList.add(sanPham);
+//        }
+//        return sanPhamList;
+//    }
 
     private int calculateTotalQuantity(List<GioHangDTO> items) {
         int quantity = 0;
