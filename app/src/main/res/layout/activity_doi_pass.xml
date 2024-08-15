@@ -71,22 +71,18 @@
 
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_marginTop="20dp"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border_background">
 
-            <Button
-                android:id="@+id/btnChangePassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Đổi mật khẩu"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="16sp" />
-        </LinearLayout>
+        <Button
+            android:id="@+id/btnChangePassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Đổi mật khẩu"
+            android:layout_marginTop="20dp"
+            android:textColor="@android:color/white"
+            android:background="@drawable/button_background"
+            app:backgroundTint="@null"
+            android:layout_marginBottom="20dp"
+            android:onClick="register" />
     </LinearLayout>
 
 

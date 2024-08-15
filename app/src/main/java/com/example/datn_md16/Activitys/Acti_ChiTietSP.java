@@ -22,16 +22,18 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.datn_md16.Adapter.DanhGiaAdapter;
 import com.example.datn_md16.Adapter.MauAdapter;
 import com.example.datn_md16.Adapter.TimKiemAdapter;
 import com.example.datn_md16.DTO.AccountResponse;
-import com.example.datn_md16.DTO.DanhGiaDTO;
+import com.example.datn_md16.DTO.DanhGiaReceiveDTO;
 import com.example.datn_md16.DTO.GioHangDTO;
 import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.DTO.SanPhamDTO;
 import com.example.datn_md16.DTO.SanPhamYeuThichDTO;
 import com.example.datn_md16.DTO.TimKiemDTO;
 import com.example.datn_md16.Interfa.ApiService;
+import com.example.datn_md16.Interfa.DanhGiaResponse;
 import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -74,6 +76,10 @@ public class Acti_ChiTietSP extends AppCompatActivity {
 
     private RecyclerView rcvDanhGia;
 
+    private DanhGiaAdapter danhGiaAdapter;
+    private String idSP; // ID sản phẩm
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,15 +93,39 @@ public class Acti_ChiTietSP extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(getString(R.string.toolbarChiTietSP_title));
 
-        apiService = ApiClient.getClient().create(ApiService.class);
+        Retrofit retrofit = ApiClient.getClient();
 
-        // Khởi tạo RecyclerView
+        // Tạo đối tượng dịch vụ API từ Retrofit
+        ApiService apiService = retrofit.create(ApiService.class);
+        idSP = getIntent().getStringExtra("idSP");
         rcvDanhGia = findViewById(R.id.rcvdanhgia);
         rcvDanhGia.setLayoutManager(new LinearLayoutManager(this));
-//        adapterDanhGia = new DanhGiaAdapter(new ArrayList<>());
+        String idSP = "668ea5681403cda3c0c969a2";
+        Call<DanhGiaResponse> call = apiService.getDanhGiaByIdSP(idSP);
+        call.enqueue(new Callback<DanhGiaResponse>() {
+            @Override
+            public void onResponse(Call<DanhGiaResponse> call, Response<DanhGiaResponse> response) {
+                if (response.isSuccessful()) {
+                    DanhGiaResponse danhGiaResponse = response.body();
+                    if (danhGiaResponse != null && danhGiaResponse.getData() != null) {
+                        List<DanhGiaReceiveDTO> danhGiaList = danhGiaResponse.getData();
+                        danhGiaAdapter = new DanhGiaAdapter(danhGiaList);
+                        rcvDanhGia.setAdapter(danhGiaAdapter);
+                    } else {
+                        Log.e("DanhGiaActivity", "DanhGiaResponse data is null");
+                    }
+                } else {
+                    Log.e("DanhGiaActivity", "Response not successful: " + response.code());
+                }
+            }
 
-        // Gọi API để lấy dữ liệu
-        fetchDanhGia();
+            @Override
+            public void onFailure(Call<DanhGiaResponse> call, Throwable t) {
+                Log.e("DanhGiaActivity", "API call failed: " + t.getMessage());
+                Toast.makeText(Acti_ChiTietSP.this, "Lỗi khi lấy dữ liệu: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
 
         // Initialize views
         txtProductName = findViewById(R.id.tvTenDienThoai);
@@ -118,12 +148,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
         btnthemgiohang = findViewById(R.id.btnThemGioHang);
         tvGiaGoc = findViewById(R.id.tvGiaGoc);
 
-        Retrofit retrofit2 = ApiClient.getClient();
-        apiService = retrofit2.create(ApiService.class);
 
-        Retrofit retrofit = ApiClient.getClient();
-
-        apiService = retrofit.create(ApiService.class);
 
 
         btnthemgiohang.setOnClickListener(v -> {
@@ -214,31 +239,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
 
     }
 
-    public void fetchDanhGia() {
-        ApiService apiService = ApiClient.getClient().create(ApiService.class);
-        Call<DanhGiaDTO> call = apiService.getDanhGia();
-//        call.enqueue(new Callback<DanhGiaDTO>() {
-//            @Override
-//            public void onResponse(Call<DanhGiaDTO> call, Response<DanhGiaDTO> response) {
-//                if (response.isSuccessful() && response.body() != null) {
-//                    DanhGiaDTO danhGiaDTO = response.body();
-//                    List<DanhGiaDTO.DanhGia> danhGiaList = danhGiaDTO.getData();
-//
-//                    DanhGiaAdapter adapter = new DanhGiaAdapter(danhGiaList);
-//                    rcvDanhGia.setAdapter(adapterDanhGia);
-//                } else {
-//                    // Xử lý lỗi khi phản hồi không thành công
-//                    Log.e("API_ERROR", "Lỗi phản hồi: " + response.message());
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<DanhGiaDTO> call, Throwable t) {
-//                // Xử lý lỗi khi gọi API thất bại
-//                Log.e("API_ERROR", "Gọi API thất bại: " + t.getMessage());
-//            }
-//        });
-    }
+
 
 
 

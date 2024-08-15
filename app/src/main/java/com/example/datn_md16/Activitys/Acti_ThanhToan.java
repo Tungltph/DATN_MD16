@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -18,15 +16,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.datn_md16.Adapter.GioHangAdapter;
 import com.example.datn_md16.Adapter.Thaanh_Toan_Adapter;
 import com.example.datn_md16.DTO.CreateOrder;
 import com.example.datn_md16.DTO.DiaChiDTO;
 import com.example.datn_md16.DTO.DonHangDTO;
 import com.example.datn_md16.DTO.GioHangDTO;
 import com.example.datn_md16.DTO.KhuyenMai;
-import com.example.datn_md16.Fragment.DonHangFrag;
-import com.example.datn_md16.Fragment.HoaDonFrag;
 import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.Interface.ApiService;
 

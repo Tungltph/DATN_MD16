@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="5dp"
+        android:background="#5FB1C1" />
+
+    <TextView
+        android:id="@+id/textHoTen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:text="Họ tên" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textDiemDanhGia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5 " />
+
+        <ImageView
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:src="@drawable/star"/>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="15dp"
+            android:layout_marginLeft="5dp"
+            android:background="#5FB1C1" />
+
+        <TextView
+            android:id="@+id/textTenDienThoai"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_height="wrap_content"
+            android:text="Tên điện thoại" />
+    </LinearLayout>
+
+
+
+    <TextView
+        android:id="@+id/textNoiDung"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nội dung đánh giá" />
+
+    <TextView
+        android:id="@+id/textThoiGian"
+        android:layout_width="wrap_content"
+        android:layout_gravity="end"
+        android:layout_height="wrap_content"
+        android:text="Thời gian" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="#5FB1C1" />
+
+
+
+
+
+
+
+
+    <!-- Nếu bạn cần hiển thị hình ảnh -->
+    <!-- <ImageView
+        android:id="@+id/imageHinhAnh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/placeholder" /> -->
+
+</LinearLayout>

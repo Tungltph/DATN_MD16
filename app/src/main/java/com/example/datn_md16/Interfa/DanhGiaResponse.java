@@ -1,36 +1,22 @@
 package com.example.datn_md16.Interfa;
 
-import com.example.datn_md16.DTO.DanhGiaDTO;
+import com.example.datn_md16.DTO.DanhGiaReceiveDTO;
 
 import java.util.List;
 
 public class DanhGiaResponse {
     private int status;
     private String msg;
-    private List<DanhGiaDTO> data;
+    private List<DanhGiaReceiveDTO> data;
 
-    // Getters and Setters
-    public int getStatus() {
-        return status;
-    }
+    // Getter and Setter
+    public int getStatus() { return status; }
+    public void setStatus(int status) { this.status = status; }
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
+    public String getMsg() { return msg; }
+    public void setMsg(String msg) { this.msg = msg; }
 
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
-    }
-
-    public List<DanhGiaDTO> getData() {
-        return data;
-    }
-
-    public void setData(List<DanhGiaDTO> data) {
-        this.data = data;
-    }
+    public List<DanhGiaReceiveDTO> getData() { return data; }
+    public void setData(List<DanhGiaReceiveDTO> data) { this.data = data; }
 }
+

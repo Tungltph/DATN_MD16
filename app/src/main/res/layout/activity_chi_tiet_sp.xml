@@ -351,9 +351,11 @@
                 android:layout_height="wrap_content"
                 android:textSize="18dp"
                 android:textStyle="bold"
+                android:paddingLeft="20dp"
                 android:text="Đánh giá"
                 />
             <androidx.recyclerview.widget.RecyclerView
+                android:paddingLeft="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/rcvdanhgia"

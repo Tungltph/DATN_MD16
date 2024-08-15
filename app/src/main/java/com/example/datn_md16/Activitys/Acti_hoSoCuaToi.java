@@ -1,5 +1,7 @@
 package com.example.datn_md16.Activitys;
 
+import static com.example.datn_md16.Activitys.DangNhap.PREFS_NAME;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -9,12 +11,16 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.datn_md16.DTO.AccountRequest;
 import com.example.datn_md16.DTO.AccountResponse;
+import com.example.datn_md16.DTO.HoSoDTO;
 import com.example.datn_md16.Interfa.ApiService;
+import com.example.datn_md16.Interfa.HoSoResponse;
 import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
 import com.google.android.material.textfield.TextInputEditText;
@@ -29,10 +35,15 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Acti_hoSoCuaToi extends AppCompatActivity {
-    private TextInputEditText tvTenNguoiDung, tvSoDienThoai;
-    ApiService apiService;
 
 
+    private TextInputEditText tvTenNguoiDungHoso;
+    private TextInputEditText tvSoDienThoai;
+    private static final String TAG = "NguoiDungActivity";
+
+    private Button btnThayDoiTT;
+
+    private ApiService apiService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,60 +58,119 @@ public class Acti_hoSoCuaToi extends AppCompatActivity {
         // Đặt tiêu đề cho Toolbar từ chuỗi trong strings.xml
         setTitle(getString(R.string.toolbarHoSo));
 
-        tvTenNguoiDung = findViewById(R.id.tvTenNguoiDungHoso);
+        // Ánh xạ các TextInputEditText từ layout
+        tvTenNguoiDungHoso = findViewById(R.id.tvTenNguoiDungHoso);
         tvSoDienThoai = findViewById(R.id.tvSoDienThoai);
+        fetchUserInfo();
 
-        SharedPreferences sharedPreferences = getSharedPreferences(DangNhap.PREFS_NAME, Context.MODE_PRIVATE);
-        String accountId = sharedPreferences.getString(DangNhap.KEY_USER_ID, "");
+        btnThayDoiTT = findViewById(R.id.btnThayDoiTT);
 
-        if (accountId.isEmpty()) {
-            Toast.makeText(this, "Chưa đăng nhập", Toast.LENGTH_SHORT).show();
+        fetchUserInfo();
+
+        Retrofit retrofit = ApiClient.getClient();
+
+        apiService = retrofit.create(ApiService.class);
+
+        // Thiết lập sự kiện nhấn nút
+        btnThayDoiTT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateAccountInfo();
+            }
+        });
+    }
+
+    private void updateAccountInfo() {
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        String userId = sharedPreferences.getString("user_id", null);
+
+        // Lấy dữ liệu từ các EditText
+        String tenNguoiDung = tvTenNguoiDungHoso.getText().toString().trim();
+        String soDienThoai = tvSoDienThoai.getText().toString().trim();
+
+        // Validate inputs
+        if (tenNguoiDung.isEmpty()) {
+            Toast.makeText(this, "Tên người dùng không được để trống.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        // Gọi API lấy thông tin tài khoản
-        setupRetrofit();
-        fetchAccountById(accountId);
-    }
-    public void setupRetrofit() {
-        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
-        logging.setLevel(HttpLoggingInterceptor.Level.BODY);
+        if (soDienThoai.isEmpty()) {
+            Toast.makeText(this, "Số điện thoại không được để trống.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        OkHttpClient client = new OkHttpClient.Builder()
-                .addInterceptor(logging)
-                .build();
+        // Validate phone number format
+        if (!isValidPhoneNumber(soDienThoai)) {
+            Toast.makeText(this, "Số điện thoại không hợp lệ.", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-        Retrofit retrofit = ApiClient.getClient();
-        apiService = retrofit.create(ApiService.class);
-    }
+        // Tạo đối tượng AccountDTO để gửi đến API
+        HoSoDTO updatedAccount = new HoSoDTO();
+        updatedAccount.setHoTen(tenNguoiDung);
+        updatedAccount.setSdt(soDienThoai);
 
-    private void fetchAccountById(String accountId) {
-        Call<AccountRequest> call = apiService.getAccountById(accountId);
-        call.enqueue(new Callback<AccountRequest>() {
+        // Gửi yêu cầu PUT đến API
+        Call<HoSoDTO> call = apiService.updateAccountInfo(userId, updatedAccount);
+        call.enqueue(new Callback<HoSoDTO>() {
             @Override
-            public void onResponse(Call<AccountRequest> call, Response<AccountRequest> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    AccountRequest account = response.body();
-                    if (account != null) {
-                        tvTenNguoiDung.setText(account.getHoTen() != null ? account.getHoTen() : "Không có tên");
-                        tvSoDienThoai.setText(account.getSdt() != null ? account.getSdt() : "Không có số điện thoại");
-                    } else {
-                        Log.d("Account Data", "Account is null");
-                    }
+            public void onResponse(Call<HoSoDTO> call, Response<HoSoDTO> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(Acti_hoSoCuaToi.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
                 } else {
-                    Log.d("API_RESPONSE", "Response failed: " + response.message());
+                    Toast.makeText(Acti_hoSoCuaToi.this, "Cập nhật không thành công", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<AccountRequest> call, Throwable t) {
-                Log.e("APIFailure", t.getMessage());
+            public void onFailure(Call<HoSoDTO> call, Throwable t) {
                 Toast.makeText(Acti_hoSoCuaToi.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    private boolean isValidPhoneNumber(String phoneNumber) {
+        // Check if the phone number starts with '0' and has exactly 10 digits
+        return phoneNumber.matches("^0\\d{9}$");
+    }
 
+
+    private void fetchUserInfo() {
+        Retrofit retrofit = ApiClient.getClient();
+
+        ApiService apiService = retrofit.create(ApiService.class);
+
+        SharedPreferences sharedPreferences = getApplication().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        String userId = sharedPreferences.getString("user_id", null);
+
+//        String accountId = "668fcb250711941e32e4b16c";
+
+        Call<HoSoResponse> call = apiService.getAccByID(userId);
+        call.enqueue(new Callback<HoSoResponse>() {
+            @Override
+            public void onResponse(Call<HoSoResponse> call, Response<HoSoResponse> response) {
+                if (response.isSuccessful()) {
+                    HoSoResponse apiResponse = response.body();
+                    if (apiResponse != null && apiResponse.getData() != null) {
+                        HoSoDTO account = apiResponse.getData();
+                        tvTenNguoiDungHoso.setText(account.getHoTen());
+                        tvSoDienThoai.setText(account.getSdt());
+                    } else {
+                        Log.d(TAG, "Account data is null");
+                    }
+                } else {
+                    Log.e(TAG, "Response unsuccessful: " + response.message());
+                    Toast.makeText(Acti_hoSoCuaToi.this, "Lỗi khi lấy dữ liệu", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<HoSoResponse> call, Throwable t) {
+                Log.e(TAG, "API call failed: " + t.getMessage());
+                Toast.makeText(Acti_hoSoCuaToi.this, "Lỗi kết nối", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

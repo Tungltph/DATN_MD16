@@ -47,7 +47,7 @@ public class DangNhap extends AppCompatActivity {
 
     public static final String PREFS_NAME = "user_prefs";
     public static final String KEY_USER_ID = "user_id";
-    private static final String KEY_USER_NAME = "user_name";
+    public static final String KEY_USER_NAME = "user_name";
     private static final String KEY_SAVE_ACCOUNT = "save_account";
     private static final String KEY_SAVED_USERNAME = "saved_username";
     private static final String KEY_SAVED_PASSWORD = "saved_password";

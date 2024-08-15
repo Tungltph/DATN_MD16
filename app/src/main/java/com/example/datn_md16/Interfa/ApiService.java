@@ -2,12 +2,12 @@ package com.example.datn_md16.Interfa;
 
 import com.example.datn_md16.DTO.AccountRequest;
 import com.example.datn_md16.DTO.AccountResponse;
-import com.example.datn_md16.DTO.DanhGiaDTO;
+import com.example.datn_md16.DTO.DanhGiaSendDTO;
 import com.example.datn_md16.DTO.DoiPassDTO;
 import com.example.datn_md16.DTO.DonHangDTO;
 import com.example.datn_md16.DTO.GioHangDTO;
+import com.example.datn_md16.DTO.HoSoDTO;
 import com.example.datn_md16.DTO.ProductHome;
-import com.example.datn_md16.DTO.SanPhamDTO;
 import com.example.datn_md16.DTO.SanPhamYeuThichDTO;
 import com.example.datn_md16.DTO.TimKiemDTO;
 
@@ -29,6 +29,9 @@ public interface ApiService {
 
     @GET("/api/sanPham/hot")
     Call<List<ProductHome>> getHotProducts();
+
+    @PUT("/api/account/edit-account/{id}")
+    Call<HoSoDTO> updateAccountInfo(@Path("id") String id, @Body HoSoDTO accountDTO);
 
     @GET("/api/sanPham/new")
     Call<List<ProductHome>> getNewProducts();
@@ -98,11 +101,17 @@ public interface ApiService {
     @GET("/api/account/{id}")
     Call<AccountRequest> getAccountById(@Path("id") String id);
 
-    @POST("/api/danhGia")
-    Call<Void> themDanhGia(@Body DanhGiaDTO danhGiaDTO);
 
-    @GET("/api/danhGia")
-    Call<DanhGiaDTO> getDanhGia();
+    @GET("/api/account/{id}")
+    Call<HoSoResponse> getAccByID(@Path("id") String id);
+
+    @POST("/api/danhGia")
+    Call<Void> themDanhGia(@Body DanhGiaSendDTO danhGiaDTO);
+
+
+
+    @GET("/api/danhGia/{idSP}")
+    Call<DanhGiaResponse> getDanhGiaByIdSP(@Path("idSP") String idSP);
 
 
     @Headers("Content-Type: application/json")
