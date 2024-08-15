@@ -203,6 +203,39 @@ public class DonHangDTO {
         @SerializedName("soLuong")
         private int soLuong;
 
+        @SerializedName("idMau")
+        private String idMau;
+
+        @SerializedName("mau")
+        private String mau;
+
+        @SerializedName("giaTien")
+        private int giaTien;
+
+        public int getGiaTien() {
+            return giaTien;
+        }
+
+        public void setGiaTien(int giaTien) {
+            this.giaTien = giaTien;
+        }
+
+        public String getMau() {
+            return mau;
+        }
+
+        public void setMau(String mau) {
+            this.mau = mau;
+        }
+
+        public String getIdMau() {
+            return idMau;
+        }
+
+        public void setIdMau(String idMau) {
+            this.idMau = idMau;
+        }
+
         // Getters and Setters
         public SanPham getSanPham() {
             return sanPham;
@@ -269,6 +302,8 @@ public class DonHangDTO {
     }
 
     public static class MauSchema {
+
+
         @SerializedName("mau")
         private String mau;
 

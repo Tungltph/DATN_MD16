@@ -3,6 +3,7 @@ package com.example.datn_md16.Activitys;
 import static com.example.datn_md16.Activitys.DangNhap.PREFS_NAME;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -22,18 +23,19 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.datn_md16.Adapter.DanhGiaAdapter;
+
 import com.example.datn_md16.Adapter.MauAdapter;
 import com.example.datn_md16.Adapter.TimKiemAdapter;
 import com.example.datn_md16.DTO.AccountResponse;
-import com.example.datn_md16.DTO.DanhGiaReceiveDTO;
+
+import com.example.datn_md16.DTO.DanhGiaSendDTO;
+import com.example.datn_md16.DTO.DonHangDTO;
 import com.example.datn_md16.DTO.GioHangDTO;
 import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.DTO.SanPhamDTO;
 import com.example.datn_md16.DTO.SanPhamYeuThichDTO;
 import com.example.datn_md16.DTO.TimKiemDTO;
 import com.example.datn_md16.Interfa.ApiService;
-import com.example.datn_md16.Interfa.DanhGiaResponse;
 import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -41,6 +43,7 @@ import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -48,6 +51,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Acti_ChiTietSP extends AppCompatActivity {
 
@@ -74,11 +78,9 @@ public class Acti_ChiTietSP extends AppCompatActivity {
     private AccountResponse account;
     private ApiService apiService; // Khai báo ApiService
 
-    private RecyclerView rcvDanhGia;
-
-    private DanhGiaAdapter danhGiaAdapter;
-    private String idSP; // ID sản phẩm
-
+    private RecyclerView recyclerView2;
+    //private DanhgiaSanPhamAdapter adapter2;
+    private List<DanhGiaSendDTO> danhGiaList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,40 +94,6 @@ public class Acti_ChiTietSP extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setTitle(getString(R.string.toolbarChiTietSP_title));
-
-        Retrofit retrofit = ApiClient.getClient();
-
-        // Tạo đối tượng dịch vụ API từ Retrofit
-        ApiService apiService = retrofit.create(ApiService.class);
-        idSP = getIntent().getStringExtra("idSP");
-        rcvDanhGia = findViewById(R.id.rcvdanhgia);
-        rcvDanhGia.setLayoutManager(new LinearLayoutManager(this));
-        String idSP = "668ea5681403cda3c0c969a2";
-        Call<DanhGiaResponse> call = apiService.getDanhGiaByIdSP(idSP);
-        call.enqueue(new Callback<DanhGiaResponse>() {
-            @Override
-            public void onResponse(Call<DanhGiaResponse> call, Response<DanhGiaResponse> response) {
-                if (response.isSuccessful()) {
-                    DanhGiaResponse danhGiaResponse = response.body();
-                    if (danhGiaResponse != null && danhGiaResponse.getData() != null) {
-                        List<DanhGiaReceiveDTO> danhGiaList = danhGiaResponse.getData();
-                        danhGiaAdapter = new DanhGiaAdapter(danhGiaList);
-                        rcvDanhGia.setAdapter(danhGiaAdapter);
-                    } else {
-                        Log.e("DanhGiaActivity", "DanhGiaResponse data is null");
-                    }
-                } else {
-                    Log.e("DanhGiaActivity", "Response not successful: " + response.code());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<DanhGiaResponse> call, Throwable t) {
-                Log.e("DanhGiaActivity", "API call failed: " + t.getMessage());
-                Toast.makeText(Acti_ChiTietSP.this, "Lỗi khi lấy dữ liệu: " + t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-
 
         // Initialize views
         txtProductName = findViewById(R.id.tvTenDienThoai);
@@ -147,8 +115,22 @@ public class Acti_ChiTietSP extends AppCompatActivity {
         buttonBuyNow = findViewById(R.id.button_buy_now);
         btnthemgiohang = findViewById(R.id.btnThemGioHang);
         tvGiaGoc = findViewById(R.id.tvGiaGoc);
+        recyclerView2 = findViewById(R.id.rcvdanhgia);
+        danhGiaList = new ArrayList<>();
+
+//        adapter2 = new DanhgiaSanPhamAdapter(danhGiaList);
+//        recyclerView2.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView2.setAdapter(adapter2);
+//        Retrofit retrofit2 = ApiClient.getClient();
+//        apiService = retrofit2.create(ApiService.class);
+//        fetchDanhGiaList2();
 
 
+
+
+        Retrofit retrofit = ApiClient.getClient();
+
+        apiService = retrofit.create(ApiService.class);
 
 
         btnthemgiohang.setOnClickListener(v -> {
@@ -238,12 +220,6 @@ public class Acti_ChiTietSP extends AppCompatActivity {
         }
 
     }
-
-
-
-
-
-
 
     public void setStrikeThroughText(TextView textView) {
         textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
@@ -375,7 +351,6 @@ public class Acti_ChiTietSP extends AppCompatActivity {
             tvMoTaThem.setText("- "+sanPham.getMoTaThem());
             tvDoPhanGiai.setText("- "+sanPham.getDoPhanGiai());
             tvPhanTramChiTiet.setText("-"+sanPham.getGiamGia()+"%");
-
             Picasso.get().load(sanPham.getHinhAnh()).into(imgProduct);
         }
     }
@@ -384,41 +359,38 @@ public class Acti_ChiTietSP extends AppCompatActivity {
         bottomSheetDialog = new BottomSheetDialog(Acti_ChiTietSP.this);
         View sheetView = getLayoutInflater().inflate(R.layout.sheet_dialog_giohang, null);
         RecyclerView rcvMau = sheetView.findViewById(R.id.rcv_Mau);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 3);
-        rcvMau.setLayoutManager(layoutManager);
-
         ImageView imgGioHang = sheetView.findViewById(R.id.img_gioHang);
+        GridLayoutManager layoutManager = new GridLayoutManager(this, 3); // 3 cột
+        rcvMau.setLayoutManager(layoutManager);
+        Picasso.get().load(sanPham.getHinhAnh()).placeholder(R.drawable.img_sale).error(R.drawable.img).into(imgGioHang);
+
         TextView tvGiamGiaGioHang = sheetView.findViewById(R.id.tv_giamGia_gioHang);
         TextView tvSoLuong = sheetView.findViewById(R.id.tv_soLuong);
         TextView tvKQ = sheetView.findViewById(R.id.tvKQ);
         TextView btnGiamSoLuong = sheetView.findViewById(R.id.tvGiam);
         TextView btnTangSoLuong = sheetView.findViewById(R.id.tvTang);
+        Button btnThanhToanNgay = sheetView.findViewById(R.id.btn_thanhToan);
+
+        // Load dữ liệu mặc định
         Picasso.get().load(sanPham.getHinhAnh()).placeholder(R.drawable.img_sale).error(R.drawable.img).into(imgGioHang);
-        Button btnthemgiohang = sheetView.findViewById(R.id.btn_thanhToan);
-        // Set initial quantity
         int initialQuantity = 1;
         tvKQ.setText(String.valueOf(initialQuantity));
 
+        // Cài đặt adapter và chọn màu sắc đầu tiên
         if (mauList != null && !mauList.isEmpty()) {
             MauAdapter mauAdapter = new MauAdapter(mauList, mau -> {
                 selectedColor = mau.get_id();
-
                 updatePriceAndQuantity(mauList, selectedColor, tvGiamGiaGioHang, tvSoLuong);
             });
 
             rcvMau.setAdapter(mauAdapter);
 
-            // Ensure the correct initial selection
-            if (selectedColor != null) {
-                updatePriceAndQuantity(mauList, selectedColor, tvGiamGiaGioHang, tvSoLuong);
-            } else {
-                // No need to set default color; use color selected from adapter
-                ProductHome.MauSchema firstColor = mauList.get(0);
-                selectedColor = firstColor.get_id();
-                updatePriceAndQuantity(mauList, selectedColor, tvGiamGiaGioHang, tvSoLuong);
-            }
+            ProductHome.MauSchema firstColor = mauList.get(0);
+            selectedColor = firstColor.get_id();
+            updatePriceAndQuantity(mauList, selectedColor, tvGiamGiaGioHang, tvSoLuong);
         }
 
+        // Điều chỉnh số lượng
         btnGiamSoLuong.setOnClickListener(v -> {
             int currentQuantity = Integer.parseInt(tvKQ.getText().toString());
             if (currentQuantity > 1) {
@@ -433,15 +405,31 @@ public class Acti_ChiTietSP extends AppCompatActivity {
             tvKQ.setText(String.valueOf(currentQuantity));
         });
 
+        // Xử lý khi nhấn nút Thanh toán ngay
+        btnThanhToanNgay.setOnClickListener(v -> {
+            // Kiểm tra đăng nhập
+            SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+            String userId = sharedPreferences.getString(KEY_USER_ID, null);
+            if (userId == null) {
+                Toast.makeText(Acti_ChiTietSP.this, "Bạn cần đăng nhập để thanh toán", Toast.LENGTH_SHORT).show();
+                return;
+            }
 
-        btnthemgiohang.setOnClickListener(v -> {
-
+            // Tạo Intent để chuyển sang màn hình thanh toán
+            Intent intent = new Intent(Acti_ChiTietSP.this, Acti_ThanhToan.class);
+            intent.putExtra("sanPhamId", sanPham.get_id());
+            intent.putExtra("mauId", selectedColor);
+            intent.putExtra("soLuong", Integer.parseInt(tvKQ.getText().toString()));
+            intent.putExtra("giaTien", Double.parseDouble(tvGiamGiaGioHang.getText().toString()));
+            startActivity(intent);
+            bottomSheetDialog.dismiss();
         });
 
 
         bottomSheetDialog.setContentView(sheetView);
         bottomSheetDialog.show();
     }
+
 
     private void them_gio_hang(List<ProductHome.MauSchema> mauList) {
         bottomSheetDialog = new BottomSheetDialog(Acti_ChiTietSP.this);
@@ -519,28 +507,41 @@ public class Acti_ChiTietSP extends AppCompatActivity {
             Log.d("ThemGioHang", "Số Lượng: " + gioHangDTO.getSoLuong());
             Log.d("ThemGioHang", "Số acou: " + gioHangDTO.getIdAccount());
 
-            Call<Void> call = apiService.adddToCart(gioHangDTO);
-            call.enqueue(new Callback<Void>() {
-                @Override
-                public void onResponse(Call<Void> call, Response<Void> response) {
-                    if (response.isSuccessful()) {
-                        Toast.makeText(Acti_ChiTietSP.this, "Thêm vào giỏ hàng thành công", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(Acti_ChiTietSP.this, "Không thể thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+
+            int soLuong = Integer.parseInt(tvSoLuong.getText().toString());
+            int soLuongKho = Integer.parseInt(tvKQ.getText().toString());
+
+
+            if (soLuong <= 0) {
+                Toast.makeText(Acti_ChiTietSP.this, "Hàng trong kho đã hết", Toast.LENGTH_SHORT).show();
+            } else if (soLuong < soLuongKho) {
+                Toast.makeText(Acti_ChiTietSP.this, "Số lượng lớn hơn số hàng trong kho", Toast.LENGTH_SHORT).show();
+            }else {
+
+                Call<Void> call = apiService.adddToCart(gioHangDTO);
+                call.enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            Toast.makeText(Acti_ChiTietSP.this, "Thêm vào giỏ hàng thành công", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(Acti_ChiTietSP.this, "Không thể thêm vào giỏ hàng", Toast.LENGTH_SHORT).show();
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<Void> call, Throwable t) {
-                    Toast.makeText(Acti_ChiTietSP.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Toast.makeText(Acti_ChiTietSP.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                });
 
-            bottomSheetDialog.dismiss();
+                bottomSheetDialog.dismiss();
+            }
         });
 
         bottomSheetDialog.setContentView(sheetView);
         bottomSheetDialog.show();
+
     }
 
 
@@ -569,4 +570,29 @@ public class Acti_ChiTietSP extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+//    private void fetchDanhGiaList2() {
+//        Call<List<DanhGiaDTO>> call = apiService.getDanhGiaList();
+//        call.enqueue(new Callback<List<DanhGiaDTO>>() {
+//            @Override
+//            public void onResponse(Call<List<DanhGiaDTO>> call, Response<List<DanhGiaDTO>> response) {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    danhGiaList.clear();  // Xóa dữ liệu cũ
+//                    danhGiaList.addAll(response.body());  // Thêm dữ liệu mới vào danh sách
+//                    adapter2.notifyDataSetChanged();  // Cập nhật RecyclerView
+//                } else {
+//                    // Xử lý khi server trả về kết quả không thành công
+//                    Toast.makeText(Acti_ChiTietSP.this, "Không thể lấy dữ liệu đánh giá.", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<DanhGiaDTO>> call, Throwable t) {
+//                // Xử lý lỗi kết nối hoặc lỗi khác
+//                Toast.makeText(Acti_ChiTietSP.this, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
+
+
+
 }

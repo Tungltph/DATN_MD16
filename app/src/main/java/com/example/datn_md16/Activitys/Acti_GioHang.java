@@ -121,14 +121,10 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
 
     @Override
     public void onTotalPriceChanged(int totalPrice) {
-        // Create a NumberFormat instance to format the number with thousand separators
+
         NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault());
         numberFormat.setGroupingUsed(true);
-
-        // Format the totalPrice
         String formattedPrice = numberFormat.format(totalPrice);
-
-        // Set the formatted price to the TextView
         totalPriceTextView.setText("Tổng thanh toán:\n " +"₫"+ formattedPrice);
     }
     @Override

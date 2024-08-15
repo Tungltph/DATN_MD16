@@ -315,6 +315,9 @@ public class ProductHome implements Parcelable {
         private int giaTien;
         private String _id;
 
+        public MauSchema() {
+        }
+
         public MauSchema(String mau, int soLuong, int giaTien, String _id) {
             this.mau = mau;
             this.soLuong = soLuong;

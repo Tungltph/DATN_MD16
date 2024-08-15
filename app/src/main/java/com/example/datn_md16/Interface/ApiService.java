@@ -1,6 +1,7 @@
 package com.example.datn_md16.Interface;
 
 import com.example.datn_md16.DTO.AccountResponse;
+
 import com.example.datn_md16.DTO.DiaChiDTO;
 import com.example.datn_md16.DTO.DonHangDTO;
 import com.example.datn_md16.DTO.ProductHome;
@@ -37,13 +38,21 @@ import retrofit2.Call;
             @POST("/api/donHang/")
             Call<DonHangDTO> createOrder(@Body DonHangDTO.DonHang donHang);
 
+            @PUT("/api/donHang/update/{id}")
+            Call<DonHangDTO> updateoder(@Path("id") String id, @Body DonHangDTO.DonHang donHang);
+
+            @PUT("/api/sanPham/edit-mau/{productId}/{mauId}")
+            Call<ProductHome.MauSchema> updateColor(@Body int soLuongMoi);
+
+
+
 
             @DELETE("/api/gioHang/delete/{id}")
             Call<Void> deleteItemFromCart(@Path("id") String id);
 
             @GET("api/account/{id}")
             Call<AccountResponse> getAccount(@Path("id") String id);
-
+//
 //            @POST("/api/danhGia/")
 //            Call<DanhGiaDTO> adddanhgia(@Body DanhGiaDTO danhgia);
         }
