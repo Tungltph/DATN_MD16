@@ -218,7 +218,13 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
                 ProductHome sanPham = gioHang.getSanPham();
                 int price = 0;
                 if (sanPham.getMauSchema() != null && !sanPham.getMauSchema().isEmpty()) {
-                    price = sanPham.getMauSchema().get(0).getGiaTien(); // Lấy giá từ mauSchema
+                    for (ProductHome.MauSchema mauSchema : sanPham.getMauSchema()) {
+                        if (mauSchema.get_id() != null && mauSchema.get_id().equals(gioHang.getIdMau())) {
+                            // Lấy giá từ mauSchema tương ứng với idMau
+                            price = mauSchema.getGiaTien();
+                            break;
+                        }
+                    }
                 }
                 totalPrice += price * gioHang.getSoLuong();
             }
@@ -227,6 +233,7 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
             onTotalPriceChangeListener.onTotalPriceChanged(totalPrice);
         }
     }
+
 
     @Override
     public int getItemCount() {

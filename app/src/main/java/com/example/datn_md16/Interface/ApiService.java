@@ -6,6 +6,7 @@ import com.example.datn_md16.DTO.DiaChiDTO;
 import com.example.datn_md16.DTO.DonHangDTO;
 import com.example.datn_md16.DTO.ProductHome;
 
+import okhttp3.RequestBody;
 import retrofit2.Call;
         import retrofit2.http.Body;
         import retrofit2.http.DELETE;
@@ -41,9 +42,12 @@ import retrofit2.Call;
             @PUT("/api/donHang/update/{id}")
             Call<DonHangDTO> updateoder(@Path("id") String id, @Body DonHangDTO.DonHang donHang);
 
-            @PUT("/api/sanPham/edit-mau/{productId}/{mauId}")
-            Call<ProductHome.MauSchema> updateColor(@Body int soLuongMoi);
 
+            @GET("/api/sanpham/mau/{mauId}")
+            Call<ProductHome.MauSchema> getMauSchemaById(@Path("mauId") String mauId);
+
+            @PUT("/api/sanpham/edit-mau/{productId}/{mauId}")
+            Call<Void> updateMauSchema(@Path("productId") String productId, @Path("mauId") String mauId, @Body ProductHome.MauSchema mauSchema);
 
 
 

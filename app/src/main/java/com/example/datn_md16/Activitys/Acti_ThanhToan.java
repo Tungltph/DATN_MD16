@@ -226,12 +226,19 @@ public class Acti_ThanhToan extends AppCompatActivity {
         int total = 0;
         for (GioHangDTO item : items) {
             if (item.getSanPham() != null && !item.getSanPham().getMauSchema().isEmpty()) {
-                int giaTien = item.getSanPham().getMauSchema().get(0).getGiaTien();
-                total += item.getSoLuong() * giaTien;
+                // Tìm kiếm màu mà người dùng đã chọn
+                for (ProductHome.MauSchema mau : item.getSanPham().getMauSchema()) {
+                    if (mau.get_id().equals(item.getIdMau())) {
+                        int giaTien = mau.getGiaTien();
+                        total += item.getSoLuong() * giaTien;
+                        break; // Khi đã tìm được màu phù hợp, thoát khỏi vòng lặp
+                    }
+                }
             }
         }
         return total;
     }
+
 
     private void placeOrder() {
         // Kiểm tra xem địa chỉ có được chọn không
@@ -298,6 +305,7 @@ public class Acti_ThanhToan extends AppCompatActivity {
                         int soluongtrongkho = soluongtrongkho();
                         ProductHome.MauSchema mauSchema = new ProductHome.MauSchema();
                         mauSchema.setSoLuong(soluongtrongkho);
+                        finish();
                     } else {
                         Toast.makeText(Acti_ThanhToan.this, "Đặt hàng thất bại!", Toast.LENGTH_SHORT).show();
                     }
@@ -378,6 +386,7 @@ private void Zalopay() {
                                 int soluongtrongkho = soluongtrongkho();
                                 ProductHome.MauSchema mauSchema = new ProductHome.MauSchema();
                                 mauSchema.setSoLuong(soluongtrongkho);
+                                finish();
                             } else {
                                 Toast.makeText(Acti_ThanhToan.this, "Đặt hàng thất bại!", Toast.LENGTH_SHORT).show();
                             }
