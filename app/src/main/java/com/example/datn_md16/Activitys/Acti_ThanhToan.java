@@ -224,12 +224,16 @@ public class Acti_ThanhToan extends AppCompatActivity {
 
     private int calculateTotalAmount(List<GioHangDTO> items) {
         int total = 0;
+
         for (GioHangDTO item : items) {
+            Log.d("zzzz",""+item.getSanPham().getMauSchema());
             if (item.getSanPham() != null && !item.getSanPham().getMauSchema().isEmpty()) {
+
                 // Tìm kiếm màu mà người dùng đã chọn
                 for (ProductHome.MauSchema mau : item.getSanPham().getMauSchema()) {
                     if (mau.get_id().equals(item.getIdMau())) {
                         int giaTien = mau.getGiaTien();
+
                         total += item.getSoLuong() * giaTien;
                         break; // Khi đã tìm được màu phù hợp, thoát khỏi vòng lặp
                     }

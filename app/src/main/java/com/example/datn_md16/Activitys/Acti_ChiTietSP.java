@@ -415,15 +415,31 @@ public class Acti_ChiTietSP extends AppCompatActivity {
                 return;
             }
 
-            // Tạo Intent để chuyển sang màn hình thanh toán
+            List<GioHangDTO> selectedItems = new ArrayList<>();
+
+            // Tạo đối tượng GioHangDTO và thiết lập các thuộc tính
+            GioHangDTO gioHangDTO = new GioHangDTO();
+            gioHangDTO.setIdSanPham(sanPham.get_id());
+            gioHangDTO.setSanPham(sanPham);
+            gioHangDTO.setIdMau(selectedColor);
+            gioHangDTO.setSoLuong(Integer.parseInt(tvKQ.getText().toString()));
+            gioHangDTO.setIdAccount(userId);
+
+
+
+
+            // Thêm đối tượng GioHangDTO vào danh sách selectedItems
+            selectedItems.add(gioHangDTO);
+
+            Log.d("zzz",""+selectedItems);
+            // Chuyển sang Activity thanh toán
             Intent intent = new Intent(Acti_ChiTietSP.this, Acti_ThanhToan.class);
-            intent.putExtra("sanPhamId", sanPham.get_id());
-            intent.putExtra("mauId", selectedColor);
-            intent.putExtra("soLuong", Integer.parseInt(tvKQ.getText().toString()));
-            intent.putExtra("giaTien", Double.parseDouble(tvGiamGiaGioHang.getText().toString()));
+            intent.putParcelableArrayListExtra("selectedItems", new ArrayList<>(selectedItems));
             startActivity(intent);
+            // Đóng BottomSheetDialog
             bottomSheetDialog.dismiss();
         });
+
 
 
         bottomSheetDialog.setContentView(sheetView);
@@ -502,10 +518,10 @@ public class Acti_ChiTietSP extends AppCompatActivity {
             // Comment dòng này lại
             gioHangDTO.setIdAccount(userId);
 
-            Log.d("ThemGioHang", "ID Sản Phẩm: " + gioHangDTO.getIdSanPham());
-            Log.d("ThemGioHang", "ID Màu: " + gioHangDTO.getIdMau());
-            Log.d("ThemGioHang", "Số Lượng: " + gioHangDTO.getSoLuong());
-            Log.d("ThemGioHang", "Số acou: " + gioHangDTO.getIdAccount());
+//            Log.d("ThemGioHang", "ID Sản Phẩm: " + gioHangDTO.getIdSanPham());
+//            Log.d("ThemGioHang", "ID Màu: " + gioHangDTO.getIdMau());
+//            Log.d("ThemGioHang", "Số Lượng: " + gioHangDTO.getSoLuong());
+//            Log.d("ThemGioHang", "Số acou: " + gioHangDTO.getIdAccount());
 
 
             int soLuong = Integer.parseInt(tvSoLuong.getText().toString());
