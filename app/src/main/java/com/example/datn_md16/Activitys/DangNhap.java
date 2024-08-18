@@ -72,16 +72,18 @@ public class DangNhap extends AppCompatActivity {
         loadSavedCredentials();
 
         loginButton.setOnClickListener(view -> {
-            String username = usernameEditText.getText().toString();
-            String password = passwordEditText.getText().toString();
+            String username = usernameEditText.getText().toString().trim();
+            String password = passwordEditText.getText().toString().trim();
 
             if (validateLogin(username, password)) {
+                // If login is successful
                 Toast.makeText(DangNhap.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(DangNhap.this, MainActivity.class);
                 startActivity(intent);
                 finish();
             } else {
-//                Toast.makeText(DangNhap.this, "Thông tin đăng nhập không chính xác", Toast.LENGTH_SHORT).show();
+                // If login fails
+                Toast.makeText(DangNhap.this, "Thông tin đăng nhập không chính xác", Toast.LENGTH_SHORT).show();
             }
         });
 
