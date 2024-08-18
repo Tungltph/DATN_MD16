@@ -1,10 +1,14 @@
 package com.example.datn_md16.Adapter;
 
+import static com.example.datn_md16.Activitys.DangNhap.PREFS_NAME;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,6 +42,7 @@ public class DiaChiAdapter extends RecyclerView.Adapter<DiaChiAdapter.DiaChiView
     private Context context;
     private List<GioHangDTO> selectedItems;
     private static final int REQUEST_CODE_SELECT_ADDRESS = 1;
+    private String KEY_USER_ID = "user_id";
 
     public DiaChiAdapter(List<DiaChiDTO> diaChiList, ApiService apiService, Context context, List<GioHangDTO> selectedItems) {
         this.diaChiList = diaChiList;
@@ -139,6 +144,15 @@ public class DiaChiAdapter extends RecyclerView.Adapter<DiaChiAdapter.DiaChiView
                     diaChi.setTen(newName);
                     diaChi.setSdt(newPhoneNumber);
                     diaChi.setDiaChi(newAddress);
+                    SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                    String userId = sharedPreferences.getString("user_id", null);
+                    diaChi.setIdAccount(userId);
+
+                    Log.d("diachi","id" + diaChi.getId());
+                    Log.d("diachi"," ten" + diaChi.getTen());
+                    Log.d("diachi","sdt" + diaChi.getSdt());
+                    Log.d("diachi","diachi" + diaChi.getDiaChi());
+                    Log.d("diachi","acou" + diaChi.getIdAccount());
 
                     // Gửi yêu cầu cập nhật thông tin lên server
                     Call<Void> call = apiService.updateDiaChi(diaChi.getId(), diaChi);

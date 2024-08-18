@@ -77,6 +77,8 @@ public interface ApiService {
     Call<List<ProductHome>> getProducts();
 
 
+
+
     @GET("/api/thongBao/{id}")
     Call<ThongBaoResponse> getThongBaoById(@Path("id") String id);
 
@@ -112,6 +114,11 @@ public interface ApiService {
 
     @GET("/api/danhGia/{idSP}")
     Call<DanhGiaResponse> getDanhGiaByIdSP(@Path("idSP") String idSP);
+
+    @PUT("/api/donHang/update/{id}")
+    Call<DonHangDTO> updateoder(@Path("id") String id, @Body DonHangDTO.DonHang donHang);
+
+
 
 
     @Headers("Content-Type: application/json")

@@ -5,11 +5,14 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,6 +48,8 @@ public class HoaDonFrag extends Fragment {
     private List<DonHangDTO.DonHang> donHangList = new ArrayList<>();
     private TextView btnChoXacNhan, btnChoGiaoHang, btnDangGiao, btnDaGiao, btnDaHuy;
     private String userId;
+
+    EditText edtTimKiemDonHang;
 
     private void updateButtonStyles(TextView selectedButton) {
         // Danh sách các nút trạng thái
@@ -84,6 +89,7 @@ public class HoaDonFrag extends Fragment {
         adapter = new DonHangHomeAdapter(donHangList, getContext());
         recyclerView.setAdapter(adapter);
 
+
         Retrofit retrofit = ApiClient.getClient();
         apiService = retrofit.create(ApiService.class);
 
@@ -93,6 +99,7 @@ public class HoaDonFrag extends Fragment {
         btnDangGiao = view.findViewById(R.id.btnDangGiao);
         btnDaGiao = view.findViewById(R.id.btnDaGiao);
         btnDaHuy = view.findViewById(R.id.btnDaHuy);
+        edtTimKiemDonHang = view.findViewById(R.id.edtTimKiemDonHang);
 
         // Gán sự kiện cho các nút trạng thái
         btnChoXacNhan.setOnClickListener(v -> {
@@ -122,8 +129,76 @@ public class HoaDonFrag extends Fragment {
 
         loadDonHang();
 
+        edtTimKiemDonHang.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Không cần xử lý
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String keyword = s.toString().trim();
+                TextView[] buttons = {btnChoXacNhan, btnChoGiaoHang, btnDangGiao, btnDaGiao, btnDaHuy};
+                String currentStatus = "";
+
+                for (TextView button : buttons) {
+                    if (button.getCurrentTextColor() == getResources().getColor(R.color.white)) {
+                        currentStatus = button.getText().toString();
+                        break;
+                    }
+                }
+
+                if (keyword.isEmpty()) {
+                    filterDonHang(currentStatus); // Tải lại dữ liệu theo trạng thái hiện tại nếu không có từ khóa
+                } else {
+                    searchDonHang(keyword, currentStatus); // Tìm kiếm trong trạng thái hiện tại
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Không cần xử lý
+            }
+        });
+
+
+
         return view;
     }
+
+    private void searchDonHang(String keyword, String currentStatus) {
+        apiService.getDonHangByUser(userId).enqueue(new Callback<DonHangDTO>() {
+            @Override
+            public void onResponse(@NonNull Call<DonHangDTO> call, @NonNull Response<DonHangDTO> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    List<DonHangDTO.DonHang> allDonHangList = response.body().getData();
+                    List<DonHangDTO.DonHang> filteredList = new ArrayList<>();
+                    for (DonHangDTO.DonHang donHang : allDonHangList) {
+                        if (donHang.getTrangThaiDonHang().equals(currentStatus) &&
+                                donHang.getTenSanPham().toLowerCase().contains(keyword.toLowerCase())) {
+                            filteredList.add(donHang);
+                        }
+                    }
+
+                    donHangList.clear();
+                    donHangList.addAll(filteredList);
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getContext(), "Không tìm thấy đơn hàng nào phù hợp với từ khóa: " + keyword, Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<DonHangDTO> call, @NonNull Throwable t) {
+                Toast.makeText(getContext(), "Lỗi khi tìm kiếm: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Log.e("HoaDonFrag", "Lỗi khi tìm kiếm " + t.getMessage(), t);
+            }
+        });
+    }
+
+
+
+
 
     private void loadDonHang() {
         Log.d("HoaDonFrag", "Loading orders for user ID: " + userId);
@@ -131,18 +206,14 @@ public class HoaDonFrag extends Fragment {
             @Override
             public void onResponse(@NonNull Call<DonHangDTO> call, @NonNull Response<DonHangDTO> response) {
                 if (response.isSuccessful() && response.body() != null) {
-                    List<DonHangDTO.DonHang> donHangList = response.body().getData();
-                    // Đặt dữ liệu vào adapter và cập nhật giao diện
+                    List<DonHangDTO.DonHang> newDonHangList = response.body().getData();
                     donHangList.clear();
-                    donHangList.addAll(donHangList);
+                    donHangList.addAll(newDonHangList);
                     adapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(getContext(), "Lỗi khi lấy dữ liệu", Toast.LENGTH_SHORT).show();
                 }
             }
-
-
-
 
             @Override
             public void onFailure(@NonNull Call<DonHangDTO> call, @NonNull Throwable t) {
@@ -151,6 +222,7 @@ public class HoaDonFrag extends Fragment {
             }
         });
     }
+
 
 
     private void filterDonHang(String status) {

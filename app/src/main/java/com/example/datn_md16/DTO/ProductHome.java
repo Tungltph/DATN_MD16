@@ -9,6 +9,17 @@ public class ProductHome implements Parcelable {
     private String _id;
     private String tenDienThoai; // Product name
     private String camera;
+
+    @Override
+    public String toString() {
+        return "ProductHome{" +
+                "_id='" + _id + '\'' +
+                ", tenDienThoai='" + tenDienThoai + '\'' +
+                ", camera='" + camera + '\'' +
+                ", cameraTruoc='" + cameraTruoc + '\'' +
+                '}';
+    }
+
     private String cameraTruoc;
     private String kichThuoc;
     private String cPU;
@@ -132,6 +143,8 @@ public class ProductHome implements Parcelable {
     };
 
     // Getters and Setters
+
+
     public String get_id() {
         return _id;
     }

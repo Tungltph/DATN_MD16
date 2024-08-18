@@ -12,12 +12,16 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.datn_md16.Adapter.IphoneAdapter;
+import com.example.datn_md16.Adapter.TimKiemAdapter;
 import com.example.datn_md16.DTO.ProductHome;
 import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
@@ -39,6 +43,10 @@ public class Acti_Oppo extends AppCompatActivity {
     private TextView btnip, btnss, btnvv, btnxm, btnop;
 
     private static final String HANG_SX_ID = "6675aa16ff75b8dfd1e641e8"; // Oppo's manufacturer ID
+
+    private TextView noResultsTextView;
+
+    EditText edtTimKiemOppo;
 
     private void updateButtonStyles(TextView selectedButton) {
         // Danh sách các nút trạng thái
@@ -65,6 +73,7 @@ public class Acti_Oppo extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        noResultsTextView = findViewById(R.id.tv_no_resultsOppo); // Khởi tạo TextView thông báo
 
         // Thiết lập Toolbar và hiển thị nút back
         Toolbar toolbar = findViewById(R.id.toolbarOppo);
@@ -80,6 +89,23 @@ public class Acti_Oppo extends AppCompatActivity {
         btnop = findViewById(R.id.btnOppo);
         btnss = findViewById(R.id.btnss);
         btnvv = findViewById(R.id.btnVivo);
+        edtTimKiemOppo = findViewById(R.id.edtTimKiemOppo);
+
+        adapter = new IphoneAdapter(getApplicationContext(),noResultsTextView);
+        recyclerView.setAdapter(adapter);
+
+        edtTimKiemOppo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.filterData(s.toString()); // Gọi filterData với chuỗi tìm kiếm hiện tại
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
 
         btnip.setOnClickListener(new View.OnClickListener() {
             @Override

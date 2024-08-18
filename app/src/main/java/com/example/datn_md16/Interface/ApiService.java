@@ -26,14 +26,14 @@ import retrofit2.Call;
             @GET("{id}")
             Call<DiaChiDTO> getDiaChiById(@Path("id") String id);
 
-            @DELETE("delete/{id}")
+            @DELETE("api/diaChi/delete/{id}")
             Call<Void> deleteDiaChi(@Path("id") String id);
 
             @GET("api/sanpham/{id}")
             Call<ProductHome> getProductById(@Path("id") String productId);
 
 
-            @PUT("edit/{id}")
+            @PUT("api/diaChi/edit/{id}")
             Call<Void> updateDiaChi(@Path("id") String id, @Body DiaChiDTO diaChi);
 
             @POST("/api/donHang/")

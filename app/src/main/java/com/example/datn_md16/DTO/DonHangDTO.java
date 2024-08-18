@@ -95,6 +95,15 @@ public class DonHangDTO {
             return sanPhamTrongDonHang;
         }
 
+        public String getTenSanPham() {
+            // Kiểm tra nếu danh sách sản phẩm không rỗng
+            if (sanPhamTrongDonHang != null && !sanPhamTrongDonHang.isEmpty()) {
+                // Lấy sản phẩm đầu tiên trong danh sách và trả về tên sản phẩm
+                return sanPhamTrongDonHang.get(0).getSanPham().getTenDienThoai();
+            }
+            return null; // Trả về null nếu không có sản phẩm nào
+        }
+
         public void setSanPhamTrongDonHang(List<SanPhamTrongDonHang> sanPhamTrongDonHang) {
             this.sanPhamTrongDonHang = sanPhamTrongDonHang;
         }
@@ -195,6 +204,8 @@ public class DonHangDTO {
             this.idDiaChi = idDiaChi;
         }
     }
+
+
 
     public static class SanPhamTrongDonHang {
         @SerializedName("idSP")

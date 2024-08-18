@@ -26,17 +26,20 @@ import com.example.datn_md16.Activitys.Acti_ThanhToan;
 import com.example.datn_md16.Activitys.Acti_chitietdonhang;
 import com.example.datn_md16.Activitys.MainActivity;
 
+import com.example.datn_md16.DTO.DanhGiaSendDTO;
 import com.example.datn_md16.DTO.DiaChiDTO;
 import com.example.datn_md16.DTO.DonHangDTO;
 import com.example.datn_md16.DTO.ProductHome;
+import com.example.datn_md16.Interfa.ApiService;
 import com.example.datn_md16.Interface.ApiClient;
-import com.example.datn_md16.Interface.ApiService;
 import com.example.datn_md16.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -55,6 +58,7 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
     public DonHangHomeAdapter(List<DonHangDTO.DonHang> donHangList, Context context) {
         this.donHangList = donHangList;
         this.context = context;
+        apiService = ApiClient.getClient().create(ApiService.class);
     }
 
     @NonNull
@@ -87,6 +91,88 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
                 TextView btnHuy = productView.findViewById(R.id.btnHuy);
                 TextView btnXemChiTiet = productView.findViewById(R.id.btnXemChiTiet);
                 TextView tvDanhGia = productView.findViewById(R.id.tvDanhGia);
+                SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+
+// Kiểm tra nếu người dùng đã đánh giá sản phẩm này chưa
+                String sanPhamId = sanPham.getId();
+                boolean daDanhGia = sharedPreferences.getBoolean("daDanhGia_" + sanPhamId, false);
+
+                if (daDanhGia) {
+                    // Hiển thị chữ "Mua lại" nếu đã đánh giá
+                    tvDanhGia.setText("");
+                    tvDanhGia.setOnClickListener(null); // Xóa sự kiện click nếu không cần
+                } else {
+                    // Hiển thị nút đánh giá và gán sự kiện click
+                    tvDanhGia.setText("Đánh giá");
+                    tvDanhGia.setOnClickListener(v -> {
+                        Dialog dialog = new Dialog(context);
+                        dialog.setContentView(R.layout.dialog_danhgia);
+
+                        RatingBar ratingBar = dialog.findViewById(R.id.rbSao);
+                        TextInputEditText edtComment = dialog.findViewById(R.id.etNoidungdanhgia);
+                        Button btnSubmitRating = dialog.findViewById(R.id.btndanhgia);
+
+                        btnSubmitRating.setOnClickListener(v1 -> {
+                            // Get user input
+                            String noiDung = edtComment.getText().toString().trim();
+                            int diemDanhGia = (int) ratingBar.getRating();
+
+                            // Check if rating is greater than 0
+                            if (diemDanhGia <= 0) {
+                                Toast.makeText(context, "Vui lòng chọn đánh giá sao.", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
+                            // Check if comment is empty
+                            if (noiDung.isEmpty()) {
+                                Toast.makeText(context, "Vui lòng nhập nội dung đánh giá.", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+
+                            // Prepare data for sending
+                            String thoiGian = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+
+                            // Get user ID from SharedPreferences
+                            String userId = sharedPreferences.getString("user_id", null);
+
+                            // Create DanhGiaDTO object
+                            DanhGiaSendDTO danhGiaDTO = new DanhGiaSendDTO(noiDung, thoiGian, diemDanhGia, userId, sanPhamId);
+
+                            // Send data to server via Retrofit
+                            Call<Void> call = apiService.themDanhGia(danhGiaDTO);
+                            call.enqueue(new Callback<Void>() {
+                                @Override
+                                public void onResponse(Call<Void> call, Response<Void> response) {
+                                    if (response.isSuccessful()) {
+                                        // Lưu trạng thái đã đánh giá
+                                        sharedPreferences.edit().putBoolean("daDanhGia_" + sanPhamId, true).apply();
+
+                                        // Thay đổi văn bản thành "Mua lại" sau khi thành công
+                                        tvDanhGia.setText("Mua lại");
+
+                                        Toast.makeText(context, "Đánh giá đã được gửi thành công!", Toast.LENGTH_SHORT).show();
+                                        dialog.dismiss();
+                                    } else {
+                                        // Display error details
+                                        Toast.makeText(context, "Gửi đánh giá thất bại: " + response.message(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Void> call, Throwable t) {
+                                    // Display error details
+                                    Toast.makeText(context, "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        });
+
+                        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                        dialog.show();
+                    });
+                }
+
+
+
 
 
 

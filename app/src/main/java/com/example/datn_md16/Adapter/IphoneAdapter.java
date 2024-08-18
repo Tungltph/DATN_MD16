@@ -15,21 +15,33 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datn_md16.Activitys.Acti_ChiTietSP;
 import com.example.datn_md16.DTO.ProductHome;
+import com.example.datn_md16.DTO.TimKiemDTO;
 import com.example.datn_md16.R;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class IphoneAdapter extends RecyclerView.Adapter<IphoneAdapter.IphoneViewHolder> {
     private Context context;
     private List<ProductHome> productList;
+    private List<ProductHome> originalDataList;
+
+    private TextView noResultsTextView;
 
     public IphoneAdapter(Context context, List<ProductHome> productList) {
         this.context = context;
         this.productList = productList;
+    }
+
+    public IphoneAdapter(Context context, TextView noResultsTextView) {
+        this.context = context;
+        this.productList = new ArrayList<>();
+        this.originalDataList = new ArrayList<>();
+        this.noResultsTextView = noResultsTextView;
     }
 
     @NonNull
@@ -82,6 +94,33 @@ public class IphoneAdapter extends RecyclerView.Adapter<IphoneAdapter.IphoneView
                 }
             }
         });
+    }
+
+
+    public void filterData(String query) {
+        List<ProductHome> filteredList = new ArrayList<>();
+        if (query == null || query.isEmpty()) {
+            filteredList.addAll(this.originalDataList);
+        } else {
+            query = query.toLowerCase().trim();
+            for (ProductHome item : this.originalDataList) {
+                if (item.getTenDienThoai() != null && item.getTenDienThoai().toLowerCase().contains(query)) {
+                    filteredList.add(item);
+                }
+            }
+        }
+
+        // Cập nhật dữ liệu và thông báo cho RecyclerView
+        this.productList.clear();
+        this.productList.addAll(filteredList);
+        notifyDataSetChanged();
+
+//        // Hiển thị thông báo nếu không có kết quả
+//        if (filteredList.isEmpty()) {
+//            noResultsTextView.setVisibility(View.VISIBLE);
+//        } else {
+//            noResultsTextView.setVisibility(View.GONE);
+//        }
     }
 
     public void setStrikeThroughText(TextView textView) {

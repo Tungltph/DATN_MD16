@@ -3,6 +3,7 @@ package com.example.datn_md16.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -71,35 +72,19 @@ public class HotItemAdapter extends RecyclerView.Adapter<HotItemAdapter.ViewHold
 
         holder.tvPhanTramHot.setText("-" + item.getGiamGia() + "%");
 
+        // Thêm hiệu ứng phóng to khi chạm vào
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (item != null) {
                     Gson gson = new Gson();
                     String itemJson = gson.toJson(item);
-
+                    Log.d("zzz123", "onClick: "+ item.toString());
                     Intent intent = new Intent(context, Acti_ChiTietSP.class);
                     intent.putExtra("sanPhamJson", itemJson);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     context.startActivity(intent);
                 }
-            }
-        });
-
-        // Thêm hiệu ứng phóng to khi chạm vào
-        holder.itemView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                switch (event.getAction()) {
-                    case MotionEvent.ACTION_DOWN:
-                        v.animate().scaleX(1.1f).scaleY(1.1f).setDuration(300).start();
-                        break;
-                    case MotionEvent.ACTION_UP:
-                    case MotionEvent.ACTION_CANCEL:
-                        v.animate().scaleX(1f).scaleY(1f).setDuration(300).start();
-                        break;
-                }
-                return false;
             }
         });
     }

@@ -485,7 +485,7 @@ private void Zalopay() {
     private void clearCart() {
         // Tạo Retrofit và ApiService
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.1.11:3000/") // Đảm bảo URL chính xác
+                .baseUrl("http://192.168.9.103:3000/") // Đảm bảo URL chính xác
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         ApiService apiService = retrofit.create(ApiService.class);

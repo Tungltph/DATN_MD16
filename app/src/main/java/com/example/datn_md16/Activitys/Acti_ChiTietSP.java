@@ -24,10 +24,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.datn_md16.Adapter.DanhGiaAdapter;
 import com.example.datn_md16.Adapter.MauAdapter;
 import com.example.datn_md16.Adapter.TimKiemAdapter;
 import com.example.datn_md16.DTO.AccountResponse;
 
+import com.example.datn_md16.DTO.DanhGiaReceiveDTO;
 import com.example.datn_md16.DTO.DanhGiaSendDTO;
 import com.example.datn_md16.DTO.DonHangDTO;
 import com.example.datn_md16.DTO.GioHangDTO;
@@ -36,6 +38,7 @@ import com.example.datn_md16.DTO.SanPhamDTO;
 import com.example.datn_md16.DTO.SanPhamYeuThichDTO;
 import com.example.datn_md16.DTO.TimKiemDTO;
 import com.example.datn_md16.Interfa.ApiService;
+import com.example.datn_md16.Interfa.DanhGiaResponse;
 import com.example.datn_md16.Interface.ApiClient;
 import com.example.datn_md16.R;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -65,7 +68,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
 
 
     private LinearLayout lnMoRong;
-    private TextView tvMoRong, tvPhanTramChiTiet,tvGiaGoc;
+    private TextView tvMoRong, tvPhanTramChiTiet, tvGiaGoc;
 
     RecyclerView recyclerView;
 
@@ -82,18 +85,18 @@ public class Acti_ChiTietSP extends AppCompatActivity {
     //private DanhgiaSanPhamAdapter adapter2;
     private List<DanhGiaSendDTO> danhGiaList;
 
+    private RecyclerView rcvDanhGia;
+
+    private DanhGiaAdapter danhGiaAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chi_tiet_sp);
 
+        Retrofit retrofit = ApiClient.getClient();
 
-
-        // Thiết lập Toolbar
-        Toolbar toolbar = findViewById(R.id.toolbarChiTietSP);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTitle(getString(R.string.toolbarChiTietSP_title));
+        apiService = retrofit.create(ApiService.class);
 
         // Initialize views
         txtProductName = findViewById(R.id.tvTenDienThoai);
@@ -118,19 +121,48 @@ public class Acti_ChiTietSP extends AppCompatActivity {
         recyclerView2 = findViewById(R.id.rcvdanhgia);
         danhGiaList = new ArrayList<>();
 
-//        adapter2 = new DanhgiaSanPhamAdapter(danhGiaList);
-//        recyclerView2.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerView2.setAdapter(adapter2);
-//        Retrofit retrofit2 = ApiClient.getClient();
-//        apiService = retrofit2.create(ApiService.class);
-//        fetchDanhGiaList2();
+        // Thiết lập Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbarChiTietSP);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle(getString(R.string.toolbarChiTietSP_title));
+
+        getData();
+        updateUI(sanPham);
+
+
+        rcvDanhGia = findViewById(R.id.rcvdanhgia);
+        rcvDanhGia.setLayoutManager(new LinearLayoutManager(this));
+//        String idSP = "668ea5681403cda3c0c969a2";
+        Log.d("zzzzz", "onCreate: "+ sanPham.get_id());
+        Call<DanhGiaResponse> call = apiService.getDanhGiaByIdSP(sanPham.get_id());
+        call.enqueue(new Callback<DanhGiaResponse>() {
+            @Override
+            public void onResponse(Call<DanhGiaResponse> call, Response<DanhGiaResponse> response) {
+                if (response.isSuccessful()) {
+                    DanhGiaResponse danhGiaResponse = response.body();
+                    if (danhGiaResponse != null && danhGiaResponse.getData() != null) {
+                        List<DanhGiaReceiveDTO> danhGiaList = danhGiaResponse.getData();
+                        danhGiaAdapter = new DanhGiaAdapter(danhGiaList);
+                        rcvDanhGia.setAdapter(danhGiaAdapter);
+                    } else {
+                        Log.e("DanhGiaActivity", "DanhGiaResponse data is null");
+                    }
+                } else {
+                    Log.e("DanhGiaActivity", "Response not successful: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DanhGiaResponse> call, Throwable t) {
+                Log.e("DanhGiaActivity", "API call failed: " + t.getMessage());
+                Toast.makeText(Acti_ChiTietSP.this, "Lỗi khi lấy dữ liệu: " + t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
 
 
 
 
-        Retrofit retrofit = ApiClient.getClient();
-
-        apiService = retrofit.create(ApiService.class);
 
 
         btnthemgiohang.setOnClickListener(v -> {
@@ -140,11 +172,6 @@ public class Acti_ChiTietSP extends AppCompatActivity {
         });
 
 
-        btnthemgiohang.setOnClickListener(v -> {
-            if (sanPham != null && sanPham.getMauSchema() != null) {
-                them_gio_hang(sanPham.getMauSchema());
-            }
-        });
 
         buttonBuyNow.setOnClickListener(v -> {
             if (sanPham != null && sanPham.getMauSchema() != null) {
@@ -210,14 +237,17 @@ public class Acti_ChiTietSP extends AppCompatActivity {
 
 
         // Retrieve JSON data from Intent
-        String sanPhamJson = getIntent().getStringExtra("sanPhamJson");
-        if (sanPhamJson != null) {
-            Gson gson = new Gson();
-            sanPham = gson.fromJson(sanPhamJson, ProductHome.class);
-            // Log URL hình ảnh để kiểm tra
-            Log.d("ImageURL", sanPham.getHinhAnh());
-            updateUI(sanPham);
-        }
+//        String sanPhamJson = getIntent().getStringExtra("sanPhamJson");
+//        if (sanPhamJson != null) {
+//            Gson gson = new Gson();
+//            sanPham = gson.fromJson(sanPhamJson, ProductHome.class);
+//            sanPham.get_id();
+//            Log.d("SanPham", sanPham.get_id());
+//
+//            // Log URL hình ảnh để kiểm tra
+//            Log.d("ImageURL", sanPham.getHinhAnh());
+//            updateUI(sanPham);
+//        }
 
     }
 
@@ -258,6 +288,20 @@ public class Acti_ChiTietSP extends AppCompatActivity {
             imgYeuThich.setImageResource(R.drawable.ic_yeuthich_do); // Hình ảnh trái tim màu đỏ
         } else {
             imgYeuThich.setImageResource(R.drawable.ic_favorite); // Hình ảnh trái tim màu xám
+        }
+    }
+
+    public void getData() {
+        String sanPhamJson = getIntent().getStringExtra("sanPhamJson");
+        if (sanPhamJson != null) {
+            Gson gson = new Gson();
+            sanPham = gson.fromJson(sanPhamJson, ProductHome.class);
+//            sanPham.get_id();
+//            Log.d("SanPham", sanPham.get_id());
+
+            // Log URL hình ảnh để kiểm tra
+            Log.d("ImageURL", sanPham.getTenDienThoai());
+//            updateUI(sanPham);
         }
     }
 
@@ -319,6 +363,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
     }
 
     private void updateUI(ProductHome sanPham) {
+        Log.d("zzzz", "updateUI: "+ sanPham.getTenDienThoai());
         if (sanPham != null) {
             // Update TextViews
             txtProductName.setText(sanPham.getTenDienThoai());
@@ -338,19 +383,19 @@ public class Acti_ChiTietSP extends AppCompatActivity {
                 // Định dạng giá trị giaGoc chỉ hiển thị phần nguyên
                 tvGiaGoc.setText("₫" + formatter.format(giaGoc));
             }
-            tvCamera.setText("- "+sanPham.getCamera());
-            tvCameraTruoc.setText("- "+sanPham.getCameraTruoc());
-            tvKichThuoc.setText("- "+sanPham.getKichThuoc());
-            tvCPU.setText("- "+sanPham.getcPU());
-            tvRam.setText("- "+sanPham.getRam());
-            tvSim.setText("- "+sanPham.getSim());
-            tvPin.setText("- "+sanPham.getPin());
-            tvHeDieuHanh.setText("- "+sanPham.getHeDieuHanh());
-            tvNamSanXuat.setText(String.valueOf("- "+sanPham.getNamSanXuat()));
-            tvCongNgheManHinh.setText("- "+sanPham.getCongNgheManHinh());
-            tvMoTaThem.setText("- "+sanPham.getMoTaThem());
-            tvDoPhanGiai.setText("- "+sanPham.getDoPhanGiai());
-            tvPhanTramChiTiet.setText("-"+sanPham.getGiamGia()+"%");
+            tvCamera.setText("- " + sanPham.getCamera());
+            tvCameraTruoc.setText("- " + sanPham.getCameraTruoc());
+            tvKichThuoc.setText("- " + sanPham.getKichThuoc());
+            tvCPU.setText("- " + sanPham.getcPU());
+            tvRam.setText("- " + sanPham.getRam());
+            tvSim.setText("- " + sanPham.getSim());
+            tvPin.setText("- " + sanPham.getPin());
+            tvHeDieuHanh.setText("- " + sanPham.getHeDieuHanh());
+            tvNamSanXuat.setText(String.valueOf("- " + sanPham.getNamSanXuat()));
+            tvCongNgheManHinh.setText("- " + sanPham.getCongNgheManHinh());
+            tvMoTaThem.setText("- " + sanPham.getMoTaThem());
+            tvDoPhanGiai.setText("- " + sanPham.getDoPhanGiai());
+            tvPhanTramChiTiet.setText("-" + sanPham.getGiamGia() + "%");
             Picasso.get().load(sanPham.getHinhAnh()).into(imgProduct);
         }
     }
@@ -462,6 +507,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
         TextView btnTangSoLuong = sheetView.findViewById(R.id.tvTang);
         Picasso.get().load(sanPham.getHinhAnh()).placeholder(R.drawable.img_sale).error(R.drawable.img).into(imgGioHang);
         Button btnthemgiohang = sheetView.findViewById(R.id.btn_thanhToan);
+        btnthemgiohang.setText("Thêm vào Giỏ Hàng");
         // Set initial quantity
         int initialQuantity = 1;
         tvKQ.setText(String.valueOf(initialQuantity));
@@ -532,7 +578,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
                 Toast.makeText(Acti_ChiTietSP.this, "Hàng trong kho đã hết", Toast.LENGTH_SHORT).show();
             } else if (soLuong < soLuongKho) {
                 Toast.makeText(Acti_ChiTietSP.this, "Số lượng lớn hơn số hàng trong kho", Toast.LENGTH_SHORT).show();
-            }else {
+            } else {
 
                 Call<Void> call = apiService.adddToCart(gioHangDTO);
                 call.enqueue(new Callback<Void>() {
@@ -561,11 +607,6 @@ public class Acti_ChiTietSP extends AppCompatActivity {
     }
 
 
-
-
-
-
-
     private void updatePriceAndQuantity(List<ProductHome.MauSchema> mauList, String selectedColor, TextView tvGiamGiaGioHang, TextView tvSoLuong) {
         for (ProductHome.MauSchema mau : mauList) {
             if (mau.get_id().equals(selectedColor)) {
@@ -575,7 +616,6 @@ public class Acti_ChiTietSP extends AppCompatActivity {
             }
         }
     }
-
 
 
     @Override
@@ -608,7 +648,6 @@ public class Acti_ChiTietSP extends AppCompatActivity {
 //            }
 //        });
 //    }
-
 
 
 }
