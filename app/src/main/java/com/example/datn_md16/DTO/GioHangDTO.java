@@ -15,6 +15,26 @@ public class GioHangDTO implements Parcelable {
     private String selectedColorId; // Thêm trường này để lưu màu sắc được chọn
     private KhachHang khachHang;
 
+    private int price;
+    private int quantity;
+    private boolean checked;
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
     // Getter và Setter cho KhachHang
     public KhachHang getKhachHang() {
         return khachHang;

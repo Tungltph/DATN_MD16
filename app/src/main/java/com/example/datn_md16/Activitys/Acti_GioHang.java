@@ -32,9 +32,11 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.OnTotalPriceChangeListener {
-    private TextView totalPriceTextView;
+    private TextView totalPriceTextView, tvsoLuongGioHang;
     private GioHangAdapter adapter;
     private List<GioHangDTO> gioHangList;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +49,7 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
         // Khởi tạo RecyclerView và Adapter
         RecyclerView recyclerView = findViewById(R.id.rcGioHang);
         totalPriceTextView = findViewById(R.id.totalPrice);
+        tvsoLuongGioHang = findViewById(R.id.tvsoLuongGioHang);
         Button btnthanhtoan = findViewById(R.id.btnthanhtoan);
         btnthanhtoan.setOnClickListener(v -> processPayment());
 
@@ -59,10 +62,18 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
             public void onResponse(Call<List<GioHangDTO>> call, Response<List<GioHangDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     gioHangList = response.body();
+//
+//        // Tính số lượng sản phẩm trong giỏ hàng
+                   int itemCount = gioHangList.size();
+                   tvsoLuongGioHang.setText(String.valueOf(itemCount));
+
+
+                    gioHangList = response.body();
                     adapter = new GioHangAdapter(gioHangList, Acti_GioHang.this);
                     adapter.setOnTotalPriceChangeListener(Acti_GioHang.this);
                     recyclerView.setLayoutManager(new LinearLayoutManager(Acti_GioHang.this));
                     recyclerView.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
                 } else {
                     Toast.makeText(Acti_GioHang.this, "Failed to load data", Toast.LENGTH_SHORT).show();
                 }
@@ -126,6 +137,11 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
         numberFormat.setGroupingUsed(true);
         String formattedPrice = numberFormat.format(totalPrice);
         totalPriceTextView.setText("Tổng thanh toán:\n " +"₫"+ formattedPrice);
+
+        if (adapter != null) {
+            int itemCount = adapter.getItemCount();
+            tvsoLuongGioHang.setText(String.valueOf(itemCount));
+        }
     }
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
