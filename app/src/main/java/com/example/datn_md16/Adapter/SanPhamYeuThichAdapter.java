@@ -2,6 +2,7 @@ package com.example.datn_md16.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Paint;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,9 @@ import com.example.datn_md16.R;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
 
+import java.text.NumberFormat;
 import java.util.List;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -113,11 +116,23 @@ public class SanPhamYeuThichAdapter extends RecyclerView.Adapter<SanPhamYeuThich
                     String priceText = "Không có thông tin giá";
                     String colorText = "Không có thông tin màu";
                     if (sanPham.getMauSchema() != null && !sanPham.getMauSchema().isEmpty()) {
-                        priceText = sanPham.getMauSchema().get(0).getGiaTien() + "đ";
-                        colorText = "Màu điện thoại : " + sanPham.getMauSchema().get(0).getMau();
+                        double giaTien = sanPham.getMauSchema().get(0).getGiaTien();
+
+                        // Định dạng giá trị giaTien chỉ hiển thị phần nguyên
+                        NumberFormat formatter = NumberFormat.getIntegerInstance(Locale.US);
+                        holder.tvGiaGiam.setText("₫" + formatter.format(giaTien));
+
+                        // Tính toán giá gốc
+                        double phanTram = Double.parseDouble(sanPham.getGiamGia());
+                        double giaGoc = giaTien / (1 - (phanTram / 100));
+
+                        // Định dạng giá trị giaGoc chỉ hiển thị phần nguyên
+                        holder.tvGiaGoc.setText("₫" + formatter.format(giaGoc));
+                        setStrikeThroughText(holder.tvGiaGoc);
                     }
                     holder.tvTenYT.setText(sanPham.getTenDienThoai());
                     Glide.with(context).load(sanPham.getHinhAnh()).into(holder.imgSanPhamYT);
+                    holder.tvPhanTram.setText("-"+sanPham.getGiamGia());
                 } else {
                     holder.tvTenYT.setText("Sản phẩm không tìm thấy");
                     Log.e("SanPhamYeuThichAdapter", "Response not successful or body is null");
@@ -132,6 +147,10 @@ public class SanPhamYeuThichAdapter extends RecyclerView.Adapter<SanPhamYeuThich
         });
     }
 
+    public void setStrikeThroughText(TextView textView) {
+        textView.setPaintFlags(textView.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+    }
+
     @Override
     public int getItemCount() {
         return sanPhamYeuThichDTOS != null ? sanPhamYeuThichDTOS.size() : 0;
@@ -140,7 +159,7 @@ public class SanPhamYeuThichAdapter extends RecyclerView.Adapter<SanPhamYeuThich
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView imgSanPhamYT;
-        TextView tvTenYT;
+        TextView tvTenYT, tvGiaGoc, tvGiaGiam, tvPhanTram;
         ImageView imgYeuThich;
 
         public ViewHolder(@NonNull View itemView) {
@@ -148,6 +167,9 @@ public class SanPhamYeuThichAdapter extends RecyclerView.Adapter<SanPhamYeuThich
             imgSanPhamYT = itemView.findViewById(R.id.imgSanPhamYT);
             tvTenYT = itemView.findViewById(R.id.tvTenYT);
             imgYeuThich = itemView.findViewById(R.id.imgYeuThich);
+            tvGiaGiam = itemView.findViewById(R.id.tvGiaGiamYT);
+            tvGiaGoc = itemView.findViewById(R.id.tvGiaGocYT);
+            tvPhanTram = itemView.findViewById(R.id.tv_phanTram_YT);
         }
     }
 }
