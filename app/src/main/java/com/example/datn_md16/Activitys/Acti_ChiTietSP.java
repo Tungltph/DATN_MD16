@@ -608,9 +608,15 @@ public class Acti_ChiTietSP extends AppCompatActivity {
 
 
     private void updatePriceAndQuantity(List<ProductHome.MauSchema> mauList, String selectedColor, TextView tvGiamGiaGioHang, TextView tvSoLuong) {
+        NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault()); // Format based on locale
+
         for (ProductHome.MauSchema mau : mauList) {
             if (mau.get_id().equals(selectedColor)) {
-                tvGiamGiaGioHang.setText(String.valueOf(mau.getGiaTien()));
+                // Format price with commas
+                String formattedPrice = numberFormat.format(mau.getGiaTien());
+                tvGiamGiaGioHang.setText("₫"+formattedPrice);
+
+                // Set quantity
                 tvSoLuong.setText(String.valueOf(mau.getSoLuong()));
                 break;
             }
