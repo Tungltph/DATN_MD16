@@ -47,6 +47,28 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
         productService = retrofit.create(ApiService.class);
     }
 
+    public void removeItem(int position) {
+        if (position >= 0 && position < gioHangList.size()) {
+            gioHangList.remove(position);
+            notifyItemRemoved(position);
+            if (onTotalPriceChangeListener != null) {
+                // Notify total price changed after removing item
+                onTotalPriceChangeListener.onTotalPriceChanged(calculateTotalPrice());
+            }
+        }
+    }
+
+    private int calculateTotalPrice() {
+        int total = 0;
+        for (GioHangDTO item : gioHangList) {
+            if (item.isChecked()) {
+                total += item.getPrice() * item.getQuantity();
+            }
+        }
+        return total;
+    }
+
+
     public void setOnTotalPriceChangeListener(OnTotalPriceChangeListener listener) {
         this.onTotalPriceChangeListener = listener;
     }

@@ -24,7 +24,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface ApiService {
-    @GET("/api/khuyenMai")
+    @GET("/api/khuyenMai/conHieuLuc")
     Call<ApiResponseKhuyenMai> getKhuyenMai();
 
     @GET("/api/sanPham/hot")

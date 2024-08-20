@@ -28,7 +28,7 @@ import retrofit2.Response;
 
 public class Acti_doiPass extends AppCompatActivity {
 
-    private TextInputEditText edtOldPassword, edtNewPassword;
+    private TextInputEditText edtOldPassword, edtNewPassword,tvNhapLaiMatKhauMoi;
     private Button btnChangePassword;
     private ApiService apiService;
     private String accountId; // Lưu ID tài khoản
@@ -63,21 +63,24 @@ public class Acti_doiPass extends AppCompatActivity {
         edtOldPassword = findViewById(R.id.tvMatKhauCu);
         edtNewPassword = findViewById(R.id.tvMatKhauMoi);
         btnChangePassword = findViewById(R.id.btnChangePassword);
+        tvNhapLaiMatKhauMoi = findViewById(R.id.tvNhapLaiMatKhauMoi);
 
         btnChangePassword.setOnClickListener(v -> {
             String oldPassword = edtOldPassword.getText().toString().trim();
             String newPassword = edtNewPassword.getText().toString().trim();
+            String confirmNewPassword = tvNhapLaiMatKhauMoi.getText().toString().trim();
 
             Log.d("Acti_doiPass", "Old Password: " + oldPassword);
             Log.d("Acti_doiPass", "New Password: " + newPassword);
+            Log.d("Acti_doiPass", "Confirm New Password: " + confirmNewPassword);
 
-            if (validateInputs(oldPassword, newPassword)) {
+            if (validateInputs(oldPassword, newPassword, confirmNewPassword)) {
                 changePassword(oldPassword, newPassword);
             }
         });
     }
 
-    private boolean validateInputs(String oldPassword, String newPassword) {
+    private boolean validateInputs(String oldPassword, String newPassword, String confirmNewPassword) {
         if (oldPassword == null || oldPassword.isEmpty()) {
             Toast.makeText(this, "Vui lòng nhập mật khẩu cũ", Toast.LENGTH_SHORT).show();
             return false;
@@ -86,12 +89,25 @@ public class Acti_doiPass extends AppCompatActivity {
             Toast.makeText(this, "Vui lòng nhập mật khẩu mới", Toast.LENGTH_SHORT).show();
             return false;
         }
+        if (confirmNewPassword == null || confirmNewPassword.isEmpty()) {
+            Toast.makeText(this, "Vui lòng nhập lại mật khẩu mới", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         if (newPassword.length() < 6 || newPassword.length() > 20) {
             Toast.makeText(this, "Mật khẩu mới phải từ 6 đến 20 ký tự", Toast.LENGTH_SHORT).show();
             return false;
         }
+        if (oldPassword.equals(newPassword)) {
+            Toast.makeText(this, "Mật khẩu mới không được trùng với mật khẩu cũ", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (!newPassword.equals(confirmNewPassword)) {
+            Toast.makeText(this, "Mật khẩu mới không khớp", Toast.LENGTH_SHORT).show();
+            return false;
+        }
         return true;
     }
+
 
     private void changePassword(String currentPassword, String newPassword) {
         DoiPassDTO passwordDTO = new DoiPassDTO(currentPassword, newPassword);
