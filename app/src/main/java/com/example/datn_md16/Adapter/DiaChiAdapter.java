@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +44,8 @@ public class DiaChiAdapter extends RecyclerView.Adapter<DiaChiAdapter.DiaChiView
     private List<GioHangDTO> selectedItems;
     private static final int REQUEST_CODE_SELECT_ADDRESS = 1;
     private String KEY_USER_ID = "user_id";
+    private int selectedPosition = -1;
+
 
     public DiaChiAdapter(List<DiaChiDTO> diaChiList, ApiService apiService, Context context, List<GioHangDTO> selectedItems) {
         this.diaChiList = diaChiList;
@@ -65,18 +68,48 @@ public class DiaChiAdapter extends RecyclerView.Adapter<DiaChiAdapter.DiaChiView
         holder.tvAddress.setText("Địa chỉ: " + diaChi.getDiaChi());
         holder.tvPhone.setText("Sđt: " + diaChi.getSdt());
 
-        holder.itemView.setOnClickListener(v -> {
-            Toast.makeText(v.getContext(), "Đã chọn địa chỉ", Toast.LENGTH_SHORT).show();
+        holder.radioButton.setChecked(position == selectedPosition);
 
-            // Tạo Intent và trả kết quả về Activity
+        // Sự kiện click vào itemView (cả vùng ngoài RadioButton)
+        holder.itemView.setOnClickListener(v -> {
+            if (selectedPosition != position) {
+                selectedPosition = position;
+                notifyDataSetChanged();
+
+                // Lưu vị trí đã chọn vào SharedPreferences
+                SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("selectedPosition", selectedPosition);
+                editor.apply();
+            }
+
+            // Trả kết quả về Activity
             Intent resultIntent = new Intent();
             resultIntent.putExtra("selectedAddress", diaChi);
-            resultIntent.putParcelableArrayListExtra("selectedItems", new ArrayList<>(selectedItems));
-
-            // Trả kết quả về Acti_ThanhToan
-            ((Activity) context).setResult(Activity.RESULT_OK, resultIntent);
-            ((Activity) context).finish();
+            ((Activity) v.getContext()).setResult(Activity.RESULT_OK, resultIntent);
+            ((Activity) v.getContext()).finish();
         });
+
+        // Sự kiện click vào RadioButton
+        holder.radioButton.setOnClickListener(v -> {
+            if (selectedPosition != position) {
+                selectedPosition = position;
+                notifyDataSetChanged();
+
+                // Lưu vị trí đã chọn vào SharedPreferences
+                SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("selectedPosition", selectedPosition);
+                editor.apply();
+            }
+
+            // Trả kết quả về Activity
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("selectedAddress", diaChi);
+            ((Activity) v.getContext()).setResult(Activity.RESULT_OK, resultIntent);
+            ((Activity) v.getContext()).finish();
+        });
+
 
         holder.btnDelete.setOnClickListener(v -> {
             // Hiển thị dialog xác nhận xóa
@@ -198,6 +231,7 @@ public class DiaChiAdapter extends RecyclerView.Adapter<DiaChiAdapter.DiaChiView
         public TextView tvPhone;
         public ImageView btnDelete;
         public ImageView btnEdit;
+        public RadioButton radioButton;
 
         public DiaChiViewHolder(View itemView) {
             super(itemView);
@@ -206,7 +240,13 @@ public class DiaChiAdapter extends RecyclerView.Adapter<DiaChiAdapter.DiaChiView
             tvPhone = itemView.findViewById(R.id.tvPhone);
             btnDelete = itemView.findViewById(R.id.btnDelete);
             btnEdit = itemView.findViewById(R.id.btnEdit);
+            radioButton = itemView.findViewById(R.id.radioButton);
         }
     }
+    public void setSelectedPosition(int position) {
+        this.selectedPosition = position;
+        notifyDataSetChanged();
+    }
+
 }
 

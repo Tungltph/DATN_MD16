@@ -460,8 +460,9 @@ public class Acti_ChiTietSP extends AppCompatActivity {
                 return;
             }
 
-            List<GioHangDTO> selectedItems = new ArrayList<>();
 
+
+            List<GioHangDTO> selectedItems = new ArrayList<>();
             // Tạo đối tượng GioHangDTO và thiết lập các thuộc tính
             GioHangDTO gioHangDTO = new GioHangDTO();
             gioHangDTO.setIdSanPham(sanPham.get_id());
@@ -469,20 +470,24 @@ public class Acti_ChiTietSP extends AppCompatActivity {
             gioHangDTO.setIdMau(selectedColor);
             gioHangDTO.setSoLuong(Integer.parseInt(tvKQ.getText().toString()));
             gioHangDTO.setIdAccount(userId);
-
-
-
-
             // Thêm đối tượng GioHangDTO vào danh sách selectedItems
             selectedItems.add(gioHangDTO);
-
             Log.d("zzz",""+selectedItems);
             // Chuyển sang Activity thanh toán
-            Intent intent = new Intent(Acti_ChiTietSP.this, Acti_ThanhToan.class);
-            intent.putParcelableArrayListExtra("selectedItems", new ArrayList<>(selectedItems));
-            startActivity(intent);
+            int soLuong = Integer.parseInt(tvSoLuong.getText().toString());
+            int soLuongKho = Integer.parseInt(tvKQ.getText().toString());
+            if (soLuong <= 0) {
+                Toast.makeText(Acti_ChiTietSP.this, "Hàng trong kho đã hết", Toast.LENGTH_SHORT).show();
+            } else if (soLuong < soLuongKho) {
+                Toast.makeText(Acti_ChiTietSP.this, "Số lượng lớn hơn số hàng trong kho", Toast.LENGTH_SHORT).show();
+            } else {
+                Intent intent = new Intent(Acti_ChiTietSP.this, Acti_ThanhToan.class);
+                intent.putParcelableArrayListExtra("selectedItems", new ArrayList<>(selectedItems));
+                startActivity(intent);
+                bottomSheetDialog.dismiss();
+            }
             // Đóng BottomSheetDialog
-            bottomSheetDialog.dismiss();
+
         });
 
 

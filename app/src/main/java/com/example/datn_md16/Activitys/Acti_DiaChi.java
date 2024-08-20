@@ -89,6 +89,10 @@ public class Acti_DiaChi extends AppCompatActivity {
         diaChiList = new ArrayList<>();
         gioHangList = new ArrayList<>();
         diaChiAdapter = new DiaChiAdapter(diaChiList, apiService, this, gioHangList);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        int savedPosition = sharedPreferences.getInt("selectedPosition", -1);
+        diaChiAdapter.setSelectedPosition(savedPosition);
         recyclerView.setAdapter(diaChiAdapter);
 
         ImageView imgDiaChi = findViewById(R.id.imgThemDiaChi);

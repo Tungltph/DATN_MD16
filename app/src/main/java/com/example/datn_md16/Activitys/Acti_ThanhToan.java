@@ -36,6 +36,7 @@ import com.example.datn_md16.R;
 
 import org.json.JSONObject;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class Acti_ThanhToan extends AppCompatActivity {
     private List<GioHangDTO> selectedItems = new ArrayList<>();
     private TextView textViewAddress,textViewAddress2;
     private RecyclerView recyclerViewProducts;
-    private TextView tvKM;
+    private TextView tvKM,textViewProducts;
     private TextView textViewTotalAmount, tvten, tvsdt, tv_tongtiensanPham, tongtienkhuyenmai, tongtien;
     private Button buttonPlaceOrder;
     private LinearLayout btnKm;
@@ -64,33 +65,11 @@ public class Acti_ThanhToan extends AppCompatActivity {
     private String idDiaChi;//thêm
     private String selectedColor;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.thanhtoan);
-
-//        Intent intent = getIntent();
-//        if (intent != null) {
-//            String sanPhamId = intent.getStringExtra("sanPhamId");
-//            String mauId = intent.getStringExtra("mauId");
-//            int soLuong = intent.getIntExtra("soLuong", 0);
-//            double giaTien = intent.getDoubleExtra("giaTien", 0.0);
-//
-//            // Tạo GioHangDTO từ dữ liệu nhận được
-//            List<GioHangDTO> selectedItems = new ArrayList<>();
-//            GioHangDTO gioHangDTO = new GioHangDTO();
-//            gioHangDTO.setIdSanPham(sanPhamId);
-//            gioHangDTO.setIdMau(mauId);
-//            gioHangDTO.setSoLuong(soLuong);
-//           // gioHangDTO.setGiaTien(giaTien);
-//            selectedItems.add(gioHangDTO);
-//
-//            RecyclerView recyclerViewProducts = null;
-//
-//            // Cập nhật adapter
-//            Thaanh_Toan_Adapter adapter = new Thaanh_Toan_Adapter(selectedItems, this);
-//            recyclerViewProducts.setAdapter(adapter);
-//        }
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
@@ -120,6 +99,7 @@ public class Acti_ThanhToan extends AppCompatActivity {
         textViewTotalAmount = findViewById(R.id.textViewTotalAmount);
         buttonPlaceOrder = findViewById(R.id.buttonPlaceOrder);
         tvKM = findViewById(R.id.tvkhuyenmai);
+        textViewProducts = findViewById(R.id.textViewProducts);
 
 
 
@@ -150,11 +130,29 @@ public class Acti_ThanhToan extends AppCompatActivity {
             }
         }
 
+        if (textViewAddress2.getText() == null || textViewAddress2.getText().toString().isEmpty()) {
+            List<DiaChiDTO> diaChiList = new ArrayList<>();
+
+                // Lấy địa chỉ đầu tiên từ danh sách
+                DiaChiDTO firstAddress = diaChiList.get(0);
+
+                // Gán thông tin địa chỉ đầu tiên vào textViewAddress2
+                textViewAddress2.setText(firstAddress.getDiaChi());
+                // Tương tự nếu bạn có các TextView khác để hiển thị tên, số điện thoại...
+//                textViewName.setText(firstAddress.getTen());
+//                textViewPhone.setText(firstAddress.getSdt());
+
+                // Nếu cần thiết, bạn cũng có thể lưu địa chỉ đã chọn vào SharedPreferences hoặc thực hiện các hành động khác.
+           Log.d("aaa",""+firstAddress.getDiaChi());
+        }
+
         textViewAddress.setOnClickListener(v -> {
             Intent addressIntent = new Intent(Acti_ThanhToan.this, Acti_DiaChi.class);
             addressIntent.putParcelableArrayListExtra("selectedItems", new ArrayList<>(selectedItems));
             startActivityForResult(addressIntent, REQUEST_CODE_SELECT_ADDRESS);
+
         });
+
 
         buttonPlaceOrder.setOnClickListener(v -> placeOrder());
     }
@@ -181,7 +179,8 @@ public class Acti_ThanhToan extends AppCompatActivity {
             if (data != null) {
                 KhuyenMai khuyenMai = data.getParcelableExtra("selectedPromotion");
                 if (khuyenMai != null) {
-                    tvKM.setText(String.valueOf(khuyenMai.getGiaKhoiDiem()));
+                    NumberFormat numberFormat = NumberFormat.getInstance();
+                    tvKM.setText(numberFormat.format(khuyenMai.getGiaKhoiDiem()));
                     updateUI(selectedItems); // Cập nhật giao diện khi khuyến mãi thay đổi
                 }
             }
@@ -193,7 +192,7 @@ public class Acti_ThanhToan extends AppCompatActivity {
         Thaanh_Toan_Adapter adapter = new Thaanh_Toan_Adapter(selectedItems, this);
         recyclerViewProducts.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewProducts.setAdapter(adapter);
-
+        textViewProducts.setText("Số lượng sản phẩm : " + adapter.getItemCount());
         updateTotalAmount();
     }
 
@@ -201,15 +200,21 @@ public class Acti_ThanhToan extends AppCompatActivity {
         int totalAmount = calculateTotalAmount(selectedItems);
         int discountAmount = getDiscountFromTextView(); // Lấy giá trị khuyến mãi từ TextView tvKM
 
-        tv_tongtiensanPham.setText("Tổng tiền sản phẩm: " + totalAmount + " đ");
-        tongtienkhuyenmai.setText("Khuyến mãi: " + discountAmount + " đ");
+        // Sử dụng NumberFormat để định dạng số tiền
+        NumberFormat numberFormat = NumberFormat.getInstance();
+        numberFormat.setGroupingUsed(true);
+
+        // Định dạng và hiển thị các giá trị
+        tv_tongtiensanPham.setText("Tổng tiền sản phẩm: " + numberFormat.format(totalAmount) + " VNĐ");
+        tongtienkhuyenmai.setText("Khuyến mãi: " + numberFormat.format(discountAmount) + " VNĐ");
 
         int finalAmount = totalAmount - discountAmount;
-        tongtien.setText("Tổng tiền: " + finalAmount + " đ");
-        textViewTotalAmount.setText("Tổng tiền: " + finalAmount + " đ");
+        tongtien.setText("Tổng tiền: " + numberFormat.format(finalAmount) + " VNĐ");
+        textViewTotalAmount.setText("Tổng tiền: " + numberFormat.format(finalAmount) + " VNĐ");
 
         return finalAmount; // Trả về tổng tiền cuối cùng
     }
+
 
     private int getDiscountFromTextView() {
         int discount = 0;

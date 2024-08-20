@@ -41,7 +41,7 @@
             android:name=".ManChay"
             android:exported="true" />
         <activity
-            android:name=".Activitys.activitioSlash"
+            android:name=".Activitys.DangNhap"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,7 +57,7 @@
         <activity android:name=".Activitys.Acti_TimKiem" />
         <activity android:name=".Activitys.Acti_GioHang" />
         <activity android:name=".Activitys.Acti_ChiTietSP" />
-        <activity android:name=".Activitys.DangNhap" />
+        <activity android:name=".Activitys.activitioSlash" />
         <activity android:name=".Activitys.Acti_ThanhToan"
             android:exported="true"
             android:launchMode="singleTask"
