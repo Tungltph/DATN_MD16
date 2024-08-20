@@ -614,7 +614,7 @@ public class Acti_ChiTietSP extends AppCompatActivity {
             if (mau.get_id().equals(selectedColor)) {
                 // Format price with commas
                 String formattedPrice = numberFormat.format(mau.getGiaTien());
-                tvGiamGiaGioHang.setText("₫"+formattedPrice);
+                tvGiamGiaGioHang.setText(formattedPrice);
 
                 // Set quantity
                 tvSoLuong.setText(String.valueOf(mau.getSoLuong()));
@@ -622,7 +622,6 @@ public class Acti_ChiTietSP extends AppCompatActivity {
             }
         }
     }
-
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {

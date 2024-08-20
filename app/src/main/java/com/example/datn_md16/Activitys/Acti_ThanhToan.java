@@ -484,10 +484,7 @@ private void Zalopay() {
 
     private void clearCart() {
         // Tạo Retrofit và ApiService
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.9.103:3000/") // Đảm bảo URL chính xác
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        Retrofit retrofit = ApiClient.getClient();
         ApiService apiService = retrofit.create(ApiService.class);
 
         // Xóa từng mục trong giỏ hàng theo ID
@@ -506,13 +503,14 @@ private void Zalopay() {
                         selectedItems.remove(item);
                         updateUI(selectedItems);
                     } else {
-                        Toast.makeText(Acti_ThanhToan.this, "Lỗi: " + response.message(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Acti_ThanhToan.this, "Lỗi sss: " + response.message(), Toast.LENGTH_SHORT).show();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<Void> call, Throwable t) {
-                    Toast.makeText(Acti_ThanhToan.this, "Lỗi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(Acti_ThanhToan.this, "Lỗi mua hàng : " + t.getMessage(), Toast.LENGTH_SHORT).show();
+//                    Log.d("zzz1", "onFailure: "+t.getMessage());
                 }
             });
         }
