@@ -160,4 +160,12 @@
         android:layout_marginTop="20dp"
         android:background="#FFFFFF"
         android:scrollbars="none"/>
+
+    <TextView
+        android:id="@+id/tv_no_resultsIphone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Không có sản phẩm phù hợp với từ khóa"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 </LinearLayout>

@@ -47,7 +47,6 @@ public class SanPhamYeuThichAdapter extends RecyclerView.Adapter<SanPhamYeuThich
 
         // Khởi tạo Retrofit
         Retrofit retrofit = ApiClient.getClient();
-
         productService = retrofit.create(ApiService.class);
     }
 

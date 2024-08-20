@@ -1,160 +1,171 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/border"
     android:layout_margin="10dp"
-    android:orientation="horizontal">
+    app:cardElevation="4dp"
+    app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="#FFFFFF">
 
     <LinearLayout
-        android:id="@+id/itemLayout"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:orientation="horizontal"
-        >
-
-        <ImageView
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:padding="5dp"
-            android:layout_gravity="center"
-            android:src="@drawable/img_11" />
+        android:background="@drawable/border"
+        android:padding="10dp">
 
         <LinearLayout
+            android:id="@+id/itemLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:padding="5dp"
-            android:layout_marginStart="10dp"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tvTenKhuyenMai"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Tên khuyến mãi"
-                android:textSize="14sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvphanTramGiamGia"
-                android:layout_width="match_parent"
-                android:layout_marginTop="4dp"
-                android:layout_height="wrap_content"
-                android:text="Giảm 20%"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tvgiaKhuyenMaiToiDa"
-                android:layout_width="match_parent"
-                android:layout_marginTop="4dp"
-                android:layout_height="wrap_content"
-                android:text="Giảm tối đa"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tvngayBatDau"
-                android:layout_width="match_parent"
-                android:layout_marginTop="4dp"
-                android:visibility="gone"
-                android:layout_height="wrap_content"
-                android:text="Ngày bắt đầu"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tvngayKetThuc"
-                android:layout_width="match_parent"
-                android:visibility="gone"
-                android:layout_marginTop="4dp"
-                android:layout_height="wrap_content"
-                android:text="ngày kết thúc"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tvgiaToiDa"
-                android:layout_width="match_parent"
-                android:layout_marginTop="4dp"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:text="Gía tối đa"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tvsoLanApDung"
-                android:layout_width="match_parent"
-                android:visibility="gone"
-                android:layout_marginTop="4dp"
-                android:layout_height="wrap_content"
-                android:text="Số lần áp dụng"
-                android:textSize="14sp" />
+            <ImageView
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:padding="5dp"
+                android:layout_gravity="center"
+                android:src="@drawable/img_11" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:padding="5dp"
+                android:layout_marginStart="10dp"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvgiaKhoiDiem"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tvTenKhuyenMai"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Đơn tối thiểu"
+                    android:text="Tên khuyến mãi"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tvphanTramGiamGia"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_height="wrap_content"
+                    android:text="Giảm 20%"
                     android:textSize="14sp" />
 
                 <TextView
-                    android:id="@+id/tvDieuKien"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tvgiaKhuyenMaiToiDa"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="4dp"
                     android:layout_height="wrap_content"
-                    android:text="Điều kiện"
-                    android:layout_marginStart="5dp"
-                    android:textColor="#03A9F4"
-                    android:textStyle="bold"
-                    android:textSize="10sp" />
+                    android:text="Giảm tối đa"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvngayBatDau"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:visibility="gone"
+                    android:layout_height="wrap_content"
+                    android:text="Ngày bắt đầu"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvngayKetThuc"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_marginTop="4dp"
+                    android:layout_height="wrap_content"
+                    android:text="ngày kết thúc"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvgiaToiDa"
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:text="Gía tối đa"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/tvsoLanApDung"
+                    android:layout_width="match_parent"
+                    android:visibility="gone"
+                    android:layout_marginTop="4dp"
+                    android:layout_height="wrap_content"
+                    android:text="Số lần áp dụng"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tvgiaKhoiDiem"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Đơn tối thiểu"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tvDieuKien"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Điều kiện"
+                        android:layout_marginStart="5dp"
+                        android:textColor="#03A9F4"
+                        android:textStyle="bold"
+                        android:textSize="10sp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </LinearLayout>
 
-    <!-- LinearLayout chứa btnApDungngay và tvSoLuong -->
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_gravity="end">
-
-        <TextView
-            android:id="@+id/tvSoLuong"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="x4"
-            android:layout_gravity="end"
-            android:paddingLeft="10dp"
-            android:paddingTop="5dp"
-            android:paddingBottom="5dp"
-            android:background="@drawable/button_background"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:textSize="10sp" />
-
+        <!-- LinearLayout chứa btnApDungngay và tvSoLuong -->
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="end">
 
             <TextView
-                android:id="@+id/btnApDungngay"
+                android:id="@+id/tvSoLuong"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Dùng"
-                android:textSize="8sp"
-                android:padding="12dp"
-                android:layout_marginEnd="5dp"
-                android:background="@drawable/border"
-                android:textColor="@color/black"
-                android:gravity="center" />
+                android:text="x4"
+                android:layout_gravity="end"
+                android:paddingLeft="10dp"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:background="@drawable/button_background"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="10sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/btnApDungngay"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Dùng"
+                    android:textSize="8sp"
+                    android:padding="12dp"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/border"
+                    android:textColor="@color/black"
+                    android:gravity="center" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
+</androidx.cardview.widget.CardView>

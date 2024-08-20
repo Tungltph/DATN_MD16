@@ -118,6 +118,9 @@ public interface ApiService {
     @PUT("/api/donHang/update/{id}")
     Call<DonHangDTO> updateoder(@Path("id") String id, @Body DonHangDTO.DonHang donHang);
 
+    @POST("/api/sanPhamYT/check")
+    Call<Boolean> checkYeuThich(@Body SanPhamYeuThichDTO sanPhamYeuThichDTO);
+
 
 
 

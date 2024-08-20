@@ -158,4 +158,12 @@
         android:background="#FFFFFF"
         android:orientation="horizontal"
         android:scrollbars="none" />
+
+    <TextView
+        android:id="@+id/tv_no_resultsViVo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Không có sản phẩm phù hợp với từ khóa"
+        android:layout_gravity="center"
+        android:visibility="gone" />
 </LinearLayout>
