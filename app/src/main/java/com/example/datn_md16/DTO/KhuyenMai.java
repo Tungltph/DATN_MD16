@@ -2,10 +2,9 @@ package com.example.datn_md16.DTO;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import com.google.gson.annotations.SerializedName;
 
-public class KhuyenMai{
+public class KhuyenMai implements Parcelable {
     @SerializedName("_id")
     private String id;
 
@@ -39,6 +38,7 @@ public class KhuyenMai{
     @SerializedName("trangThai")
     private boolean trangThai;
 
+    // Constructor
     public KhuyenMai(String id, String ten, String ngayBatDau, String ngayKetThuc, int soLuong, int giaKhoiDiem, int giaToiDa, int giaKhuyenMaiToiDa, int phanTramGiamGia, int soLanApDung, boolean trangThai) {
         this.id = id;
         this.ten = ten;
@@ -51,6 +51,55 @@ public class KhuyenMai{
         this.phanTramGiamGia = phanTramGiamGia;
         this.soLanApDung = soLanApDung;
         this.trangThai = trangThai;
+    }
+
+    // Constructor để tạo đối tượng từ Parcel
+    protected KhuyenMai(Parcel in) {
+        id = in.readString();
+        ten = in.readString();
+        ngayBatDau = in.readString();
+        ngayKetThuc = in.readString();
+        soLuong = in.readInt();
+        giaKhoiDiem = in.readInt();
+        giaToiDa = in.readInt();
+        giaKhuyenMaiToiDa = in.readInt();
+        phanTramGiamGia = in.readInt();
+        soLanApDung = in.readInt();
+        trangThai = in.readByte() != 0;
+    }
+
+    // Viết đối tượng vào Parcel
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(ten);
+        dest.writeString(ngayBatDau);
+        dest.writeString(ngayKetThuc);
+        dest.writeInt(soLuong);
+        dest.writeInt(giaKhoiDiem);
+        dest.writeInt(giaToiDa);
+        dest.writeInt(giaKhuyenMaiToiDa);
+        dest.writeInt(phanTramGiamGia);
+        dest.writeInt(soLanApDung);
+        dest.writeByte((byte) (trangThai ? 1 : 0));
+    }
+
+    // Tạo đối tượng KhuyenMai từ Parcel
+    public static final Creator<KhuyenMai> CREATOR = new Creator<KhuyenMai>() {
+        @Override
+        public KhuyenMai createFromParcel(Parcel in) {
+            return new KhuyenMai(in);
+        }
+
+        @Override
+        public KhuyenMai[] newArray(int size) {
+            return new KhuyenMai[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public String getId() {

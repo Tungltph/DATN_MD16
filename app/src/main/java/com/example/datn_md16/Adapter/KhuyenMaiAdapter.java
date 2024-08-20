@@ -60,17 +60,17 @@ public class KhuyenMaiAdapter extends RecyclerView.Adapter<KhuyenMaiAdapter.Khuy
         KhuyenMai khuyenMai = khuyenMaiList.get(position);
         holder.bind(khuyenMai);
 
-//        holder.btnapdungngay.setOnClickListener(v -> {
-//            Toast.makeText(v.getContext(), "Đã chọn khuyến mãi", Toast.LENGTH_SHORT).show();
-//
-//            // Tạo Intent và trả kết quả về Activity
-//            Intent resultIntent = new Intent();
-//            resultIntent.putExtra("selectedPromotion", khuyenMai);
-//
-//            // Trả kết quả về Acti_ThanhToan
-//            ((Activity) context).setResult(Activity.RESULT_OK, resultIntent);
-//            ((Activity) context).finish();
-//        });
+        holder.btnapdungngay.setOnClickListener(v -> {
+            Toast.makeText(v.getContext(), "Đã chọn khuyến mãi", Toast.LENGTH_SHORT).show();
+
+            // Tạo Intent và trả kết quả về Activity
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("selectedPromotion", khuyenMai);
+
+            // Trả kết quả về Acti_ThanhToan
+            ((Activity) context).setResult(Activity.RESULT_OK, resultIntent);
+            ((Activity) context).finish();
+        });
 
         holder.tvDieuKien.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +100,8 @@ public class KhuyenMaiAdapter extends RecyclerView.Adapter<KhuyenMaiAdapter.Khuy
     public class KhuyenMaiViewHolder extends RecyclerView.ViewHolder {
 
         private TextView tvTenKhuyenMai, tvSoLuong, tvphanTramGiamGia, tvgiaKhuyenMaiToiDa, tvgiaKhoiDiem, tvDieuKien;
-        private TextView btnapdungngay, tvngayBatDau, tvngayKetThuc, tvgiaToiDa, tvsoLanApDung;
+        private TextView  tvngayBatDau, tvngayKetThuc, tvgiaToiDa, tvsoLanApDung;
+        TextView btnapdungngay;
 
         public KhuyenMaiViewHolder(@NonNull View itemView) {
             super(itemView);
