@@ -3,19 +3,17 @@ package com.example.datn_md16.Adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datn_md16.Activitys.Acti_ChiTietSP;
 import com.example.datn_md16.DTO.ProductHome;
-import com.example.datn_md16.DTO.TimKiemDTO;
 import com.example.datn_md16.R;
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
@@ -32,17 +30,13 @@ public class IphoneAdapter extends RecyclerView.Adapter<IphoneAdapter.IphoneView
 
     private TextView noResultsTextView;
 
-    public IphoneAdapter(Context context, List<ProductHome> productList) {
+    public IphoneAdapter(Context context, List<ProductHome> productList, TextView noResultsTextView) {
         this.context = context;
         this.productList = productList;
-    }
-
-    public IphoneAdapter(Context context, TextView noResultsTextView) {
-        this.context = context;
-        this.productList = new ArrayList<>();
-        this.originalDataList = new ArrayList<>();
+        this.originalDataList = new ArrayList<>(productList); // Initialize originalDataList
         this.noResultsTextView = noResultsTextView;
     }
+
 
     @NonNull
     @Override
@@ -96,7 +90,6 @@ public class IphoneAdapter extends RecyclerView.Adapter<IphoneAdapter.IphoneView
         });
     }
 
-
     public void filterData(String query) {
         List<ProductHome> filteredList = new ArrayList<>();
         if (query == null || query.isEmpty()) {
@@ -115,12 +108,12 @@ public class IphoneAdapter extends RecyclerView.Adapter<IphoneAdapter.IphoneView
         this.productList.addAll(filteredList);
         notifyDataSetChanged();
 
-//        // Hiển thị thông báo nếu không có kết quả
-//        if (filteredList.isEmpty()) {
-//            noResultsTextView.setVisibility(View.VISIBLE);
-//        } else {
-//            noResultsTextView.setVisibility(View.GONE);
-//        }
+        // Hiển thị thông báo nếu không có kết quả
+        if (filteredList.isEmpty()) {
+            noResultsTextView.setVisibility(View.VISIBLE);
+        } else {
+            noResultsTextView.setVisibility(View.GONE);
+        }
     }
 
     public void setStrikeThroughText(TextView textView) {
@@ -134,7 +127,7 @@ public class IphoneAdapter extends RecyclerView.Adapter<IphoneAdapter.IphoneView
 
     public static class IphoneViewHolder extends RecyclerView.ViewHolder {
         ImageView imgSanPham;
-        TextView tvProductName, tvPrice, tvgiaGoc,tvPhanTram;
+        TextView tvProductName, tvPrice, tvgiaGoc, tvPhanTram;
 
         public IphoneViewHolder(@NonNull View itemView) {
             super(itemView);

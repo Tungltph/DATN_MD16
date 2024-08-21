@@ -11,8 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,28 +39,12 @@ public class Acti_vivo extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private IphoneAdapter adapter;
+    private EditText edtTimKiemVivo;
 
     private TextView btnip, btnss, btnvv, btnxm, btnop;
+    private TextView noResultsTextView;
 
-    private static final String HANG_SX_ID = "6682f0a690f9521e5e5e376a";
-
-    private void updateButtonStyles(TextView selectedButton) {
-        // Danh sách các nút trạng thái
-        TextView[] buttons = {btnip, btnss,btnvv,btnxm,btnop};
-
-        // Cập nhật style cho các nút
-        for (TextView button : buttons) {
-            if (button == selectedButton) {
-                // Áp dụng style cho nút được chọn
-                button.setTextColor(getResources().getColor(R.color.red));
-                button.setPaintFlags(button.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-            } else {
-                // Áp dụng style cho nút không được chọn
-                button.setTextColor(getResources().getColor(R.color.black));
-                button.setPaintFlags(button.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
-            }
-        }
-    }
+    private static final String HANG_SX_ID = "6682f0a690f9521e5e5e376a"; // Oppo's manufacturer ID
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,68 +53,91 @@ public class Acti_vivo extends AppCompatActivity {
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        noResultsTextView = findViewById(R.id.tv_no_resultsViVo); // Initialize TextView for no results
 
-        // Thiết lập Toolbar và hiển thị nút back
+        // Set up Toolbar
         Toolbar toolbar = findViewById(R.id.toolbarVivo);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Hiển thị nút back
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true); // Show back button
+        setTitle(getString(R.string.toolbarOppo));
 
-        // Đặt tiêu đề cho Toolbar từ chuỗi trong strings.xml
-        setTitle(getString(R.string.toolbarVivo));
+        // Initialize Buttons
         btnxm = findViewById(R.id.btnXiaomi);
         btnip = findViewById(R.id.btnIphone);
         btnop = findViewById(R.id.btnOppo);
         btnss = findViewById(R.id.btnss);
         btnvv = findViewById(R.id.btnVivo);
+        edtTimKiemVivo = findViewById(R.id.edtTimKiemVivo);
 
-        btnip.setOnClickListener(new View.OnClickListener() {
+        // Initialize Adapter
+        adapter = new IphoneAdapter(this, new ArrayList<>(), noResultsTextView);
+        recyclerView.setAdapter(adapter);
+
+        // Set up TextWatcher for search input
+        edtTimKiemVivo.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Acty_iphone.class);
-                startActivity(intent);
-                updateButtonStyles(btnip);
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                adapter.filterData(s.toString()); // Call filterData with current search string
             }
-        });
-        btnop.setOnClickListener(new View.OnClickListener() {
+
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Acti_Oppo.class);
-                startActivity(intent);
-                updateButtonStyles(btnop);
-            }
+            public void afterTextChanged(Editable s) { }
         });
-        btnss.setOnClickListener(new View.OnClickListener() {
+
+        edtTimKiemVivo.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Acti_Samsung.class);
-                startActivity(intent);
-                updateButtonStyles(btnss);
-            }
-        });
-        btnvv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Acti_vivo.class);
-                startActivity(intent);
-                updateButtonStyles(btnvv);
-            }
-        });
-        btnxm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), Acti_Xiaomi.class);
-                startActivity(intent);
-                updateButtonStyles(btnxm);
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (edtTimKiemVivo.getRight() - edtTimKiemVivo.getCompoundDrawables()[2].getBounds().width())) {
+                        // Xóa nội dung của EditText
+                        edtTimKiemVivo.setText("");
+                        // Gọi phương thức lọc lại dữ liệu
+                        adapter.filterData("");
+                        return true;
+                    }
+                }
+                return false;
             }
         });
 
+        // Set up Button Click Listeners
+        btnip.setOnClickListener(v -> navigateTo(Acty_iphone.class, btnip));
+        btnop.setOnClickListener(v -> navigateTo(Acti_Oppo.class, btnop));
+        btnss.setOnClickListener(v -> navigateTo(Acti_Samsung.class, btnss));
+        btnvv.setOnClickListener(v -> navigateTo(Acti_vivo.class, btnvv));
+        btnxm.setOnClickListener(v -> navigateTo(Acti_Xiaomi.class, btnxm));
+
+        // Fetch data from API
         fetchData();
+    }
+
+    private void navigateTo(Class<?> targetActivity, TextView selectedButton) {
+        Intent intent = new Intent(getApplicationContext(), targetActivity);
+        startActivity(intent);
+        updateButtonStyles(selectedButton);
+    }
+
+    private void updateButtonStyles(TextView selectedButton) {
+        // List of status buttons
+        TextView[] buttons = {btnip, btnss, btnvv, btnxm, btnop};
+
+        // Update style for selected button
+        for (TextView button : buttons) {
+            if (button == selectedButton) {
+                button.setTextColor(getResources().getColor(R.color.red));
+                button.setPaintFlags(button.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+            } else {
+                button.setTextColor(getResources().getColor(R.color.black));
+                button.setPaintFlags(button.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
+            }
+        }
     }
 
     private void fetchData() {
         Retrofit retrofit = ApiClient.getClient();
-
         ApiService apiService = retrofit.create(ApiService.class);
         Call<List<ProductHome>> call = apiService.getProducts();
 
@@ -135,17 +146,10 @@ public class Acti_vivo extends AppCompatActivity {
             public void onResponse(Call<List<ProductHome>> call, Response<List<ProductHome>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<ProductHome> allProducts = response.body();
-                    List<ProductHome> filteredProducts = new ArrayList<>();
-                    // Filter products by idHangSX
-                    for (ProductHome product : allProducts) {
-                        if (HANG_SX_ID.equals(product.getIdHangSX())) {
-                            filteredProducts.add(product);
-                        }
-                    }
-                    // Check if there are products to display
+                    List<ProductHome> filteredProducts = filterProductsByHangSX(allProducts, HANG_SX_ID);
                     if (!filteredProducts.isEmpty()) {
-                        IphoneAdapter IphoneAdapter = new IphoneAdapter(Acti_vivo.this, filteredProducts);
-                        recyclerView.setAdapter(IphoneAdapter);
+                        adapter = new IphoneAdapter(Acti_vivo.this, filteredProducts, noResultsTextView);
+                        recyclerView.setAdapter(adapter);
                     } else {
                         Toast.makeText(Acti_vivo.this, "Không có sản phẩm", Toast.LENGTH_SHORT).show();
                     }
@@ -174,7 +178,7 @@ public class Acti_vivo extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            onBackPressed(); // Xử lý khi nhấn nút back trên Toolbar
+            onBackPressed(); // Handle back button on Toolbar
             return true;
         }
         return super.onOptionsItemSelected(item);
