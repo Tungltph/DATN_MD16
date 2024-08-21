@@ -130,21 +130,7 @@ public class Acti_ThanhToan extends AppCompatActivity {
             }
         }
 
-        if (textViewAddress2.getText() == null || textViewAddress2.getText().toString().isEmpty()) {
-            List<DiaChiDTO> diaChiList = new ArrayList<>();
-
-                // Lấy địa chỉ đầu tiên từ danh sách
-                DiaChiDTO firstAddress = diaChiList.get(0);
-
-                // Gán thông tin địa chỉ đầu tiên vào textViewAddress2
-                textViewAddress2.setText(firstAddress.getDiaChi());
-                // Tương tự nếu bạn có các TextView khác để hiển thị tên, số điện thoại...
-//                textViewName.setText(firstAddress.getTen());
-//                textViewPhone.setText(firstAddress.getSdt());
-
-                // Nếu cần thiết, bạn cũng có thể lưu địa chỉ đã chọn vào SharedPreferences hoặc thực hiện các hành động khác.
-           Log.d("aaa",""+firstAddress.getDiaChi());
-        }
+//
 
         textViewAddress.setOnClickListener(v -> {
             Intent addressIntent = new Intent(Acti_ThanhToan.this, Acti_DiaChi.class);
@@ -180,7 +166,12 @@ public class Acti_ThanhToan extends AppCompatActivity {
                 KhuyenMai khuyenMai = data.getParcelableExtra("selectedPromotion");
                 if (khuyenMai != null) {
                     NumberFormat numberFormat = NumberFormat.getInstance();
-                    tvKM.setText(numberFormat.format(khuyenMai.getGiaKhoiDiem()));
+                    int giakhoidiem = khuyenMai.getGiaKhoiDiem();
+                    int giatoida = khuyenMai.getGiaKhuyenMaiToiDa();
+                    int phantramgiam = khuyenMai.getPhanTramGiamGia();
+                   // int giatridonhang = tv_tongtiensanPham.get
+
+                    tvKM.setText(numberFormat.format(khuyenMai.getGiaKhuyenMaiToiDa())+ " VNĐ");
                     updateUI(selectedItems); // Cập nhật giao diện khi khuyến mãi thay đổi
                 }
             }
@@ -212,20 +203,24 @@ public class Acti_ThanhToan extends AppCompatActivity {
         tongtien.setText("Tổng tiền: " + numberFormat.format(finalAmount) + " VNĐ");
         textViewTotalAmount.setText("Tổng tiền: " + numberFormat.format(finalAmount) + " VNĐ");
 
-        return finalAmount; // Trả về tổng tiền cuối cùng
+        return finalAmount;
     }
 
 
     private int getDiscountFromTextView() {
         int discount = 0;
         try {
-            float discountFloat = Float.parseFloat(tvKM.getText().toString());
+            // Loại bỏ ký tự không phải số (VD: " VNĐ")
+            String discountText = tvKM.getText().toString().replaceAll("[^\\d]", "");
+            float discountFloat = Float.parseFloat(discountText);
             discount = (int) discountFloat;
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
+        Log.d("zzzze", "lay từ km " + discount);
         return discount;
     }
+
 
     private int calculateTotalAmount(List<GioHangDTO> items) {
         int total = 0;

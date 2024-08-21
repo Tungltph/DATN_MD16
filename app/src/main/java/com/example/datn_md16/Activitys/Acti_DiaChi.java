@@ -190,19 +190,29 @@ public class Acti_DiaChi extends AppCompatActivity {
 
 
     private void fetchData() {
-        Call<ApiResponse> call = apiService.getAllDiaChi();
+        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String userId = sharedPreferences.getString("user_id", null);
+        Call<ApiResponse> call = apiService.getDiaChiByIdAccount(userId);
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     List<DiaChiDTO> fetchedData = response.body().getData();
+
+                    // Kiểm tra fetchedData có null không
+                    if (fetchedData == null) {
+                        Toast.makeText(getApplicationContext(), "No data available", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                     diaChiList.clear();
                     diaChiList.addAll(fetchedData);
                     diaChiAdapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Failed to fetch data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Failed to fetch data. Response code: " + response.code(), Toast.LENGTH_SHORT).show();
                 }
             }
+
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {

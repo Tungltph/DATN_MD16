@@ -111,6 +111,7 @@ public class Acti_Samsung extends AppCompatActivity {
         btnvv.setOnClickListener(v -> navigateTo(Acti_vivo.class, btnvv));
         btnxm.setOnClickListener(v -> navigateTo(Acti_Xiaomi.class, btnxm));
 
+        updateButtonStyles(btnss);
         // Fetch data from API
         fetchData();
     }
@@ -128,13 +129,17 @@ public class Acti_Samsung extends AppCompatActivity {
         // Update style for selected button
         for (TextView button : buttons) {
             if (button == selectedButton) {
-                button.setTextColor(getResources().getColor(R.color.red));
-                button.setPaintFlags(button.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+                // Áp dụng style cho nút được chọn
+                button.setTextColor(getResources().getColor(R.color.white)); // Thay đổi màu chữ
+                button.setBackgroundColor(getResources().getColor(R.color.red)); // Thay đổi màu nền
             } else {
-                button.setTextColor(getResources().getColor(R.color.black));
+                // Áp dụng style cho nút không được chọn
+                button.setTextColor(getResources().getColor(R.color.black)); // Thay đổi màu chữ
+                button.setBackgroundColor(getResources().getColor(android.R.color.transparent)); // Màu nền mặc định
                 button.setPaintFlags(button.getPaintFlags() & (~Paint.UNDERLINE_TEXT_FLAG));
             }
         }
+
     }
 
     private void fetchData() {

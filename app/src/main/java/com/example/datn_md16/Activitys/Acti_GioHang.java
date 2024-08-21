@@ -1,6 +1,7 @@
 package com.example.datn_md16.Activitys;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,7 +58,9 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
 
         ApiService apiService = retrofit.create(ApiService.class);
         // Gọi API và lấy dữ liệu
-        apiService.getGioHang().enqueue(new Callback<List<GioHangDTO>>() {
+        SharedPreferences sharedPreferences = getSharedPreferences("user_prefs", MODE_PRIVATE);
+        String userId = sharedPreferences.getString("user_id", null);
+        apiService.getGioHang(userId).enqueue(new Callback<List<GioHangDTO>>() {
             @Override
             public void onResponse(Call<List<GioHangDTO>> call, Response<List<GioHangDTO>> response) {
                 if (response.isSuccessful() && response.body() != null) {

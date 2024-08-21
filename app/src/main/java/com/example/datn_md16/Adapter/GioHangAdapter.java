@@ -3,6 +3,7 @@ package com.example.datn_md16.Adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -109,11 +110,28 @@ public class GioHangAdapter extends RecyclerView.Adapter<GioHangAdapter.GioHangV
 
         holder.btnIncrease.setOnClickListener(v -> {
             int quantity = gioHang.getSoLuong();
-            quantity++;
-            gioHang.setSoLuong(quantity);
-            holder.tvQuantity.setText(String.valueOf(quantity));
-            updateTotalPrice();
+
+            // Lấy danh sách màu sắc của sản phẩm
+            List<ProductHome.MauSchema> mauSchemaList = gioHang.getSanPham().getMauSchema();
+
+            // Tìm màu sắc tương ứng với idMau đã chọn
+            for (ProductHome.MauSchema mauSchema : mauSchemaList) {
+                if (mauSchema.get_id().equals(gioHang.getIdMau())) {
+                    int maxQuantityInStock = mauSchema.getSoLuong();
+                    // Kiểm tra và tăng số lượng nếu còn hàng trong kho
+                    if (quantity < maxQuantityInStock) {
+                        quantity++;
+                        gioHang.setSoLuong(quantity);
+                        holder.tvQuantity.setText(String.valueOf(quantity));
+                        updateTotalPrice();
+                    } else {
+                        Toast.makeText(context, "Không đủ hàng trong kho", Toast.LENGTH_SHORT).show();
+                    }
+                    break;
+                }
+            }
         });
+
 
         // Xử lý sự kiện xóa sản phẩm
         holder.xoa.setOnClickListener(v -> {

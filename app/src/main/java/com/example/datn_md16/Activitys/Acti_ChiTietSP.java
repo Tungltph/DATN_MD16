@@ -574,12 +574,12 @@ public class Acti_ChiTietSP extends AppCompatActivity {
 //            Log.d("ThemGioHang", "Số Lượng: " + gioHangDTO.getSoLuong());
 //            Log.d("ThemGioHang", "Số acou: " + gioHangDTO.getIdAccount());
 
+            GioHangDTO gioHangDTO1 = new GioHangDTO();
 
             int soLuong = Integer.parseInt(tvSoLuong.getText().toString());
             int soLuongKho = Integer.parseInt(tvKQ.getText().toString());
-
-
-            if (soLuong <= 0) {
+//
+             if (soLuong <= 0) {
                 Toast.makeText(Acti_ChiTietSP.this, "Hàng trong kho đã hết", Toast.LENGTH_SHORT).show();
             } else if (soLuong < soLuongKho) {
                 Toast.makeText(Acti_ChiTietSP.this, "Số lượng lớn hơn số hàng trong kho", Toast.LENGTH_SHORT).show();

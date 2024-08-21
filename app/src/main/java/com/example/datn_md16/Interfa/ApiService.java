@@ -22,6 +22,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
     @GET("/api/khuyenMai/conHieuLuc")
@@ -47,8 +48,9 @@ public interface ApiService {
     Call<AccountResponse> getAccounts();
 
 
-    @GET("api/giohang")
-    Call<List<GioHangDTO>> getGioHang();
+    @GET("api/giohang/{id}")
+    Call<List<GioHangDTO>> getGioHang(@Path("id") String idAccount);
+
 
     @GET("/api/sanPhamYT/")
     Call<SanPhamYeuThichResponse> getSanPhamYeuThich();
@@ -61,6 +63,13 @@ public interface ApiService {
 
     @POST("/api/gioHang/add/")
     Call<Void> adddToCart(@Body GioHangDTO gioHangDTO);
+
+    @GET("/api/gioHang/soLuong")
+    Call<Integer> getSoLuongTrongGioHang(
+            @Query("userId") String userId,
+            @Query("idSanPham") String idSanPham,
+            @Query("idMau") String idMau
+    );
 
 
 

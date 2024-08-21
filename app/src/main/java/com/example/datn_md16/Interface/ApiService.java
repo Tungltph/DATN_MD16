@@ -23,6 +23,9 @@ import retrofit2.Call;
             @GET("/api/DiaChi/")
             Call<ApiResponse> getAllDiaChi();
 
+            @GET("/api/diaChi/idAccount/{idAccount}")
+            Call<ApiResponse> getDiaChiByIdAccount(@Path("idAccount") String idAccount);
+
             @GET("{id}")
             Call<DiaChiDTO> getDiaChiById(@Path("id") String id);
 
