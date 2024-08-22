@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datn_md16.Activitys.Acti_ThanhToan;
@@ -38,6 +40,8 @@ import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.text.NumberFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -88,23 +92,46 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
                 TextView soLuong = productView.findViewById(R.id.soLuong);
                 TextView productPrice = productView.findViewById(R.id.productPrice);
                 ImageView productImage = productView.findViewById(R.id.productImage);
-                TextView btnHuy = productView.findViewById(R.id.btnHuy);
-                TextView btnXemChiTiet = productView.findViewById(R.id.btnXemChiTiet);
-                TextView tvDanhGia = productView.findViewById(R.id.tvDanhGia);
+                TextView iddonhang = productView.findViewById(R.id.tvMadonhang);
+                TextView TOngtien = productView.findViewById(R.id.tongtien);
+                TextView thoigian = productView.findViewById(R.id.ngaydat);
+
+                iddonhang.setText("id đơn hàng : "+donHang.getId());
+
+
+                NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault());
+                numberFormat.setGroupingUsed(true);
+                int tongTien = (int) donHang.getTongTien();
+                TOngtien.setText("Tổng tiền đơn hàng: " + numberFormat.format(tongTien) + "Vnđ");
+
+
+                String ngayDatHang = donHang.getNgayDatHang();
+                SimpleDateFormat originalFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
+                SimpleDateFormat targetFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+
+                try {
+                    Date date = originalFormat.parse(ngayDatHang);
+                    String formattedDate = targetFormat.format(date);
+                    thoigian.setText("Ngày đặt hàng: " + formattedDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                    thoigian.setText("Ngày đặt hàng: " + ngayDatHang);
+                }
+
                 SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
-// Kiểm tra nếu người dùng đã đánh giá sản phẩm này chưa
+
                 String sanPhamId = sanPham.getId();
                 boolean daDanhGia = sharedPreferences.getBoolean("daDanhGia_" + sanPhamId, false);
 
                 if (daDanhGia) {
                     // Hiển thị chữ "Mua lại" nếu đã đánh giá
-                    tvDanhGia.setText("");
-                    tvDanhGia.setOnClickListener(null); // Xóa sự kiện click nếu không cần
+                    holder.tvDanhGia.setText("");
+                    holder.tvDanhGia.setOnClickListener(null); // Xóa sự kiện click nếu không cần
                 } else {
                     // Hiển thị nút đánh giá và gán sự kiện click
-                    tvDanhGia.setText("Đánh giá");
-                    tvDanhGia.setOnClickListener(v -> {
+                    holder.tvDanhGia.setText("Đánh giá");
+                    holder.tvDanhGia.setOnClickListener(v -> {
                         Dialog dialog = new Dialog(context);
                         dialog.setContentView(R.layout.dialog_danhgia);
 
@@ -148,7 +175,7 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
                                         sharedPreferences.edit().putBoolean("daDanhGia_" + sanPhamId, true).apply();
 
                                         // Thay đổi văn bản thành "Mua lại" sau khi thành công
-                                        tvDanhGia.setText("Mua lại");
+                                        holder.tvDanhGia.setText("Mua lại");
 
                                         Toast.makeText(context, "Đánh giá đã được gửi thành công!", Toast.LENGTH_SHORT).show();
                                         dialog.dismiss();
@@ -201,18 +228,18 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
 
 
                 if (donHang.getTrangThaiDonHang().equals("Chờ xác nhận") || donHang.getTrangThaiDonHang().equals("Đang xử lý")) {
-                    btnHuy.setVisibility(View.VISIBLE);
+                    holder.btnHuy.setVisibility(View.VISIBLE);
                 } else {
-                    btnHuy.setVisibility(View.GONE);
+                    holder.btnHuy.setVisibility(View.GONE);
                 }
 
                 if (donHang.getTrangThaiDonHang().equals("Đã giao hàng")) {
-                    tvDanhGia.setVisibility(View.VISIBLE);
+                    holder.tvDanhGia.setVisibility(View.VISIBLE);
                 } else {
-                    tvDanhGia.setVisibility(View.GONE);
+                    holder.tvDanhGia.setVisibility(View.GONE);
                 }
 
-                btnHuy.setOnClickListener(v -> {
+                holder.btnHuy.setOnClickListener(v -> {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle("Bạn muốn hủy đơn hàng ?");
                     builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
@@ -233,6 +260,9 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
                                         Toast.makeText(context, "Bạn đã hủy đơn hàng", Toast.LENGTH_SHORT).show();
                                         donHangList.remove(donHang);
                                         notifyDataSetChanged();
+                                        int soluongtrongkho = soluongtrongkho();
+                                        ProductHome.MauSchema mauSchema = new ProductHome.MauSchema();
+                                        mauSchema.setSoLuong(soluongtrongkho);
 
 
                                     }
@@ -255,27 +285,13 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
                 });
 
 
-                btnXemChiTiet.setOnClickListener(v -> {
-                    DiaChiDTO diaChiDTO = new DiaChiDTO();
-
-                        Intent intent = new Intent(context, Acti_chitietdonhang.class);
-                        intent.putExtra("tenDienThoai", sanPham.getTenDienThoai());
-                        intent.putExtra("mauSchema", sanPhamTrongDonHang.getMau());
-                        intent.putExtra("soLuong", sanPhamTrongDonHang.getSoLuong());
-                        intent.putExtra("tongTien", (double) sanPhamTrongDonHang.getGiaTien());
-                        intent.putExtra("hoTen", donHang.getIdDiaChi().getTen());
-                        intent.putExtra("sdt", donHang.getIdDiaChi().getSdt()); // đảm bảo bạn có trường này trong model
-                        intent.putExtra("ngayDatHang", donHang.getNgayDatHang());
-                        intent.putExtra("ngayNhanHang", donHang.getNgayNhanHang());
-                        intent.putExtra("diaChiGiaoHang", donHang.getIdDiaChi().getDiaChi());
-                        intent.putExtra("trangThaiDonHang", donHang.getTrangThaiDonHang());
-                        intent.putExtra("phuongThucThanhToan", donHang.getPhuongThucThanhToan());
-                        intent.putExtra("hinhAnhUrl", sanPham.getHinhAnh());
-
-                        context.startActivity(intent);
-
+                holder.btnXemChiTiet.setOnClickListener(v -> {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("infoOrder", donHang);
+                    Intent intent = new Intent(context, Acti_chitietdonhang.class);
+                    intent.putExtras(bundle); // Thêm bundle chứa infoOrder vào intent
+                    context.startActivity(intent);
                 });
-
 
             }
         }
@@ -288,7 +304,7 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
         DonHangDTO.SanPhamTrongDonHang sanPhamTrongDonHang = new DonHangDTO.SanPhamTrongDonHang();
         int sanphamtrongkho = mauSchema.getSoLuong();
         int sanphamtrongdon = sanPhamTrongDonHang.getSoLuong();
-        int soluongMoi = sanphamtrongkho - sanphamtrongdon;
+        int soluongMoi = sanphamtrongkho + sanphamtrongdon;
         mauSchema.setSoLuong(soluongMoi);
         return soluongMoi;
     }
@@ -314,12 +330,14 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
     }
 
 public static class ViewHolder extends RecyclerView.ViewHolder {
-    public LinearLayout productContainer;
-
+    public CardView productContainer;
+    private TextView btnHuy,btnXemChiTiet,tvDanhGia;
     public ViewHolder(View itemView) {
         super(itemView);
         productContainer = itemView.findViewById(R.id.productContainer);
-
+         btnHuy = itemView.findViewById(R.id.btnHuy);
+         btnXemChiTiet = itemView.findViewById(R.id.btnXemChiTiet);
+         tvDanhGia = itemView.findViewById(R.id.tvDanhGia);
     }
 }
 }

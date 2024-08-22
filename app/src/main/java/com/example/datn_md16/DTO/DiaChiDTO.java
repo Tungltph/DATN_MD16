@@ -4,7 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.gson.annotations.SerializedName;
 
-public class DiaChiDTO implements Parcelable {
+import java.io.Serializable;
+
+public class DiaChiDTO implements Parcelable, Serializable {
     @SerializedName("_id")
     private String id;
 

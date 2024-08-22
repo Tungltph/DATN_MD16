@@ -3,6 +3,7 @@ package com.example.datn_md16.Activitys;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -118,7 +119,7 @@ public class Acti_GioHang extends AppCompatActivity implements GioHangAdapter.On
         intent.putParcelableArrayListExtra("selectedItems", new ArrayList<>(selectedItems));
 
         if (diaChi != null) {
-            intent.putExtra("selectedAddress", diaChi);
+            intent.putExtra("selectedAddress", (Parcelable) diaChi);
         }
 
         startActivity(intent);

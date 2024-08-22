@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -85,7 +86,7 @@ public class DiaChiAdapter extends RecyclerView.Adapter<DiaChiAdapter.DiaChiView
 
             // Trả kết quả về Activity
             Intent resultIntent = new Intent();
-            resultIntent.putExtra("selectedAddress", diaChi);
+            resultIntent.putExtra("selectedAddress", (Parcelable) diaChi);
             ((Activity) v.getContext()).setResult(Activity.RESULT_OK, resultIntent);
             ((Activity) v.getContext()).finish();
         });
@@ -105,7 +106,7 @@ public class DiaChiAdapter extends RecyclerView.Adapter<DiaChiAdapter.DiaChiView
 
             // Trả kết quả về Activity
             Intent resultIntent = new Intent();
-            resultIntent.putExtra("selectedAddress", diaChi);
+            resultIntent.putExtra("selectedAddress", (Parcelable) diaChi);
             ((Activity) v.getContext()).setResult(Activity.RESULT_OK, resultIntent);
             ((Activity) v.getContext()).finish();
         });

@@ -1,6 +1,5 @@
 package com.example.datn_md16.Adapter;
 
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datn_md16.DTO.DonHangDTO;
-
 import com.example.datn_md16.R;
 import com.squareup.picasso.Picasso;
 
@@ -36,25 +34,21 @@ public class ChitietdonhangAdapter extends RecyclerView.Adapter<ChitietdonhangAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        DonHangDTO.SanPhamTrongDonHang sanPham = sanPhamList.get(position);
-        DonHangDTO.SanPham donhang = new DonHangDTO.SanPham();
-
-        holder.tvTenDienThoai.setText(sanPham.getSanPham().getTenDienThoai());
-        holder.tvMau.setText("Màu: " + sanPham.getSanPham().getMauSchema());
-        holder.tvSl.setText("Số lượng: " + sanPham.getSoLuong());
-
-        // Định dạng số tiền
-        NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault());
-        numberFormat.setGroupingUsed(true);
-        //String formattedTongTien = numberFormat.format(sanPham.);
-        holder.tvTongtien.setText("₫" + donhang.getMauSchema().get(0).getGiaTien());
-
-        // Tải hình ảnh bằng Picasso
-        Picasso.get().load(donhang.getHinhAnh()).placeholder(R.drawable.product_background).into(holder.ivHinhAnh);
+        DonHangDTO.SanPhamTrongDonHang sanPhamTrongDonHang = sanPhamList.get(position);
+        DonHangDTO.SanPham sanPham = sanPhamTrongDonHang.getSanPham();
 
 
 
 
+        holder.tvProductName.setText(sanPham.getTenDienThoai());
+        holder.tvProductColor.setText("Màu: " + sanPham.getMauSchema().get(0).getMau());
+        holder.tvProductPrice.setText(formatCurrency(sanPham.getMauSchema().get(0).getGiaTien()));
+        holder.tvProductQuantity.setText("Số lượng: " + sanPhamTrongDonHang.getSoLuong());
+
+        // Tải hình ảnh sản phẩm bằng Picasso
+        Picasso.get().load(sanPham.getHinhAnh())
+                .placeholder(R.drawable.product_background) // Hình nền mặc định khi chưa load xong
+                .into(holder.ivProductImage);
     }
 
     @Override
@@ -63,16 +57,21 @@ public class ChitietdonhangAdapter extends RecyclerView.Adapter<ChitietdonhangAd
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivHinhAnh;
-        TextView tvTenDienThoai, tvMau, tvTongtien, tvSl;
+        ImageView ivProductImage;
+        TextView tvProductName, tvProductColor, tvProductPrice, tvProductQuantity;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivHinhAnh = itemView.findViewById(R.id.ivHinhAnh);
-            tvTenDienThoai = itemView.findViewById(R.id.tvTenDienThoai);
-            tvMau = itemView.findViewById(R.id.tvMau);
-            tvTongtien = itemView.findViewById(R.id.tvTongtien);
-            tvSl = itemView.findViewById(R.id.tvSl);
+            ivProductImage = itemView.findViewById(R.id.ivProductImage);
+            tvProductName = itemView.findViewById(R.id.tvProductName);
+            tvProductColor = itemView.findViewById(R.id.tvProductColor);
+            tvProductPrice = itemView.findViewById(R.id.tvProductPrice);
+            tvProductQuantity = itemView.findViewById(R.id.tvsl);
         }
+    }
+
+    private String formatCurrency(double amount) {
+        NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        return numberFormat.format(amount);
     }
 }

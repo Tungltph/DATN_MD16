@@ -2,9 +2,10 @@ package com.example.datn_md16.DTO;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class DonHangDTO {
+public class DonHangDTO implements Serializable{
     @SerializedName("status")
     private int status;
 
@@ -39,7 +40,7 @@ public class DonHangDTO {
         this.data = data;
     }
 
-    public static class DonHang {
+    public static class DonHang implements Serializable {
         @SerializedName("_id")
         private String id;
 
@@ -207,7 +208,7 @@ public class DonHangDTO {
 
 
 
-    public static class SanPhamTrongDonHang {
+    public static class SanPhamTrongDonHang implements Serializable{
         @SerializedName("idSP")
         private SanPham sanPham;
 
@@ -265,7 +266,7 @@ public class DonHangDTO {
         }
     }
 
-    public static class SanPham {
+    public static class SanPham implements Serializable{
         @SerializedName("_id")
         private String id;
 
@@ -312,7 +313,7 @@ public class DonHangDTO {
         }
     }
 
-    public static class MauSchema {
+    public static class MauSchema implements Serializable{
 
 
         @SerializedName("mau")
@@ -350,7 +351,7 @@ public class DonHangDTO {
         }
     }
 
-    public static class KhachHang {
+    public static class KhachHang implements Serializable{
         @SerializedName("_id")
         private String id;
 

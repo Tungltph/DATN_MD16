@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -54,7 +55,7 @@ public class Acti_DiaChi extends AppCompatActivity {
 
     private void selectAddress(DiaChiDTO diaChi) {
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("selectedAddress", diaChi);
+        resultIntent.putExtra("selectedAddress", (Parcelable) diaChi);
         setResult(RESULT_OK, resultIntent);
         finish();
     }
