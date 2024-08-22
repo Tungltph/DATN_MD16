@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.datn_md16.Activitys.Acti_ThanhToan;
@@ -87,10 +88,8 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
                 TextView productColor = productView.findViewById(R.id.productColor);
                 TextView soLuong = productView.findViewById(R.id.soLuong);
                 TextView productPrice = productView.findViewById(R.id.productPrice);
-                ImageView productImage = productView.findViewById(R.id.productImage);
-                TextView btnHuy = productView.findViewById(R.id.btnHuy);
-                TextView btnXemChiTiet = productView.findViewById(R.id.btnXemChiTiet);
-                TextView tvDanhGia = productView.findViewById(R.id.tvDanhGia);
+                ImageView productImage = productView.findViewById(R.id.productImage);   
+
                 SharedPreferences sharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
 
 // Kiểm tra nếu người dùng đã đánh giá sản phẩm này chưa
@@ -99,12 +98,12 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
 
                 if (daDanhGia) {
                     // Hiển thị chữ "Mua lại" nếu đã đánh giá
-                    tvDanhGia.setText("");
-                    tvDanhGia.setOnClickListener(null); // Xóa sự kiện click nếu không cần
+                    holder.tvDanhGia.setText("");
+                    holder.tvDanhGia.setOnClickListener(null); // Xóa sự kiện click nếu không cần
                 } else {
                     // Hiển thị nút đánh giá và gán sự kiện click
-                    tvDanhGia.setText("Đánh giá");
-                    tvDanhGia.setOnClickListener(v -> {
+                    holder.tvDanhGia.setText("Đánh giá");
+                    holder.tvDanhGia.setOnClickListener(v -> {
                         Dialog dialog = new Dialog(context);
                         dialog.setContentView(R.layout.dialog_danhgia);
 
@@ -148,7 +147,7 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
                                         sharedPreferences.edit().putBoolean("daDanhGia_" + sanPhamId, true).apply();
 
                                         // Thay đổi văn bản thành "Mua lại" sau khi thành công
-                                        tvDanhGia.setText("Mua lại");
+                                        holder.tvDanhGia.setText("Mua lại");
 
                                         Toast.makeText(context, "Đánh giá đã được gửi thành công!", Toast.LENGTH_SHORT).show();
                                         dialog.dismiss();
@@ -201,18 +200,18 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
 
 
                 if (donHang.getTrangThaiDonHang().equals("Chờ xác nhận") || donHang.getTrangThaiDonHang().equals("Đang xử lý")) {
-                    btnHuy.setVisibility(View.VISIBLE);
+                    holder.btnHuy.setVisibility(View.VISIBLE);
                 } else {
-                    btnHuy.setVisibility(View.GONE);
+                    holder.btnHuy.setVisibility(View.GONE);
                 }
 
                 if (donHang.getTrangThaiDonHang().equals("Đã giao hàng")) {
-                    tvDanhGia.setVisibility(View.VISIBLE);
+                    holder.tvDanhGia.setVisibility(View.VISIBLE);
                 } else {
-                    tvDanhGia.setVisibility(View.GONE);
+                    holder.tvDanhGia.setVisibility(View.GONE);
                 }
 
-                btnHuy.setOnClickListener(v -> {
+                holder.btnHuy.setOnClickListener(v -> {
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
                     builder.setTitle("Bạn muốn hủy đơn hàng ?");
                     builder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
@@ -255,7 +254,7 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
                 });
 
 
-                btnXemChiTiet.setOnClickListener(v -> {
+                holder.btnXemChiTiet.setOnClickListener(v -> {
                     DiaChiDTO diaChiDTO = new DiaChiDTO();
 
                         Intent intent = new Intent(context, Acti_chitietdonhang.class);
@@ -314,12 +313,14 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
     }
 
 public static class ViewHolder extends RecyclerView.ViewHolder {
-    public LinearLayout productContainer;
-
+    public CardView productContainer;
+    private TextView btnHuy,btnXemChiTiet,tvDanhGia;
     public ViewHolder(View itemView) {
         super(itemView);
         productContainer = itemView.findViewById(R.id.productContainer);
-
+         btnHuy = itemView.findViewById(R.id.btnHuy);
+         btnXemChiTiet = itemView.findViewById(R.id.btnXemChiTiet);
+         tvDanhGia = itemView.findViewById(R.id.tvDanhGia);
     }
 }
 }
