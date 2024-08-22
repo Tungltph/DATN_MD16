@@ -313,7 +313,7 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
     }
 
 public static class ViewHolder extends RecyclerView.ViewHolder {
-    public CardView productContainer;
+    public LinearLayout productContainer;
     private TextView btnHuy,btnXemChiTiet,tvDanhGia;
     public ViewHolder(View itemView) {
         super(itemView);
