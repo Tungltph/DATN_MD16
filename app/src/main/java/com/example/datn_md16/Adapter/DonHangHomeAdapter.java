@@ -87,16 +87,20 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
                 View productView = LayoutInflater.from(holder.itemView.getContext()).inflate(R.layout.item_donhang, holder.productContainer, false);
 
                 // Find views in item_san_pham layout
-                TextView productName = productView.findViewById(R.id.productName);
-                TextView productColor = productView.findViewById(R.id.productColor);
-                TextView soLuong = productView.findViewById(R.id.soLuong);
-                TextView productPrice = productView.findViewById(R.id.productPrice);
+//                TextView productName = productView.findViewById(R.id.productName);
+//                TextView productColor = productView.findViewById(R.id.productColor);
+//                TextView soLuong = productView.findViewById(R.id.soLuong);
+//                TextView productPrice = productView.findViewById(R.id.productPrice);
                 ImageView productImage = productView.findViewById(R.id.productImage);
                 TextView iddonhang = productView.findViewById(R.id.tvMadonhang);
                 TextView TOngtien = productView.findViewById(R.id.tongtien);
                 TextView thoigian = productView.findViewById(R.id.ngaydat);
+                TextView soluong = productView.findViewById(R.id.Soluong);
 
-                iddonhang.setText("id đơn hàng : "+donHang.getId());
+
+                soluong.setText("Số Lượng sản phẩm : "+donHang.getSoLuong());
+
+                iddonhang.setText("Mã đơn hàng : "+donHang.getId());
 
 
                 NumberFormat numberFormat = NumberFormat.getInstance(Locale.getDefault());
@@ -204,14 +208,14 @@ public class DonHangHomeAdapter extends RecyclerView.Adapter<DonHangHomeAdapter.
 
 
                 // Update product information
-                String tenSanPham = sanPham.getTenDienThoai();
-                int soLuongSanPham = sanPhamTrongDonHang.getSoLuong();
-                productName.setText(tenSanPham);
-                soLuong.setText("Số lượng: " + soLuongSanPham);
+//                String tenSanPham = sanPham.getTenDienThoai();
+//                int soLuongSanPham = sanPhamTrongDonHang.getSoLuong();
+//                productName.setText(tenSanPham);
+//                soLuong.setText("Số lượng: " + soLuongSanPham);
 
 
-                productColor.setText(sanPhamTrongDonHang.getMau());
-                productPrice.setText(formatPrice(sanPhamTrongDonHang.getGiaTien()));
+//                productColor.setText(sanPhamTrongDonHang.getMau());
+//                productPrice.setText(formatPrice(sanPhamTrongDonHang.getGiaTien()));
 
 
                 productImage.setImageResource(R.drawable.product_background); // Placeholder image

@@ -35,46 +35,47 @@
             android:orientation="vertical"
             android:layout_marginStart="16dp">
 
-            <TextView
-                android:id="@+id/productName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="iPhone 15 Pro"
-                android:textColor="@android:color/black"
-                android:textSize="17sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/productName"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="iPhone 15 Pro"-->
+<!--                android:textColor="@android:color/black"-->
+<!--                android:textSize="17sp" />-->
 
-            <TextView
-                android:id="@+id/productPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="15.000.000đ"
-                android:textColor="#FF00"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+<!--            <TextView-->
+<!--                android:id="@+id/productPrice"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="15.000.000đ"-->
+<!--                android:textColor="#FF00"-->
+<!--                android:textSize="16sp"-->
+<!--                android:textStyle="bold" />-->
 
-            <TextView
-                android:id="@+id/productColor"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Màu: Đen"
-                android:textColor="@android:color/darker_gray"
-                android:textSize="14sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/productColor"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Màu: Đen"-->
+<!--                android:textColor="@android:color/darker_gray"-->
+<!--                android:textSize="14sp" />-->
 
 
-            <TextView
-                android:id="@+id/soLuong"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10px"
-                android:text="Số lượng :"
-                android:textColor="@android:color/black"
-                android:textSize="14sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/soLuong"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="10px"-->
+<!--                android:text="Số lượng :"-->
+<!--                android:textColor="@android:color/black"-->
+<!--                android:textSize="14sp" />-->
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tvMadonhang"
                 android:textStyle="bold"
+                android:textSize="20dp"
                 android:textColor="@color/red"
                 />
             <TextView
@@ -82,14 +83,24 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/tongtien"
                 android:textStyle="bold"
-                android:textColor="@color/red"
+                android:textSize="20dp"
+                android:textColor="#FF0000"
                 />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/ngaydat"
                 android:textStyle="bold"
-                android:textColor="@color/red"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/Soluong"
+                android:textSize="15dp"
+                android:textColor="@color/black"
+                android:textStyle="bold"
                 />
 
 

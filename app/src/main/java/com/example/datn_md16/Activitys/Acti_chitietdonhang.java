@@ -83,6 +83,7 @@ public class Acti_chitietdonhang extends AppCompatActivity {
             tvPhuongThucThanhToan.setText(infoOrder.getPhuongThucThanhToan());
 
             chitietdonhangAdapter.notifyDataSetChanged();
+            soLuongHoaDon.setText("Tổng sản phẩm : "+infoOrder.getSoLuong());
 
 
 
